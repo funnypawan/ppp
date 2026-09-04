@@ -1,0 +1,50 @@
+<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <ellipse cx="100" cy="140" rx="50" ry="60" fill="#D4A574"/>
+  
+  <!-- Head -->
+  <circle cx="100" cy="80" r="45" fill="#D4A574"/>
+  
+  <!-- Left Ear -->
+  <ellipse cx="70" cy="40" rx="20" ry="35" fill="#D4A574"/>
+  <ellipse cx="70" cy="45" rx="12" ry="25" fill="#E8C4A0"/>
+  
+  <!-- Right Ear -->
+  <ellipse cx="130" cy="40" rx="20" ry="35" fill="#D4A574"/>
+  <ellipse cx="130" cy="45" rx="12" ry="25" fill="#E8C4A0"/>
+  
+  <!-- Snout -->
+  <ellipse cx="100" cy="95" rx="25" ry="20" fill="#E8C4A0"/>
+  
+  <!-- Nose -->
+  <ellipse cx="100" cy="92" rx="8" ry="7" fill="#333"/>
+  
+  <!-- Mouth -->
+  <path d="M 100 92 Q 95 100 90 98" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 100 92 Q 105 100 110 98" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- Left Eye -->
+  <circle cx="85" cy="70" r="6" fill="#333"/>
+  <circle cx="86" cy="68" r="2" fill="white"/>
+  
+  <!-- Right Eye -->
+  <circle cx="115" cy="70" r="6" fill="#333"/>
+  <circle cx="116" cy="68" r="2" fill="white"/>
+  
+  <!-- Left Front Paw -->
+  <rect x="75" y="190" width="15" height="35" rx="7" fill="#D4A574"/>
+  <ellipse cx="82.5" cy="228" rx="10" ry="6" fill="#333"/>
+  
+  <!-- Right Front Paw -->
+  <rect x="110" y="190" width="15" height="35" rx="7" fill="#D4A574"/>
+  <ellipse cx="117.5" cy="228" rx="10" ry="6" fill="#333"/>
+  
+  <!-- Tail -->
+  <path d="M 145 130 Q 170 120 175 90" stroke="#D4A574" stroke-width="18" fill="none" stroke-linecap="round"/>
+  
+  <!-- Belly spot -->
+  <ellipse cx="100" cy="155" rx="20" ry="25" fill="#E8C4A0"/>
+  
+  <!-- Happy expression (tongue) -->
+  <ellipse cx="100" cy="108" rx="6" ry="5" fill="#FF6B9D"/>
+</svg>
