@@ -1,29 +1,42 @@
-# 🎬 Think & Grow Rich — 30 min Hindi Video (1080p + Music)
+# 🎬 अपनी सोच से अमीर बनिए — 30 min Hindi Video (Full HD)
 
-**File:** `think_grow_rich_1080p_music.mp4` (146 MB)
-**Format:** 1920×1080 Full HD • H.264 + AAC • Duration: 29:31
-**Content:** 180 AI-generated images + Hindi voiceover + copyright-free background music
+**File:** `think_grow_rich_hindi_1080p.mp4` — **70 MB, single file** (कोई zip नहीं, कोई parts नहीं)
+**Quality:** 1920×1080 Full HD • H.264 + AAC • **29:31 minutes**
+**Content:** 180 AI-generated images + Hindi voiceover + copyright-free background music (music आवाज़ से 25% पर, हल्का background)
 
-> GitHub per-file limit (100 MB) की वजह से video 4 parts में split है।
+---
 
-## 📥 Download & Join
+## 📱 Mobile पर download कैसे करें (सबसे आसान)
 
-### Option A — Linux / macOS / Git Bash
-```bash
-# 1. चारों parts download करें (उसी folder में रखें)
-# 2. Join करें:
-cat think_grow_rich_1080p_music.mp4.part* > think_grow_rich_1080p_music.mp4
+1. नीचे दिए **direct link** पर tap करें
+2. Browser में video खुल जाएगी → **⋮ (3 dots)** menu → **"Download"** tap करें
+3. Gallery / Files में video सेव हो जाएगी — सीधे play करें 🎉
+
+### 🔗 Direct download link
+```
+https://raw.githubusercontent.com/funnypawan/ppp/arena/01a07f9d-ppp/video/think_grow_rich_hindi_1080p.mp4
 ```
 
-### Option B — Windows (7-Zip)
-1. चारों `.part` files download करें
-2. 7-Zip में पहली file पर right-click → **Extract here** (7-Zip parts को खुद जोड़ देता है)
+**या GitHub page से:** video file पर tap करें → **Download** (⤓) icon दबाएँ
 
-## ✅ Verify
-Join के बाद file size **146,408,216 bytes** और SHA-256 होनी चाहिए:
+---
 
-```bash
-sha256sum think_grow_rich_1080p_music.mp4
-```
+## ✅ Verify (optional)
+SHA-256: *(नीचे README के अंत में)*
 
-**SHA-256:** `87e081c30751c83c36fd4848b1bfc8f74dde40db14218f613768c91e3b2d23f3`
+## 📋 Video details
+| | |
+|---|---|
+| Duration | 29:31 |
+| Resolution | 1920×1080 (16:9) |
+| Video | H.264, 25 fps |
+| Audio | AAC stereo 112 kbps |
+| Size | 70 MB |
+
+## 📖 Related files in this repo
+- `voiceover_script_hindi.md` — पूरी 30-मिनट Hindi script (20 sections)
+- `image_prompts_think_and_grow_rich_hindi.md` — 180 image prompts
+- `image_prompts.csv` — prompts + timecodes (CSV)
+- `audio/` — 20 voice clips (CLIP-01…CLIP-20) + background music
+- `images/` — 183 images (180 main + 3 thumbnails)
+SHA-256: `e6d51dc4ab5a6f9ae71c4666b8747ad1e3b20796af84a8f2f9588481206d7872`
