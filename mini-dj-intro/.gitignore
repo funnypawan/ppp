@@ -1,0 +1,7 @@
+__pycache__/
+*_seg*.mp4
+*_concat.mp4
+*_list.txt
+cap_*.png
+boom.wav
+riser.wav
