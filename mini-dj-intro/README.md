@@ -17,9 +17,10 @@ Bhai, tumne jo video bheji thi — **"Mini Dj Pickup setup | how to make mini dj
 | `07-editing-checklist.md` | CapCut / Premiere / Resolve me edit karne ka checklist + export settings |
 | `08-naya-script-monkey-bhai-birthday.md` | ⭐ **Naya full episode script** (7:45, shot-by-shot Hindi dialogue, 11 beats) + 30s Shorts cut + **repeatable formula template** (isse 50 script banao) + 7 image prompts |
 | `keyframes/` | 7 sample images jo maine isi style me generate ki hain (reference ke liye) |
-| `out/mini-dj-intro-hindi-voice.mp4` | 🎬 **40.7s animated intro** — 7 images animate + Hindi voiceover + SFX (1080p, 16:9) |
-| `out/mini-dj-intro-hindi-voice-music.mp4` | 🎬 Same + **145 BPM DJ background music** (1080p, 16:9) |
+| `out/mini-dj-intro-hindi-voice-bass-16x9.mp4` | 🎬 **40.7s main intro** — 7 images animate + Hindi voiceover + **BASS-HEAVY 145 BPM music** (1080p, 16:9) |
 | `out/mini-dj-shorts-vertical-9x16.mp4` | 📱 **Shorts/Reels version** — 1080x1920, blurred bg + Hindi captions + music |
+| `out/mini-dj-showcase-vehicles-16x9.mp4` | 🚜 **Vehicle showcase episode** — tractor, e-rickshaw, auto, truck (36.4s) |
+| `out/mini-dj-showcase-vehicles-9x16.mp4` | 🚜 Same showcase — Shorts/Reels (1080x1920) |
 | `out/mini-dj-story-birthday-16x9.mp4` | 🎂 **Naya episode intro** — "मंकी भाई का बर्थडे" 8 shots, 43.2s, 16:9 |
 | `out/mini-dj-story-birthday-9x16.mp4` | 🎂 Same story episode intro — Shorts/Reels (1080x1920) |
 | `out/mini-dj-bumper-15s-16x9.mp4` | ⚡ **15-sec fast punch-in bumper** (truck → monkey dance → DJ console → logo) |
@@ -27,6 +28,11 @@ Bhai, tumne jo video bheji thi — **"Mini Dj Pickup setup | how to make mini dj
 | `video_build/` | Python + ffmpeg scripts (Ken Burns animation, voice sync, music synth) — dobara chala ke naya intro banao |
 | `video_build/build_bumper.py` | 15-sec punch-in bumper banane wala script |
 | `video_build/build_story.py` | Story video builder (8 shots, wide + vertical) |
+| `video_build/build_showcase.py` | Vehicle showcase builder (tractor/rickshaw/auto/truck) |
+| `video_build/build_intro_bass.py` | Main intro ka bass-heavy render |
+| `video_build/music_gen.py` | 145 BPM DJ track (normal version) |
+| `video_build/music_gen_bass.py` | **Bass-heavy version** — sidechain ducking + low-end boost |
+| `showcase_build/` | Showcase video ki 7 Hindi voice lines |
 | `story_build/` | Story video ki 8 Hindi voice lines (vo1-vo8) |
 
 ---

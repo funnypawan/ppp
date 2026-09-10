@@ -14,7 +14,9 @@ KF, WB, OUT = f"{BASE}/keyframes", f"{BASE}/video_build", f"{BASE}/out"
 os.makedirs(OUT, exist_ok=True)
 FPS, LEAD, TAIL = 30, 0.45, 0.65
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
-MUSIC = None   # default: WB/music.wav  (story builder se override hota hai)
+MUSIC = None            # WB/music.wav default
+MUSIC_VOL_DIALOG = 0.055   # dialogue ke waqt music level
+MUSIC_VOL_LOGO  = 0.115    # logo reveal pe music level
 
 SHOTS = [
     ("05_workshop_build.jpg",       "vo1.mp3", "in",      "Cardboard + glue gun se shuru!"),
@@ -142,7 +144,7 @@ def final_mix(layout, concat, starts, durs, out_name):
     nvoice, nmix = len(SHOTS), 0
     fc, mix = [], ["[music]"]
     # music: low during dialogue, lifts at logo reveal
-    fc.append(f"[{nvoice+1}:a]volume='if(gt(t,{logo_t:.2f}),0.115,0.055)':eval=frame,"
+    fc.append(f"[{nvoice+1}:a]volume='if(gt(t,{logo_t:.2f}),{MUSIC_VOL_LOGO},{MUSIC_VOL_DIALOG})':eval=frame,"
               f"atrim=0:{total:.2f},afade=t=out:st={total-0.8:.2f}:d=0.8[music]")
     # voice over
     for i in range(nvoice):

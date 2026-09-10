@@ -15,7 +15,7 @@ WB   = f"{BASE}/bumper_build"
 MUSIC = f"{BASE}/video_build/music.wav"
 os.makedirs(WB, exist_ok=True)
 
-INTRO = f"{OUT}/mini-dj-intro-hindi-voice-music.mp4"     # truck hero @13.70, monkey @24.89, logo @35.09
+INTRO = f"{OUT}/mini-dj-intro-hindi-voice-bass-16x9.mp4"  # truck hero @13.70, monkey @24.89, logo @35.09
 STORY = f"{OUT}/mini-dj-story-birthday-16x9.mp4"         # monkey dance @31.85
 
 # (source video, start time, duration)
