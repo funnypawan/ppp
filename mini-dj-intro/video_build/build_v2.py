@@ -14,6 +14,7 @@ KF, WB, OUT = f"{BASE}/keyframes", f"{BASE}/video_build", f"{BASE}/out"
 os.makedirs(OUT, exist_ok=True)
 FPS, LEAD, TAIL = 30, 0.45, 0.65
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+MUSIC = None   # default: WB/music.wav  (story builder se override hota hai)
 
 SHOTS = [
     ("05_workshop_build.jpg",       "vo1.mp3", "in",      "Cardboard + glue gun se shuru!"),
@@ -87,6 +88,7 @@ def build_segments(layout):
         if layout == "wide":
             vf = (f"scale=3840:2160:force_original_aspect_ratio=increase,crop=3840:2160,"
                   f"{zoom(kind, frames, 1920, 1080)},format=yuv420p")
+            extra_in = []
             filters = [f"[0:v]{vf}[v]"]
         else:
             # background: cover + blur; foreground: 1080 wide sharp card on top
@@ -134,7 +136,8 @@ def final_mix(layout, concat, starts, durs, out_name):
     cmd = [FF, "-y", "-i", concat]
     for i, (img, vo, kind, cap) in enumerate(SHOTS, 1):
         cmd += ["-i", os.path.join(WB, vo)]
-    cmd += ["-stream_loop", "6", "-i", os.path.join(WB, "music.wav"), "-i", boom, "-i", riser]
+    music_path = MUSIC or os.path.join(WB, "music.wav")
+    cmd += ["-stream_loop", "6", "-i", music_path, "-i", boom, "-i", riser]
 
     nvoice, nmix = len(SHOTS), 0
     fc, mix = [], ["[music]"]

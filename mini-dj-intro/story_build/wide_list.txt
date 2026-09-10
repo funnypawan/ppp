@@ -1,0 +1,8 @@
+file '/home/user/ppp/mini-dj-intro/story_build/wide_seg01.mp4'
+file '/home/user/ppp/mini-dj-intro/story_build/wide_seg02.mp4'
+file '/home/user/ppp/mini-dj-intro/story_build/wide_seg03.mp4'
+file '/home/user/ppp/mini-dj-intro/story_build/wide_seg04.mp4'
+file '/home/user/ppp/mini-dj-intro/story_build/wide_seg05.mp4'
+file '/home/user/ppp/mini-dj-intro/story_build/wide_seg06.mp4'
+file '/home/user/ppp/mini-dj-intro/story_build/wide_seg07.mp4'
+file '/home/user/ppp/mini-dj-intro/story_build/wide_seg08.mp4'
