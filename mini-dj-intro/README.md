@@ -17,6 +17,10 @@ Bhai, tumne jo video bheji thi — **"Mini Dj Pickup setup | how to make mini dj
 | `07-editing-checklist.md` | CapCut / Premiere / Resolve me edit karne ka checklist + export settings |
 | `08-naya-script-monkey-bhai-birthday.md` | ⭐ **Naya full episode script** (7:45, shot-by-shot Hindi dialogue, 11 beats) + 30s Shorts cut + **repeatable formula template** (isse 50 script banao) + 7 image prompts |
 | `keyframes/` | 7 sample images jo maine isi style me generate ki hain (reference ke liye) |
+| `out/mini-dj-intro-hindi-voice.mp4` | 🎬 **40.7s animated intro** — 7 images animate + Hindi voiceover + SFX (1080p, 16:9) |
+| `out/mini-dj-intro-hindi-voice-music.mp4` | 🎬 Same + **145 BPM DJ background music** (1080p, 16:9) |
+| `out/mini-dj-shorts-vertical-9x16.mp4` | 📱 **Shorts/Reels version** — 1080x1920, blurred bg + Hindi captions + music |
+| `video_build/` | Python + ffmpeg scripts (Ken Burns animation, voice sync, music synth) — dobara chala ke naya intro banao |
 
 ---
 
