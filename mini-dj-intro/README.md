@@ -15,7 +15,8 @@ Bhai, tumne jo video bheji thi — **"Mini Dj Pickup setup | how to make mini dj
 | `05-image-to-video-prompts.md` | Har shot ka image→video prompt, camera move, duration, model-wise tips |
 | `06-voice-music-sfx.md` | Hindi TTS lines + music keywords + SFX cue sheet with timecode |
 | `07-editing-checklist.md` | CapCut / Premiere / Resolve me edit karne ka checklist + export settings |
-| `keyframes/` | 5 sample images jo maine isi style me generate ki hain (reference ke liye) |
+| `08-naya-script-monkey-bhai-birthday.md` | ⭐ **Naya full episode script** (7:45, shot-by-shot Hindi dialogue, 11 beats) + 30s Shorts cut + **repeatable formula template** (isse 50 script banao) + 7 image prompts |
+| `keyframes/` | 7 sample images jo maine isi style me generate ki hain (reference ke liye) |
 
 ---
 
