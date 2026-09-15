@@ -7,17 +7,24 @@ Rich Dad Poor Dad, Think and Grow Rich और Atomic Habits जैसी कि�
 | फ़ाइल | क्या है |
 |---|---|
 | `index.html` | सर्च करने वाला वेब पेज — खोजिए, विषय से छाँटिए, Ctrl+P से PDF बनाइए |
+| `top-100-self-improvement-books-hindi.pdf` | **34 पेज का तैयार PDF** — बुकमार्क/आउटलाइन, प्रिंट-रेडी (A4), हिंदी में सर्च भी हो सकता है |
 | `top-100-self-improvement-books-hindi.md` | पूरी गाइड मार्कडाउन में (आसानी से कॉपी/शेयर करने के लिए) |
 | `tools/data_books.py` | 125 किताबों का डेटा (हिंदी नाम, मूल नाम, लेखक, क्यों पढ़ें) |
 | `tools/data_topics.py` | 70 टॉपिक, 12 महीने का प्लान, पढ़ने के नियम |
-| `tools/build.py` | दोनों फ़ाइलें फिर से बनाने की स्क्रिप्ट (`python3 tools/build.py`) |
+| `tools/build.py` | वेब पेज + मार्कडाउन फिर से बनाने की स्क्रिप्ट (`python3 tools/build.py`) |
+| `tools/make_pdf.py` | PDF बनाने की स्क्रिप्ट (`python3 tools/make_pdf.py`) — fpdf2 + uharfbuzz |
+| `assets/fonts/` | PDF के लिए बंडल किए गए Noto Sans Devanagari फ़ॉन्ट (OFL लाइसेंस) |
 
 ## चलाने का तरीक़ा
 
 ```bash
 python3 -m http.server 8080 --bind 0.0.0.0   # फिर index.html खोलिए
-# या सिर्फ़: python3 tools/build.py          # डेटा बदलकर फ़ाइलें फिर बनाइए
+python3 tools/build.py                       # डेटा बदलकर वेब पेज + मार्कडाउन फिर बनाइए
+pip install fpdf2 uharfbuzz                  # PDF के लिए (एक बार)
+python3 tools/make_pdf.py                    # PDF फिर से बनाइए
 ```
+
+> **देवनागरी टिप:** fpdf2 में `pdf.set_text_shaping(True)` ज़रूरी है, वरना मात्राएँ/संयुक्ताक्षर टूट जाते हैं (जैसे "द्वारा" → "दवारा")।
 
 `index.html` पूरी तरह ऑफ़लाइन चलता है (कोई बैकएंड नहीं) — फ़ाइल सीधे ब्राउज़र में खोल भी सकते हैं।
 

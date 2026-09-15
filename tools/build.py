@@ -300,6 +300,7 @@ def build_html():
   </tbody></table>
 
   <footer>
+    📄 <b>PDF संस्करण:</b> <a href="top-100-self-improvement-books-hindi.pdf" style="color:#ffc107">top-100-self-improvement-books-hindi.pdf</a> (34 पेज, बुकमार्क के साथ) · यह पेज भी Ctrl+P से PDF बन सकता है।<br>
     हिंदी नाम प्रकाशक के हिसाब से थोड़े बदल सकते हैं (जैसे Atomic Habits = "छोटी आदतें, बड़े बदलाव" / "परमाणु आदतें") — लेखक और मूल नाम से सही किताब मिल जाएगी।
     यह पेज पूरी तरह ऑफ़लाइन काम करता है; Ctrl+P से PDF बना सकते हैं।
   </footer>
