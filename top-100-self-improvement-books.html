@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>टॉप 100 सेल्फ-इम्प्रूवमेंट पुस्तकें - Hindi Guide</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d29;
+    --card-hover: #222637;
+    --accent: #ffd700;
+    --accent2: #00d4aa;
+    --accent3: #ff6b6b;
+    --text: #e8e8e8;
+    --muted: #9ca3af;
+    --border: #2a2d3a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Nirmala UI', 'Mangal', sans-serif;
+    background: linear-gradient(135deg, #0f1117 0%, #1a1d29 100%);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 20px;
+  }
+  .header {
+    text-align: center;
+    padding: 50px 20px 40px;
+    background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(0,212,170,0.08));
+    border-radius: 20px;
+    margin-bottom: 40px;
+    border: 1px solid var(--border);
+  }
+  .header h1 {
+    font-size: 2.5em;
+    background: linear-gradient(90deg, #ffd700, #00d4aa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+  }
+  .header p { color: var(--muted); font-size: 1.1em; max-width: 700px; margin: 0 auto; }
+  .header .tags { margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .header .tag {
+    background: rgba(255,215,0,0.15);
+    color: var(--accent);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    border: 1px solid rgba(255,215,0,0.3);
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .stat-card {
+    background: var(--card);
+    padding: 25px 20px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: transform 0.3s;
+  }
+  .stat-card:hover { transform: translateY(-3px); border-color: var(--accent2); }
+  .stat-card .num { font-size: 2em; font-weight: bold; color: var(--accent); }
+  .stat-card .label { color: var(--muted); font-size: 0.9em; margin-top: 5px; }
+  .nav-pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .nav-pills a {
+    background: var(--card);
+    color: var(--text);
+    padding: 8px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.85em;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .nav-pills a:hover { background: var(--accent); color: #000; }
+  .category {
+    max-width: 1200px;
+    margin: 0 auto 50px;
+  }
+  .category-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border);
+  }
+  .category-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    flex-shrink: 0;
+  }
+  .category-title h2 { font-size: 1.6em; }
+  .category-title .desc { color: var(--muted); font-size: 0.9em; }
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+  .book-card {
+    background: var(--card);
+    border-radius: 15px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .book-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--accent);
+  }
+  .book-card:hover { background: var(--card-hover); transform: translateY(-4px); border-color: var(--accent2); }
+  .book-card .rank {
+    position: absolute;
+    top: 15px; right: 18px;
+    font-size: 2em;
+    font-weight: bold;
+    color: rgba(255,255,255,0.08);
+  }
+  .book-card h3 {
+    color: var(--accent);
+    font-size: 1.05em;
+    margin-bottom: 5px;
+    padding-right: 35px;
+  }
+  .book-card .author { color: var(--accent2); font-size: 0.8em; margin-bottom: 10px; }
+  .book-card .topic {
+    background: rgba(0,212,170,0.1);
+    color: var(--accent2);
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .book-card .hindi-desc { font-size: 0.88em; color: #c5c5c5; }
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 50px;
+  }
+  .footer .quote {
+    font-style: italic;
+    font-size: 1.2em;
+    color: var(--accent);
+    margin-bottom: 15px;
+  }
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.7em; }
+    .books-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📚 टॉप 100 सेल्फ-इम्प्रूवमेंट पुस्तकें</h1>
+  <p>सफलता, आदत, धन, मानसिकता और व्यक्तिगत विकास की दुनिया की सर्वश्रेष्ठ पुस्तकें — हिंदी में विषय और सारांश के साथ</p>
+  <div class="tags">
+    <span class="tag">💰 धन निर्माण</span>
+    <span class="tag">🧠 मानसिकता</span>
+    <span class="tag">⚙️ आदत निर्माण</span>
+    <span class="tag">🚀 सफलता</span>
+    <span class="tag">❤️ रिश्ते</span>
+    <span class="tag">💪 स्वास्थ्य</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat-card"><div class="num">100</div><div class="label">जीवन बदलने वाली पुस्तकें</div></div>
+  <div class="stat-card"><div class="num">10</div><div class="label">श्रेणियाँ</div></div>
+  <div class="stat-card"><div class="num">50+</div><div class="label">वर्षों का ज्ञान</div></div>
+  <div class="stat-card"><div class="num">∞</div><div class="label">सीखने की क्षमता</div></div>
+</div>
+
+<div class="nav-pills">
+  <a href="#finance">💰 वित्त</a>
+  <a href="#mindset">🧠 मानसिकता</a>
+  <a href="#habits">⚙️ आदतें</a>
+  <a href="#productivity">⚡ उत्पादकता</a>
+  <a href="#leadership">👑 नेतृत्व</a>
+  <a href="#success">🏆 सफलता</a>
+  <a href="#time">⏰ समय</a>
+  <a href="#health">💪 स्वास्थ्य</a>
+  <a href="#relations">❤️ रिश्ते</a>
+  <a href="#happiness">😊 खुशी</a>
+</div>
+
+<!-- CATEGORY 1: FINANCE -->
+<div class="category" id="finance">
+  <div class="category-title">
+    <div class="category-icon" style="background:rgba(255,215,0,0.15)">💰</div>
+    <div>
+      <h2>वित्तीय स्वतंत्रता और धन निर्माण</h2>
+      <div class="desc">पैसे के बारे में सोचना सीखें, निवेश करना सीखें, और आर्थिक स्वतंत्रता पाएं</div>
+    </div>
+  </div>
+  <div class="books-grid">
+
+    <div class="book-card">
+      <div class="rank">01</div>
+      <h3>Rich Dad Poor Dad</h3>
+      <div class="author">Robert Kiyosaki</div>
+      <div class="topic">वित्तीय साक्षरता</div>
+      <div class="hindi-desc">अमीर और गरीब की सोच में फर्क बताती पुस्तक। सिखाती है कि एसेट (संपत्ति) और लायबिलिटी (देनदारियां) में अंतर कैसे पहचानें और पैसा कैसे काम पर लगाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">02</div>
+      <h3>Think and Grow Rich</h3>
+      <div class="author">Napoleon Hill</div>
+      <div class="topic">धन और मानसिकता</div>
+      <div class="hindi-desc">500+ अमीर लोगों के अध्ययन पर आधारित। इच्छा, विश्वास और साकार्य की शक्ति से धन कैसे बनाएं — यह बताती सर्वकालिक क्लासिक।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">03</div>
+      <h3>The Psychology of Money</h3>
+      <div class="author">Morgan Housel</div>
+      <div class="topic">पैसे का मनोविज्ञान</div>
+      <div class="hindi-desc">पैसा कमाना गणित नहीं, व्यवहार का मामला है। यह किताब बताती है कि धन निर्माण में भावनाएं, घमंड और डर कैसे बाधा बनते हैं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">04</div>
+      <h3>The Intelligent Investor</h3>
+      <div class="author">Benjamin Graham</div>
+      <div class="topic">निवेश कला</div>
+      <div class="hindi-desc">वॉरेन बफे के गुरु द्वारा लिखित। वैल्यू इन्वेस्टिंग के सिद्धांत — मार्केट के उतार-चढ़ाव में धैर्य और विवेक कैसे बनाए रखें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">05</div>
+      <h3>The Millionaire Fastlane</h3>
+      <div class="author">MJ DeMarco</div>
+      <div class="topic">तेजी से अमीर बनना</div>
+      <div class="hindi-desc">स्लो-लेन (नौकरी-बचत) से बाहर निकलकर फास्ट-लेन (व्यवसायिक प्रणालियां) अपनाने की रणनीति। स्केलेबल धन कैसे बनाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">06</div>
+      <h3>The Richest Man in Babylon</h3>
+      <div class="author">George S. Clason</div>
+      <div class="topic">प्राचीन धन ज्ञान</div>
+      <div class="hindi-desc">बेबीलोन की कहानियों से सीख — कमाने का हिस्सा बचाएं, बचत को निवेश करें, और अपनी आय बढ़ाने के रास्ते खोजें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">07</div>
+      <h3>I Will Teach You to Be Rich</h3>
+      <div class="author">Ramit Sethi</div>
+      <div class="topic">व्यक्तिगत वित्त</div>
+      <div class="hindi-desc">6-हफ्ते का कार्यक्रम — बचत, निवेश, क्रेडिट कार्ड, और स्वचालित वित्त प्रणाली कैसे सेट करें ताकि पैसा अपने आप बढ़े।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">08</div>
+      <h3>Your Money or Your Life</h3>
+      <div class="author">Vicki Robin</div>
+      <div class="topic">धन और जीवन</div>
+      <div class="hindi-desc">पैसा वास्तव में आपके जीवन का समय है। खर्च, आय और बचत को फिर से तय कर आर्थिक स्वतंत्रता (FIRE) की ओर कदम बढ़ाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">09</div>
+      <h3>The Total Money Makeover</h3>
+      <div class="author">Dave Ramsey</div>
+      <div class="topic">कर्ज मुक्ति</div>
+      <div class="hindi-desc">कर्ज खत्म करने की 'स्नोबॉल' विधि। बचत, इमरजेंसी फंड और निवेश के व्यावहारिक कदम जो हर कोई अपना सकता है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">10</div>
+      <h3>Money: Master the Game</h3>
+      <div class="author">Tony Robbins</div>
+      <div class="topic">धन प्रबंधन</div>
+      <div class="hindi-desc">दुनिया के टॉप वित्तीय मास्ट्रोस की रणनीतियां। निवेश, फंड चयन और जीवन-भर आय सुनिश्चित करने के 7 कदम।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">11</div>
+      <h3>The Science of Getting Rich</h3>
+      <div class="author">Wallace D. Wattles</div>
+      <div class="topic">धन का विज्ञान</div>
+      <div class="hindi-desc">The Secret का मूल स्रोत। धन निर्माण एक विज्ञान है — निश्चित सोच और क्रिया से संपन्नता नियमित रूप से प्रकट होती है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">12</div>
+      <h3>The Little Book of Common Sense Investing</h3>
+      <div class="author">John C. Bogle</div>
+      <div class="topic">इंडेक्स निवेश</div>
+      <div class="hindi-desc">Vanguard के संस्थापक बताते हैं कि कम लागत वाले इंडेक्स फंड ही दीर्घकालिक सफलता का सबसे भरोसेमंद रास्ता हैं।</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CATEGORY 2: MINDSET -->
+<div class="category" id="mindset">
+  <div class="category-title">
+    <div class="category-icon" style="background:rgba(168,85,247,0.15)">🧠</div>
+    <div>
+      <h2>मानसिकता और सोच (Mindset)</h2>
+      <div class="desc">अपनी सोच बदलें, दिमाग को नया आकार दें, और सीमाओं को तोड़ें</div>
+    </div>
+  </div>
+  <div class="books-grid">
+
+    <div class="book-card">
+      <div class="rank">13</div>
+      <h3>Mindset: The New Psychology of Success</h3>
+      <div class="author">Carol Dweck</div>
+      <div class="topic">ग्रोथ माइंडसेट</div>
+      <div class="hindi-desc">फिक्स्ड बनाम ग्रोथ माइंडसेट। यह साबित करती है कि "मैं सीख सकता हूं" की सोच वाले लोग हमेशा आगे बढ़ते हैं। क्षमता तय नहीं, विकसित होती है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">14</div>
+      <h3>The Power of Your Subconscious Mind</h3>
+      <div class="author">Joseph Murphy</div>
+      <div class="topic">अवचेतन मन</div>
+      <div class="hindi-desc">आपका अवचेतन मन आपके जीवन को आकार देता है। सकारात्मक सुझाव और विज़ुअलाइज़ेशन से स्वास्थ्य, धन और सफलता कैसे प्राप्त करें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">15</div>
+      <h3>Outliers: The Story of Success</h3>
+      <div class="author">Malcolm Gladwell</div>
+      <div class="topic">सफलता का रहस्य</div>
+      <div class="hindi-desc">सफलता सिर्फ प्रतिभा का मामला नहीं — अवसर, परिवेश और 10,000 घंटे अभ्यास का नतीजा है। 10,000-घंटे का नियम प्रसिद्ध।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">16</div>
+      <h3>Grit: The Power of Passion</h3>
+      <div class="author">Angela Duckworth</div>
+      <div class="topic">दृढ़ता और जुनून</div>
+      <div class="hindi-desc">प्रतिभा से ज्यादा जरूरी है ग्रिट — लंबे समय तक एक ही लक्ष्य के प्रति जुनून और दृढ़ता बनाए रखना। यही सफलता का असली भेद है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">17</div>
+      <h3>The Secret</h3>
+      <div class="author">Rhonda Byrne</div>
+      <div class="topic">आकर्षण का नियम</div>
+      <div class="hindi-desc">सोच वह चीज बन जाती है जिस पर ध्यान केंद्रित करते हैं। आकर्षण का नियम — सकारात्मक सोच से जीवन बदलने का दर्शन।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">18</div>
+      <h3>Awaken the Giant Within</h3>
+      <div class="author">Tony Robbins</div>
+      <div class="topic">आंतरिक शक्ति</div>
+      <div class="hindi-desc">अपनी भावनाओं, विश्वासों और आदतों पर नियंत्रण पाएं। NLP तकनीक और निर्णय लेने की कला से जीवन को आकार दें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">19</div>
+      <h3>The Power of Positive Thinking</h3>
+      <div class="author">Norman Vincent Peale</div>
+      <div class="topic">सकारात्मक सोच</div>
+      <div class="hindi-desc">आत्मविश्वास, ढलान और विश्वास से डर और चिंता को हराएं। सकारात्मक दृष्टिकोण जीवन की बाधाओं को कैसे हटाता है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">20</div>
+      <h3>You Are a Badass</h3>
+      <div class="author">Jen Sincero</div>
+      <div class="topic">आत्मविश्वास</div>
+      <div class="hindi-desc">हंसते-खेलते अपने जीवन की कमान लें। आत्म-सम्मान, पैसा और जुनून — सब कुछ आपकी सोच बदलने पर निर्भर है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">21</div>
+      <h3>The Magic of Thinking Big</h3>
+      <div class="author">David J. Schwartz</div>
+      <div class="topic">बड़ा सोचें</div>
+      <div class="hindi-desc">छोटी सोच छोटे जीवन बनाती है। बड़े सपने, आत्मविश्वास और कार्रवाई से आप अपनी क्षमता का असली इस्तेमाल कर सकते हैं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">22</div>
+      <h3>As a Man Thinketh</h3>
+      <div class="author">James Allen</div>
+      <div class="topic">विचार शक्ति</div>
+      <div class="hindi-desc">"जैसी सोच, वैसा व्यक्ति।" विचार ही चरित्र और भाग्य बनाते हैं। छोटी पर अत्यंत शक्तिशाली किताब।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">23</div>
+      <h3>Psycho-Cybernetics</h3>
+      <div class="author">Maxwell Maltz</div>
+      <div class="topic">आत्म-छवि</div>
+      <div class="hindi-desc">सर्जन लेखक बताते हैं कि आत्म-छवि (self-image) ही आपकी सफलता तय करती है। नई आत्म-छवि बनाकर नया जीवन बनाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">24</div>
+      <h3>The Four Agreements</h3>
+      <div class="author">Don Miguel Ruiz</div>
+      <div class="topic">जीवन सिद्धांत</div>
+      <div class="hindi-desc">प्राचीन टोल्टेक ज्ञान — 4 समझौते: शब्द शुद्ध रखें, न लें व्यक्तिगत, न मानें अनुमान, हमेशा अपना सर्वश्रेष्ठ दें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">25</div>
+      <h3>The Compound Effect</h3>
+      <div class="author">Darren Hardy</div>
+      <div class="topic">संचयी प्रभाव</div>
+      <div class="hindi-desc">छोटे, निरंतर कदम ही बड़े नतीजे लाते हैं। रोज की आदतें, चुनाव और अनुशासन समय के साथ अद्भुत परिणाम देते हैं।</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CATEGORY 3: HABITS -->
+<div class="category" id="habits">
+  <div class="category-title">
+    <div class="category-icon" style="background:rgba(0,212,170,0.15)">⚙️</div>
+    <div>
+      <h2>आदत निर्माण और व्यवहार परिवर्तन</h2>
+      <div class="desc">अच्छी आदतें बनाएं, बुरी छोड़ें, और रोज की कार्यप्रणाली सुधारें</div>
+    </div>
+  </div>
+  <div class="books-grid">
+
+    <div class="book-card">
+      <div class="rank">26</div>
+      <h3>Atomic Habits</h3>
+      <div class="author">James Clear</div>
+      <div class="topic">आदत प्रणाली</div>
+      <div class="hindi-desc">1% बेहतर रोज — यही साल भर में 37 गुना बदलाव लाता है। क्यू, लालसा, प्रतिक्रिया, इनाम का चार-नियम फ्रेमवर्क। छोटी आदतें बड़ा जीवन बनाती हैं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">27</div>
+      <h3>The Power of Habit</h3>
+      <div class="author">Charles Duhigg</div>
+      <div class="topic">आदत लूप</div>
+      <div class="hindi-desc">आदत का लूप — संकेत → रूटीन → इनाम। इसे समझकर आप किसी भी बुरी आदत को तोड़ सकते हैं और नई आदतें बना सकते हैं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">28</div>
+      <h3>Habits of a Happy Brain</h3>
+      <div class="author">Loretta Graziano Breuning</div>
+      <div class="topic">न्यूरोकेमिकल आदत</div>
+      <div class="hindi-desc">डोपामीन, सेरोटोनिन, ऑक्सीटोसिन और एंडोर्फिन — खुशी के हार्मोन को समझकर नई खुशी की आदतें कैसे बुनें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">29</div>
+      <h3>Better Than Before</h3>
+      <div class="author">Gretchen Rubin</div>
+      <div class="topic">व्यक्तिगत आदत रणनीति</div>
+      <div class="hindi-desc">हर व्यक्ति अलग है। चार प्रवृत्तियां (उपहारकर्ता, ढलानकर्ता, विद्रोही, प्रश्नकर्ता) के अनुसार आदत रणनीति चुनें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">30</div>
+      <h3>The Slight Edge</h3>
+      <div class="author">Jeff Olson</div>
+      <div class="topic">छोटे फैसले</div>
+      <div class="hindi-desc">आसान करने वाली चीजें आसान न करने वाली भी हैं। रोज के छोटे, सरल फैसले ही समय के साथ बड़ी सफलता या असफलता बनाते हैं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">31</div>
+      <h3>Mini Habits</h3>
+      <div class="author">Stephen Guise</div>
+      <div class="topic">सूक्ष्म आदत</div>
+      <div class="hindi-desc">इतनी छोटी आदत कि विफल होना नामुमकिन हो — जैसे रोज एक पुशअप। इच्छाशक्ति थकान के बिना आदत कैसे बने।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">32</div>
+      <h3>Making Habits, Breaking Habits</h3>
+      <div class="author">Jeremy Dean</div>
+      <div class="topic">आदत विज्ञान</div>
+      <div class="hindi-desc">मनोविज्ञान पर आधारित — आदत कैसे बनती है, कितना समय लेती है (औसतन 66 दिन), और पुरानी आदतें कैसे तोड़ें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">33</div>
+      <h3>High Performance Habits</h3>
+      <div class="author">Brendon Burchard</div>
+      <div class="topic">उच्च-प्रदर्शन आदत</div>
+      <div class="hindi-desc">लंबे समय तक ऊंचा प्रदर्शन देने वालों की 6 आदतें — स्पष्टता, ऊर्जा, आवश्यकता, उत्पादकता, प्रभाव, साहस।</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CATEGORY 4: PRODUCTIVITY -->
+<div class="category" id="productivity">
+  <div class="category-title">
+    <div class="category-icon" style="background:rgba(255,107,107,0.15)">⚡</div>
+    <div>
+      <h2>उत्पादकता और कार्यप्रणाली</h2>
+      <div class="desc">कम समय में ज्यादा काम, फोकस बढ़ाएं, और प्राथमिकता सीखें</div>
+    </div>
+  </div>
+  <div class="books-grid">
+
+    <div class="book-card">
+      <div class="rank">34</div>
+      <h3>Deep Work</h3>
+      <div class="author">Cal Newport</div>
+      <div class="topic">गहन कार्य</div>
+      <div class="hindi-desc">विकर्षण मुक्त, गहन एकाग्रता से किया काम ही मूल्यवान है। फोकस की क्षमता बढ़ाकर ज्ञान-अर्थव्यवस्था में आगे रहें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">35</div>
+      <h3>Getting Things Done (GTD)</h3>
+      <div class="author">David Allen</div>
+      <div class="topic">कार्य प्रणाली</div>
+      <div class="hindi-desc">दिमाग साफ रखें — हर काम को बाहर निकालकर सिस्टम में रखें। कैप्चर, स्पष्ट करें, व्यवस्थित करें, और नियमित समीक्षा करें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">36</div>
+      <h3>The 4-Hour Workweek</h3>
+      <div class="author">Tim Ferriss</div>
+      <div class="topic">जीवन शैली डिजाइन</div>
+      <div class="hindi-desc">काम कम, जीवन ज्यादा। आउटसोर्सिंग, स्वचालन और दूरस्थ कार्य से समय और स्वतंत्रता पाएं — नई रत्न परिभाषा।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">37</div>
+      <h3>Essentialism</h3>
+      <div class="author">Greg McKeown</div>
+      <div class="topic">कम लेकिन सही</div>
+      <div class="hindi-desc">"कम लेकिन बेहतर।" जरूरी चीजों पर ध्यान, बाकी को खारिज करें। अनुशासित ढंग से जीवन से ज्यादा निकालें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">38</div>
+      <h3>The 80/20 Principle</h3>
+      <div class="author">Richard Koch</div>
+      <div class="topic">पारेटो नियम</div>
+      <div class="hindi-desc">80% नतीजे 20% प्रयास से। इस नियम को जीवन, कारोबार और समय में लागू कर ज्यादा उपलब्धि कम मेहनत से पाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">39</div>
+      <h3>Eat That Frog!</h3>
+      <div class="author">Brian Tracy</div>
+      <div class="topic">टालमटोल हटाना</div>
+      <div class="hindi-desc">सबसे कठिन काम पहले करें ("मेंढक पहले खाएं")। बड़े, जरूरी कार्यों से बचना बंद करें और प्राथमिकता से आगे बढ़ें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">40</div>
+      <h3>The One Thing</h3>
+      <div class="author">Gary Keller</div>
+      <div class="topic">एक प्रश्न एक लक्ष्य</div>
+      <div class="hindi-desc">"मेरा वह एक काम क्या है जिससे बाकी आसान या अनावश्यक हो जाए?" फोकस डोमिनो श्रृंखला से असाधारण परिणाम।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">41</div>
+      <h3>Free to Focus</h3>
+      <div class="author">Michael Hyatt</div>
+      <div class="topic">फोकस स्वतंत्रता</div>
+      <div class="hindi-desc">व्यस्तता के बजाय प्रभावशीलता चुनें। ऊर्जा, समय और ध्यान के लिए एक समग्र उत्पादकता प्रणाली बनाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">42</div>
+      <h3>Make Time</h3>
+      <div class="author">Jake Knapp & John Zeratsky</div>
+      <div class="topic">समय बनाना</div>
+      <div class="hindi-desc">डिफ़ॉल्ट ढांचे (इफिन्यू बार, अनंत स्क्रॉल) से बाहर आएं। रोज एक "हाइलाइट" चुनें और उसे जीएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">43</div>
+      <h3>Slow Productivity</h3>
+      <div class="author">Cal Newport</div>
+      <div class="topic">धीमी उत्पादकता</div>
+      <div class="hindi-desc">जल्दबाजी और थकान के बजाय — कम काम, प्राकृतिक गति, और गुणवत्ता पर जोर। टिकाऊ उत्पादकता का नया मानदंड।</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CATEGORY 5: LEADERSHIP -->
+<div class="category" id="leadership">
+  <div class="category-title">
+    <div class="category-icon" style="background:rgba(255,159,64,0.15)">👑</div>
+    <div>
+      <h2>नेतृत्व और प्रभाव</h2>
+      <div class="desc">लोगों को प्रेरित करें, संबंध बनाएं, और अगुवाई सीखें</div>
+    </div>
+  </div>
+  <div class="books-grid">
+
+    <div class="book-card">
+      <div class="rank">44</div>
+      <h3>The 7 Habits of Highly Effective People</h3>
+      <div class="author">Stephen R. Covey</div>
+      <div class="topic">प्रभावशीलता के सिद्धांत</div>
+      <div class="hindi-desc">शासित रहें, अंत से शुरू करें, पहले समझें फिर समझाएं, सिनर्जी — 7 आदतें जो चरित्र और सफलता बनाती हैं। आत्मनिर्भरता से अंतर्निर्भरता तक की यात्रा।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">45</div>
+      <h3>How to Win Friends and Influence People</h3>
+      <div class="author">Dale Carnegie</div>
+      <div class="topic">लोगों से जुड़ना</div>
+      <div class="hindi-desc">क्लासिक। दूसरों की रुचि लें, उनका नाम याद रखें, सुनें, ईमानदार तारीफ करें। रिश्ते और प्रभाव की सर्वकालिक कला।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">46</div>
+      <h3>Leaders Eat Last</h3>
+      <div class="author">Simon Sinek</div>
+      <div class="topic">सेवा नेतृत्व</div>
+      <div class="hindi-desc">महान नेता अपने लोगों के लिए सुरक्षित माहौल बनाते हैं। विश्वास, सहयोग और "सर्कल ऑफ सेफ्टी" से संगठन मजबूत होता है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">47</div>
+      <h3>Start with Why</h3>
+      <div class="author">Simon Sinek</div>
+      <div class="topic">उद्देश्य प्रेरणा</div>
+      <div class="hindi-desc">महान नेता "क्यों" से शुरू करते हैं। उद्देश्य, कारण और विश्वास से लोग प्रेरित होते हैं — गोल्डन सर्कल फ्रेमवर्क।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">48</div>
+      <h3>Good to Great</h3>
+      <div class="author">Jim Collins</div>
+      <div class="topic">संगठन उत्कृष्टता</div>
+      <div class="hindi-desc">कुछ कंपनियां अच्छी से महान कैसे बनीं — लेवल-5 नेतृत्व, हेजहोग अवधारणा, अनुशासित कार्रवाई का अध्ययन।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">49</div>
+      <h3>Drive: The Surprising Truth</h3>
+      <div class="author">Daniel H. Pink</div>
+      <div class="topic">आंतरिक प्रेरणा</div>
+      <div class="hindi-desc">पारिश्रमिक और दंड प्रेरणा कमजोर हैं। स्वायत्तता, महारत, उद्देश्य — ये तीन आंतरिक इंधन सच्ची प्रेरणा देते हैं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">50</div>
+      <h3>The 21 Irrefutable Laws of Leadership</h3>
+      <div class="author">John C. Maxwell</div>
+      <div class="topic">नेतृत्व नियम</div>
+      <div class="hindi-desc">नेतृत्व के 21 सिद्ध नियम — कवर, प्रक्रिया, नेविगेशन, जोड़, सम्मान, चुंबकत्व आदि। नेतृत्व प्रभाव है, और प्रभाव बढ़ाता जाए।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">51</div>
+      <h3>Dare to Lead</h3>
+      <div class="author">Brené Brown</div>
+      <div class="topic">साहसी नेतृत्व</div>
+      <div class="hindi-desc">साहस, दुर्बलता और मूल्यों से नेतृत्व। ढांचा खड़ा करने वाली बातचीत और संवाद कौशल से संगठन संस्कृति बदलें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">52</div>
+      <h3>Developing the Leader Within You</h3>
+      <div class="author">John C. Maxwell</div>
+      <div class="topic">नेतृत्व विकास</div>
+      <div class="hindi-desc">नेतृत्व सीखी जा सकने वाली क्षमता है। प्रभाव, प्राथमिकता, अखंडता, विज़न और आत्म-अनुशासन विकसित करें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">53</div>
+      <h3>Primal Leadership</h3>
+      <div class="author">Daniel Goleman</div>
+      <div class="topic">भावनात्मक नेतृत्व</div>
+      <div class="hindi-desc">संवेगात्मक बुद्धि (EQ) नेतृत्व का मूल है। नेता की भावना संगठन की भावनात्मक जलवायु बनाती है।</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CATEGORY 6: SUCCESS -->
+<div class="category" id="success">
+  <div class="category-title">
+    <div class="category-icon" style="background:rgba(0,191,255,0.15)">🏆</div>
+    <div>
+      <h2>सफलता और लक्ष्य प्राप्ति</h2>
+      <div class="desc">लक्ष्य निर्धारण, अनुशासन और सफलता के सिद्धांत सीखें</div>
+    </div>
+  </div>
+  <div class="books-grid">
+
+    <div class="book-card">
+      <div class="rank">54</div>
+      <h3>The Alchemist</h3>
+      <div class="author">Paulo Coelho</div>
+      <div class="topic">व्यक्तिगत यात्रा</div>
+      <div class="hindi-desc">"जब कुछ चाहते हो, तो पूरा ब्रह्मांड उसे मिलने में साथ देता है।" अपने सपनों की खोज की रूपक कथा — सुनने वाला सब कुछ जानता है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">55</div>
+      <h3>Think Straight</h3>
+      <div class="author">Darius Foroux</div>
+      <div class="topic">स्पष्ट सोच</div>
+      <div class="hindi-desc">अव्यवस्थित दिमाग अव्यवस्थित जीवन बनाता है। सीधी, उपयोगी सोच से फैसले और परिणाम सुधारें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">56</div>
+      <h3>The 10X Rule</h3>
+      <div class="author">Grant Cardone</div>
+      <div class="topic">बड़े लक्ष्य</div>
+      <div class="hindi-desc">लक्ष्य 10 गुना बड़े, प्रयास 10 गुना ज्यादा। मध्यम लक्ष्य मध्यम जीवन देते हैं — असाधारणता के लिए अति-कार्रवाई जरूरी।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">57</div>
+      <h3>The Law of Success</h3>
+      <div class="author">Napoleon Hill</div>
+      <div class="topic">सफलता नियम</div>
+      <div class="hindi-desc">Think and Grow Rich का मूल संस्करण। 16 सफलता-सिद्धांत — निश्चित उद्देश्य, मास्टरमाइंड, आत्मविश्वास आदि।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">58</div>
+      <h3>No Excuses!: The Power of Self-Discipline</h3>
+      <div class="author">Brian Tracy</div>
+      <div class="topic">आत्म-अनुशासन</div>
+      <div class="hindi-desc">सफलता की सबसे बड़ी कुंजी — आत्म-अनुशासन। बहाने छोड़ें, जिम्मेदारी लें और अपने लक्ष्यों के प्रति कटिबद्ध रहें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">59</div>
+      <h3>The Strangest Secret</h3>
+      <div class="author">Earl Nightingale</div>
+      <div class="topic">सोच और सफलता</div>
+      <div class="hindi-desc">"हम वह बन जाते हैं जिसके बारे में सोचते हैं।" सफलता लक्ष्य की ओर बढ़ना है — और हर व्यक्ति चुनता है कि किधर जाए।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">60</div>
+      <h3>Smarter Faster Better</h3>
+      <div class="author">Charles Duhigg</div>
+      <div class="topic">उत्पादकता विज्ञान</div>
+      <div class="hindi-desc">प्रेरणा, लक्ष्य-निर्धारण, फैसले, नवीनता — उत्पादकता के आठ मुख्य ढांचे जो विज्ञान और कहानियों से सिद्ध हैं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">61</div>
+      <h3>The Millionaire Booklet</h3>
+      <div class="author">Grant Cardone</div>
+      <div class="topic">धन बनाना</div>
+      <div class="hindi-desc">9 चरणों में अमीर बनने की सीधी रणनीति — आय बढ़ाएं, निवेश करें, और अपने धन को सुरक्षित करें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">62</div>
+      <h3>Can't Hurt Me</h3>
+      <div class="author">David Goggins</div>
+      <div class="topic">मानसिक कठिनाई</div>
+      <div class="hindi-desc">बाल-यातना से नेवी सील तक की सच्ची कहानी। दिमाग की 40% नियम सीमा तोड़ें और असली क्षमता जगाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">63</div>
+      <h3>The Science of Self-Discipline</h3>
+      <div class="author">Peter Hollins</div>
+      <div class="topic">अनुशासन विज्ञान</div>
+      <div class="hindi-desc">इच्छाशक्ति की थकान से निपटें। आदत, पर्यावरण डिजाइन और देरी-संतुष्टि से आत्म-अनुशासन को टिकाऊ बनाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">64</div>
+      <h3>The Success Principles</h3>
+      <div class="author">Jack Canfield</div>
+      <div class="topic">सफलता सिद्धांत</div>
+      <div class="hindi-desc">Chicken Soup लेखक के 64 सिद्धांत — जिम्मेदारी लेने से लेकर दृढ़ संकल्प तक। सफलता की एक व्यापक हैंडबुक।</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CATEGORY 7: TIME MANAGEMENT -->
+<div class="category" id="time">
+  <div class="category-title">
+    <div class="category-icon" style="background:rgba(255,99,132,0.15)">⏰</div>
+    <div>
+      <h2>समय प्रबंधन</h2>
+      <div class="desc">समय का बेहतर उपयोग, प्राथमिकता और दक्षता</div>
+    </div>
+  </div>
+  <div class="books-grid">
+
+    <div class="book-card">
+      <div class="rank">65</div>
+      <h3>The 12 Week Year</h3>
+      <div class="author">Brian P. Moran</div>
+      <div class="topic">12-हफ्ता वर्ष</div>
+      <div class="hindi-desc">साल को 12 हफ्ते में सिकोड़ें। तेज गति और तीव्र निष्पादन से आप एक वर्ष का काम तिमाही में खत्म करते हैं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">66</div>
+      <h3>168 Hours</h3>
+      <div class="author">Laura Vanderkam</div>
+      <div="topic">हफ्ते का समय</div>
+      <div class="hindi-desc">हर हफ्ते 168 घंटे होते हैं — ज्यादा जरूरी कामों के लिए समय है, बस लॉग रखें और प्राथमिकता तय करें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">67</div>
+      <h3>Time Power</h3>
+      <div class="author">Brian Tracy</div>
+      <div class="topic">समय नियंत्रण</div>
+      <div class="hindi-desc">समय का अधिकतम उपयोग — स्पष्ट लक्ष्य, सूची निर्माण, खुद को उत्पादकता के लिए ढालें और व्यवधान हटाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">68</div>
+      <h3>The Time Trap</h3>
+      <div class="author">Alec Mackenzie</div>
+      <div class="topic">समय चोरी</div>
+      <div class="hindi-desc">समय चुराने वाली आदतों को पहचानें — अनावश्यक मीटिंग, ईमेल, टालमटोल — और उन्हें नियंत्रित कर दक्षता बढ़ाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">69</div>
+      <h3>When: The Scientific Secrets</h3>
+      <div class="author">Daniel H. Pink</div>
+      <div class="topic">समय का विज्ञान</div>
+      <div class="hindi-desc">काम कब करें — लय, ब्रेक, नयी शुरुआत और अंत — यह तय करता है कि आप कितना प्रभावी होंगे। बायोलॉजिकल टाइमिंग।</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CATEGORY 8: HEALTH -->
+<div class="category" id="health">
+  <div class="category-title">
+    <div class="category-icon" style="background:rgba(75,192,192,0.15)">💪</div>
+    <div>
+      <h2>स्वास्थ्य, ऊर्जा और शारीरिक फिटनेस</h2>
+      <div class="desc">शरीर और दिमाग को ऊर्जावान रखें, नींद और पोषण सुधारें</div>
+    </div>
+  </div>
+  <div class="books-grid">
+
+    <div class="book-card">
+      <div class="rank">70</div>
+      <h3>The 4-Hour Body</h3>
+      <div class="author">Tim Ferriss</div>
+      <div class="topic">शरीर हैकिंग</div>
+      <div class="hindi-desc">कम से कम ज्यादा — डाइट, व्यायाम, नींद और यौन स्वास्थ्य के लिए न्यूनतम प्रभावी क्रियाएं। अजीबोगरीब प्रयोगों से भरपूर।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">71</div>
+      <h3>Why We Sleep</h3>
+      <div class="author">Matthew Walker</div>
+      <div class="topic">नींद विज्ञान</div>
+      <div class="hindi-desc">नींद सफलता, स्वास्थ्य और दीर्घायु की नींव है। नींद की कमी से वजन, याददाश्त और रोग-प्रतिरोध कैसे प्रभावित होते हैं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">72</div>
+      <h3>Spark: The Revolutionary New Science</h3>
+      <div class="author">John J. Ratey</div>
+      <div class="topic">व्यायाम और दिमाग</div>
+      <div class="hindi-desc">व्यायाम दिमाग को "स्पार्क" करता है — BDNF प्रोटीन से न्यूरॉन बनते हैं, मूड, एकाग्रता और याददाश्त सुधरती है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">73</div>
+      <h3>The Blue Zones</h3>
+      <div class="author">Dan Buettner</div>
+      <div class="topic">दीर्घायु रहस्य</div>
+      <div class="hindi-desc">दुनिया के उन इलाके जहां लोग 100+ साल जीते हैं — आहार, गतिविधि, समुदाय और उद्देश्य जो जीवन लंबा करते हैं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">74</div>
+      <h3>Atomic Habits (Health Section)</h3>
+      <div class="author">James Clear</div>
+      <div class="topic">स्वास्थ्य आदतें</div>
+      <div class="hindi-desc">हल्की आदत ढांचा — रोज एक पुशअप से शुरू कर नियमित व्यायाम, जलयोजन और स्वस्थ भोजन आदतें बनाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">75</div>
+      <h3>Boundless</h3>
+      <div class="author">Ben Greenfield</div>
+      <div class="topic">बायोहैकिंग</div>
+      <div class="hindi-desc">ऊर्जा, दिमाग और शरीर को अनुकूलित करने के व्यापक तरीके — पोषण, व्यायाम, नींद, हार्मोन और न्यूरोप्टिमाइजेशन।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">76</div>
+      <h3>Grain Brain</h3>
+      <div class="author">David Perlmutter</div>
+      <div class="topic">आहार और दिमाग</div>
+      <div class="hindi-desc">आहार आपके दिमाग को बनाता या बिगाड़ता है। चीनी और सूखे अनाज कम करें, स्वस्थ वसा और सब्जियां बढ़ाएं।</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CATEGORY 9: RELATIONSHIPS -->
+<div class="category" id="relations">
+  <div class="category-title">
+    <div class="category-icon" style="background:rgba(231,76,60,0.15)">❤️</div>
+    <div>
+      <h2>रिश्ते और संचार</h2>
+      <div class="desc">रिश्तों को मजबूत करें, बेहतर बातचीत सीखें</div>
+    </div>
+  </div>
+  <div class="books-grid">
+
+    <div class="book-card">
+      <div class="rank">77</div>
+      <h3>The 5 Love Languages</h3>
+      <div class="author">Gary Chapman</div>
+      <div class="topic">प्रेम भाषाएं</div>
+      <div class="hindi-desc">हर किसी का प्यार समझने का तरीका अलग है — शब्द, समय, उपहार, सेवा, स्पर्श। पार्टनर की भाषा जानकर रिश्ता मजबूत करें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">78</div>
+      <h3>Crucial Conversations</h3>
+      <div class="author">Kerry Patterson</div>
+      <div class="topic">कठिन बातचीत</div>
+      <div class="hindi-desc">जब दांव ऊंचे, भावनाएं तीखी, विचार विपरीत हों — ऐसी महत्वपूर्ण बातचीत को सम्मानजनक और प्रभावी बनाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">79</div>
+      <h3>Nonviolent Communication</h3>
+      <div class="author">Marshall B. Rosenberg</div>
+      <div class="topic">सहानुभूतिपूर्ण संवाद</div>
+      <div class="hindi-desc">बिना दोष या आक्रमण के अपनी जरूरतें जताएं। निरीक्षण, भावना, जरूरत, निवेदन — चार-भाग ढांचा।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">80</div>
+      <h3>Attached</h3>
+      <div class="author">Amir Levine & Rachel Heller</div>
+      <div class="topic">संलग्नता शैलियां</div>
+      <div class="hindi-desc">तीन लगाव शैलियां — सुरक्षित, चिंतित, परिपहलमुक्त। अपनी और पार्टनर की शैली जानकर रिश्ते की समझ बढ़ाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">81</div>
+      <h3>Men Are from Mars, Women Are from Venus</h3>
+      <div class="author">John Gray</div>
+      <div class="topic">लिंग संचार</div>
+      <div class="hindi-desc">महिला और पुरुष अलग तरीके से संवाद करते हैं। इस अंतर को समझकर रिश्ते के टकराव घटाएं और जुड़ाव बढ़ाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">82</div>
+      <h3>Hold Me Tight</h3>
+      <div class="author">Sue Johnson</div>
+      <div class="topic">भावनात्मक जुड़ाव</div>
+      <div class="hindi-desc">EFT थेरेपी आधारित — रिश्ते में भावनात्मक जुड़ाव ही सुरक्षा और गहराई लाता है। खुली बातचीत के 7 संवाद।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">83</div>
+      <h3>Daring Greatly</h3>
+      <div class="author">Brené Brown</div>
+      <div class="topic">दुर्बलता और साहस</div>
+      <div class="hindi-desc">दुर्बलता कमजोरी नहीं, साहस है। शर्म और डर छोड़कर खुले और प्रामाणिक रिश्ते बनाएं। पूर्णता छोड़ें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">84</div>
+      <h3>The Relationship Cure</h3>
+      <div class="author">John Gottman</div>
+      <div class="topic">रिश्ता मरम्मत</div>
+      <div class="hindi-desc">गोटमैन के 5-चरण ढांचे से भावनात्मक जोड़ बनाएं। बिन्दु बुलावा, प्रशंसा, सक्रिय सुनना और टर्न करना सीखें।</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CATEGORY 10: HAPPINESS & SPIRITUALITY -->
+<div class="category" id="happiness">
+  <div class="category-title">
+    <div class="category-icon" style="background:rgba(255,215,0,0.15)">😊</div>
+    <div>
+      <h2>खुशी, अर्थ और आध्यात्मिकता</h2>
+      <div class="desc">जीवन का अर्थ खोजें, मानसिक शांति पाएं</div>
+    </div>
+  </div>
+  <div class="books-grid">
+
+    <div class="book-card">
+      <div class="rank">85</div>
+      <h3>The Happiness Project</h3>
+      <div class="author">Gretchen Rubin</div>
+      <div class="topic">खुशी परियोजना</div>
+      <div class="hindi-desc">एक साल का प्रयोग — ऊर्जा, विवाह, कार्य, दोस्ती जैसे क्षेत्रों में छोटे-छोटे बदलाव से जीवन की खुशी बढ़ाना।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">86</div>
+      <h3>The Art of Happiness</h3>
+      <div class="author">Dalai Lama & Howard Cutler</div>
+      <div class="topic">खुशी की कला</div>
+      <div class="hindi-desc">दलाई लामा के अनुसार खुशी बाहर नहीं, दिमाग की आदत है। करुणा, सहानुभूति और स्वीकृति से शांत मन पाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">87</div>
+      <h3>Man's Search for Meaning</h3>
+      <div class="author">Viktor E. Frankl</div>
+      <div class="topic">अर्थ चिकित्सा</div>
+      <div class="hindi-desc">कॉन्सेंट्रेशन कैंप के अनुभवों से लिखी। जीवन में अर्थ खोजना ही सफलता है — वह अर्थ जो परिस्थिति पर निर्भर नहीं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">88</div>
+      <h3>The Power of Now</h3>
+      <div class="author">Eckhart Tolle</div>
+      <div class="topic">वर्तमान क्षण</div>
+      <div class="hindi-desc">वर्तमान में जिएं, बीते-भविष्य की चिंता छोड़ें। अहंकार और विचारों से परे जाकर चेतना की शांति पाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">89</div>
+      <h3>The Untethered Soul</h3>
+      <div class="author">Michael A. Singer</div>
+      <div class="topic">आत्म-मुक्ति</div>
+      <div class="hindi-desc">अपने भीतर का "आवाज" — विचारों का शोर — आपको नहीं है। उससे अलग होकर आत्म-जागरूकता और स्वतंत्रता पाएं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">90</div>
+      <h3>The Four Noble Truths (Buddhism)</h3>
+      <div class="author">Thubten Chodron</div>
+      <div class="topic">बौद्ध दर्शन</div>
+      <div class="hindi-desc">दुख, उसका कारण, उसका अंत, और मार्ग — चार आर्य सत्य। समझदारी से जीवन का दुख छोड़ने का बौद्ध मार्ग।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">91</div>
+      <h3>The Monk Who Sold His Ferrari</h3>
+      <div class="author">Robin Sharma</div>
+      <div class="topic">जीवन बदलाव</div>
+      <div class="hindi-desc">एक वकील सब छोड़ हिमालय के ऋषि से सीखता है — उद्देश्य, अनुशासन, दिमाग, दिल और आत्म-अनुशासन के 7 गुण।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">92</div>
+      <h3>Walden</h3>
+      <div class="author">Henry David Thoreau</div>
+      <div class="topic">सरल जीवन</div>
+      <div class="hindi-desc">जंगल में अकेले दो साल — सादगी, प्रकृति और आत्म-निरीक्षण की महिमा। जीवन की असली जरूरतें पहचानें।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">93</div>
+      <h3>The Miracle of Mindfulness</h3>
+      <div class="author">Thich Nhat Hanh</div>
+      <div class="topic">मननशीलता</div>
+      <div class="hindi-desc">धुलाई से लेकर चाय पीने तक — हर क्रिया में पूरी तरह उपस्थित रहें। मननशीलता हर पल शांति देती है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">94</div>
+      <h3>Ikigai</h3>
+      <div class="author">Héctor García & Francesc Miralles</div>
+      <div class="topic">जीवन का अर्थ</div>
+      <div class="hindi-desc">जापानी दर्शन — प्यारा, अच्छा, कौशल और आय — चार का मिलन जीवन का "इकिगई" (जीने का कारण) बताता है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">95</div>
+      <h3>Flow: The Psychology of Optimal Experience</h3>
+      <div class="author">Mihaly Csikszentmihalyi</div>
+      <div class="topic">प्रवाह अनुभव</div>
+      <div class="hindi-desc">जब कौशल और चुनौती संतुलन में होते हैं, तब "फ्लो" में समय गायब हो जाता है। यही खुशी का स्रोत है।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">96</div>
+      <h3>The Book of Joy</h3>
+      <div class="author">Dalai Lama & Desmond Tutu</div>
+      <div class="topic">आनंद की कला</div>
+      <div class="hindi-desc">दो आध्यात्मिक महामानवों की बातचीत — दुख, डर, क्रोध से आनंद तक की यात्रा। आठ खुशी के स्तंभ।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">97</div>
+      <h3>Siddhartha</h3>
+      <div class="author">Hermann Hesse</div>
+      <div class="topic">आध्यात्मिक यात्रा</div>
+      <div class="hindi-desc">बुद्ध के युग की रूपक कथा — एक युवक की ज्ञान की खोज। अनुभव से ही सच्ची समझ आती है, उपदेश से नहीं।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">98</div>
+      <h3>The Celestine Prophecy</h3>
+      <div class="author">James Redfield</div>
+      <div class="topic">ऊर्जा और संयोग</div>
+      <div class="hindi-desc">नौ आध्यात्मिक अंतर्दृष्टियां — ऊर्जा का प्रवाह, संयोग, और चेतना का विकास। रूपक कथा के जरिए जीवन की गहरी समझ।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">99</div>
+      <h3>10% Happier</h3>
+      <div class="author">Dan Harris</div>
+      <div class="topic">ध्यान और तर्क</div>
+      <div class="hindi-desc">संशयवादी पत्रकार का ध्यान प्रयोग — बड़ी खुशी नहीं, पर 10% ज्यादा शांति और स्पष्टता। व्यावहारिक दृष्टिकोण।</div>
+    </div>
+
+    <div class="book-card">
+      <div class="rank">100</div>
+      <h3>Bhagavad Gita As It Is</h3>
+      <div class="author">A.C. Bhaktivedanta Swami Prabhupada</div>
+      <div class="topic">कर्म और ज्ञान योग</div>
+      <div class="hindi-desc">कर्म करो, फल की चिंता मत करो — कृष्ण-अर्जुन संवाद। कर्म, ज्ञान और भक्ति योग का शाश्वत ज्ञान। जीवन की सबसे गहरी रहनुमाई।</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  <div class="quote">"आज पढ़ना शुरू करें, कल आप वह बनेंगे जो बनना चाहते हैं।" 📖</div>
+  <p>यह सूची 10 श्रेणियों में 100 जीवन-बदलने वाली सेल्फ-इम्प्रूवमेंट पुस्तकों का संकलन है। हर किताब आपको एक नई दिशा दे सकती है।</p>
+  <p style="margin-top:10px; font-size:0.85em;">📚 सफर शुरू करें — एक किताब चुनें, रोज थोड़ा पढ़ें, और जीवन बदलें।</p>
+</div>
+
+</body>
+</html>
