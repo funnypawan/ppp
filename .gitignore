@@ -40,3 +40,4 @@ __pycache__/
 
 # regeneratable master (make_animation.py --audio)
 animation/audio/master_mix.wav
+animation/intro/out/

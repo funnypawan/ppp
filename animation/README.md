@@ -156,6 +156,7 @@ voice ke saath bind hoti hai, captions ka karaoke audio progress se drive hota h
 animation/make_animation.py          # poori pipeline (parse → rig → text → audio → MP4)
 animation/deva_text.py               # HarfBuzz-based Hindi/Devanagari text renderer
 animation/make_svg_animation.py      # browser-only animated SVG banane wala
+animation/intro/                       # 5-second "सोच सेठ" YouTube channel bumper (alag README wahan)
 animation/kaise-banaye.html          # ← phone pe kholo: live animation + har step copy button ke saath
 animation/make_tutorial_html.py      # upar wala page banata hai
 animation/cute_dog_animated.svg      # ← browser me kholo, dog yahi hilta hai
