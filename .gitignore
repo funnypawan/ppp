@@ -32,3 +32,11 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# animation render scratch (frames, previews, QC)
+animation/out/
+__pycache__/
+*.tmp
+
+# regeneratable master (make_animation.py --audio)
+animation/audio/master_mix.wav
