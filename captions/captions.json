@@ -1,0 +1,439 @@
+[
+  {
+    "i": 0,
+    "file": "cap_00.png",
+    "start": 1.2,
+    "end": 6.0,
+    "pos": "B",
+    "lines": [
+      "'इस बार ज़रूर बदलूँगा'"
+    ],
+    "size": 76,
+    "y": 726
+  },
+  {
+    "i": 1,
+    "file": "cap_01.png",
+    "start": 24.5,
+    "end": 30.0,
+    "pos": "H",
+    "lines": [
+      "PROBLEM तुममें नहीं,",
+      "तुम्हारे SYSTEM में है"
+    ],
+    "size": 86,
+    "y": 454
+  },
+  {
+    "i": 2,
+    "file": "cap_02.png",
+    "start": 33.5,
+    "end": 39.0,
+    "pos": "B",
+    "lines": [
+      "−4°C से −1°C तक —",
+      "फिर भी ठोस"
+    ],
+    "size": 76,
+    "y": 515
+  },
+  {
+    "i": 3,
+    "file": "cap_03.png",
+    "start": 47.2,
+    "end": 51.5,
+    "pos": "B",
+    "lines": [
+      "0°C पर — पानी!",
+      "यही है असली breakthrough"
+    ],
+    "size": 76,
+    "y": 500
+  },
+  {
+    "i": 4,
+    "file": "cap_04.png",
+    "start": 52.4,
+    "end": 58.5,
+    "pos": "B",
+    "lines": [
+      "हर degree बराबर लगा,",
+      "पर आख़िरी ने तोड़ा"
+    ],
+    "size": 76,
+    "y": 511
+  },
+  {
+    "i": 5,
+    "file": "cap_05.png",
+    "start": 62.0,
+    "end": 69.5,
+    "pos": "H",
+    "lines": [
+      "1% बेहतर रोज़,",
+      "37 गुना साल में"
+    ],
+    "size": 94,
+    "y": 433
+  },
+  {
+    "i": 6,
+    "file": "cap_06.png",
+    "start": 75.0,
+    "end": 82.0,
+    "pos": "B",
+    "lines": [
+      "Atomic Habits की",
+      "पूरी story"
+    ],
+    "size": 76,
+    "y": 496
+  },
+  {
+    "i": 7,
+    "file": "cap_07.png",
+    "start": 83.0,
+    "end": 91.0,
+    "pos": "B",
+    "lines": [
+      "CUE > CRAVING >",
+      "RESPONSE > REWARD"
+    ],
+    "size": 76,
+    "y": 529
+  },
+  {
+    "i": 8,
+    "file": "cap_08.png",
+    "start": 99.5,
+    "end": 106.0,
+    "pos": "B",
+    "lines": [
+      "पूरी video देखो —",
+      "time निकालो"
+    ],
+    "size": 76,
+    "y": 515
+  },
+  {
+    "i": 9,
+    "file": "cap_09.png",
+    "start": 111.0,
+    "end": 119.0,
+    "pos": "B",
+    "lines": [
+      "'कल से शुरू करूँगा' —",
+      "कल कभी नहीं आता"
+    ],
+    "size": 76,
+    "y": 504
+  },
+  {
+    "i": 10,
+    "file": "cap_10.png",
+    "start": 121.0,
+    "end": 129.0,
+    "pos": "H",
+    "lines": [
+      "MOTIVATION एक",
+      "FEELING है"
+    ],
+    "size": 94,
+    "y": 438
+  },
+  {
+    "i": 11,
+    "file": "cap_11.png",
+    "start": 132.0,
+    "end": 140.0,
+    "pos": "H",
+    "lines": [
+      "SYSTEM > MOTIVATION"
+    ],
+    "size": 104,
+    "y": 581
+  },
+  {
+    "i": 12,
+    "file": "cap_12.png",
+    "start": 149.5,
+    "end": 153.0,
+    "pos": "B",
+    "lines": [
+      "Goals सबके एक जैसे होते हैं"
+    ],
+    "size": 68,
+    "y": 751
+  },
+  {
+    "i": 13,
+    "file": "cap_13.png",
+    "start": 153.3,
+    "end": 160.0,
+    "pos": "B",
+    "lines": [
+      "Olympics: medal या खाली हाथ?"
+    ],
+    "size": 68,
+    "y": 747
+  },
+  {
+    "i": 14,
+    "file": "cap_14.png",
+    "start": 165.0,
+    "end": 172.5,
+    "pos": "B",
+    "lines": [
+      "GOAL = destination",
+      "SYSTEM = daily routine"
+    ],
+    "size": 76,
+    "y": 509
+  },
+  {
+    "i": 15,
+    "file": "cap_15.png",
+    "start": 182.0,
+    "end": 188.5,
+    "pos": "B",
+    "lines": [
+      "\"You do not rise to the",
+      "level of your goals.\""
+    ],
+    "size": 76,
+    "y": 509
+  },
+  {
+    "i": 16,
+    "file": "cap_16.png",
+    "start": 189.5,
+    "end": 197.0,
+    "pos": "H",
+    "lines": [
+      "तुम अपने SYSTEMS",
+      "के level तक गिरते हो"
+    ],
+    "size": 86,
+    "y": 458
+  },
+  {
+    "i": 17,
+    "file": "cap_17.png",
+    "start": 199.5,
+    "end": 206.5,
+    "pos": "B",
+    "lines": [
+      "2003 — British Cycling",
+      "110 साल, सिर्फ़ 1 medal"
+    ],
+    "size": 76,
+    "y": 516
+  },
+  {
+    "i": 18,
+    "file": "cap_18.png",
+    "start": 219.5,
+    "end": 227.0,
+    "pos": "H",
+    "lines": [
+      "Dave Brailsford",
+      "MARGINAL GAINS"
+    ],
+    "size": 94,
+    "y": 445
+  },
+  {
+    "i": 19,
+    "file": "cap_19.png",
+    "start": 230.0,
+    "end": 238.0,
+    "pos": "B",
+    "lines": [
+      "Saddle • Tires • Handlebar",
+      "Bedsheets • Hand Gel"
+    ],
+    "size": 68,
+    "y": 565
+  },
+  {
+    "i": 20,
+    "file": "cap_20.png",
+    "start": 244.0,
+    "end": 248.6,
+    "pos": "B",
+    "lines": [
+      "हर change अकेले में",
+      "'कुछ नहीं' लगता है"
+    ],
+    "size": 76,
+    "y": 498
+  },
+  {
+    "i": 21,
+    "file": "cap_21.png",
+    "start": 248.9,
+    "end": 253.2,
+    "pos": "B",
+    "lines": [
+      "पर मिलकर सब",
+      "COMPOUND होते हैं"
+    ],
+    "size": 76,
+    "y": 504
+  },
+  {
+    "i": 22,
+    "file": "cap_22.png",
+    "start": 253.6,
+    "end": 262.0,
+    "pos": "H",
+    "lines": [
+      "48 OLYMPIC MEDALS",
+      "सिर्फ़ 8 साल में"
+    ],
+    "size": 94,
+    "y": 444
+  },
+  {
+    "i": 23,
+    "file": "cap_23.png",
+    "start": 267.0,
+    "end": 274.5,
+    "pos": "B",
+    "lines": [
+      "छोटे changes =",
+      "'atomic' changes"
+    ],
+    "size": 76,
+    "y": 500
+  },
+  {
+    "i": 24,
+    "file": "cap_24.png",
+    "start": 276.0,
+    "end": 285.0,
+    "pos": "H",
+    "lines": [
+      "1.01³⁶⁵ = 37.78",
+      "0.99³⁶⁵ = 0.03"
+    ],
+    "size": 94,
+    "y": 445
+  },
+  {
+    "i": 25,
+    "file": "cap_25.png",
+    "start": 291.5,
+    "end": 299.5,
+    "pos": "B",
+    "lines": [
+      "Direction फर्क करती है —",
+      "speed नहीं"
+    ],
+    "size": 76,
+    "y": 500
+  },
+  {
+    "i": 26,
+    "file": "cap_26.png",
+    "start": 306.5,
+    "end": 314.0,
+    "pos": "B",
+    "lines": [
+      "Plateau आता है —",
+      "result देर से मिलता है"
+    ],
+    "size": 76,
+    "y": 504
+  },
+  {
+    "i": 27,
+    "file": "cap_27.png",
+    "start": 318.7,
+    "end": 324.5,
+    "pos": "H",
+    "lines": [
+      "THE PLATEAU OF",
+      "LATENT POTENTIAL"
+    ],
+    "size": 94,
+    "y": 445
+  },
+  {
+    "i": 28,
+    "file": "cap_28.png",
+    "start": 325.0,
+    "end": 331.5,
+    "pos": "B",
+    "lines": [
+      "THE VALLEY OF",
+      "DISAPPOINTMENT"
+    ],
+    "size": 76,
+    "y": 529
+  },
+  {
+    "i": 29,
+    "file": "cap_29.png",
+    "start": 332.0,
+    "end": 338.5,
+    "pos": "B",
+    "lines": [
+      "बर्फ़ पिघलने से पहले",
+      "सब बेकार लगता है"
+    ],
+    "size": 76,
+    "y": 504
+  },
+  {
+    "i": 30,
+    "file": "cap_30.png",
+    "start": 340.0,
+    "end": 347.5,
+    "pos": "B",
+    "lines": [
+      "Rich लोग जल्दी नहीं —",
+      "silent phase में काम करते हैं"
+    ],
+    "size": 68,
+    "y": 541
+  },
+  {
+    "i": 31,
+    "file": "cap_31.png",
+    "start": 356.0,
+    "end": 364.0,
+    "pos": "H",
+    "lines": [
+      "MOTIVATION नहीं,",
+      "SYSTEM चाहिए"
+    ],
+    "size": 94,
+    "y": 438
+  },
+  {
+    "i": 32,
+    "file": "cap_32.png",
+    "start": 365.8,
+    "end": 372.5,
+    "pos": "B",
+    "lines": [
+      "1% better चुनो —",
+      "identity अपने आप बदलेगी"
+    ],
+    "size": 76,
+    "y": 500
+  },
+  {
+    "i": 33,
+    "file": "cap_33.png",
+    "start": 374.5,
+    "end": 380.2,
+    "pos": "H",
+    "lines": [
+      "तुम्हारा 1% क्या है?"
+    ],
+    "size": 104,
+    "y": 567
+  }
+]
