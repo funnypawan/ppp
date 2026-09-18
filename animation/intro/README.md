@@ -22,8 +22,16 @@ Sab kuch code se bana hai (koi video editor nahi): `make_intro.py`.
 ```bash
 cd ppp/animation/intro
 ../../.venv/bin/python make_intro.py --preview 0.45,1.35,2.5,4.6   # stills -> out/
-../../.venv/bin/python make_intro.py --render --gif                # MP4 + preview.gif
+../../.venv/bin/python make_intro.py --render --gif                # MP4 16:9 + preview.gif
+../../.venv/bin/python make_intro.py --ratio 9x16 --render --gif   # Shorts/Reels version
+../../.venv/bin/python make_intro.py --scale 2 --render            # 4K master (3840x2160)
 ```
+
+`--ratio` = `16x9` (YouTube) | `9x16` (Shorts) | `1x1` / `4x5` (feed). Layout ek **unit**
+(`u()`) se scale hota hai, isliye har size me spacing same rehti hai; wordmark auto-fit
+bhi ho jaata hai (lamba naam do to font chhota ho jaata hai).
+
+Output naam apne aap banate hain: `sochseth_intro_9x16.mp4`, `sochseth_intro_16x9k.mp4` (4K).
 
 ## Customize (sirf ye lines badlo)
 

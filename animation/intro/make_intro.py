@@ -47,6 +47,25 @@ W, H = 1920, 1080
 FPS = 60
 DUR = 5.0
 M = 80                                              # overscan margin (shake/zoom ke liye)
+K = 1.0                                             # layout unit (1.0 = 1080p baseline)
+VERT = False                                        # True -> 9:16 layout (mascot lockup ke neeche)
+
+
+def u(px):
+    """Layout pixels ko current resolution ke scale par laata hai."""
+    return px * K
+
+
+def configure(ratio="16x9", scale=1.0):
+    """ratio: 16x9 (YouTube) | 9x16 (Shorts/Reels) | 1x1 (feed). scale: 2 -> 4K."""
+    global W, H, M, K, VERT
+    base = {"16x9": (1920, 1080), "9x16": (1080, 1920), "1x1": (1080, 1080), "4x5": (1080, 1350)}[ratio]
+    W, H = int(base[0] * scale), int(base[1] * scale)
+    M = int(80 * scale)
+    K = float(scale)
+    VERT = ratio in ("9x16", "1x1", "4x5")
+    _grad_cache.clear()
+    return f"{W}x{H}"
 SS = 2                                              # wordmark supersample
 
 GOLD = (255, 215, 0)
@@ -172,9 +191,10 @@ def make_bg():
     arr += rng.normal(0, 2.6, arr.shape)
     im = Image.fromarray(np.clip(arr, 0, 255).astype("uint8").transpose(1, 2, 0), "RGB").convert("RGBA")
     d = ImageDraw.Draw(im, "RGBA")
-    for x in range(0, W + 2 * M, 130):
+    step = int(130 * max(1, K))
+    for x in range(0, W + 2 * M, step):
         d.line([(x, 0), (x + 140, H + 2 * M)], fill=(255, 255, 255, 5), width=1)
-    for y in range(0, H + 2 * M, 130):
+    for y in range(0, H + 2 * M, step):
         d.line([(0, y), (W + 2 * M, y - 60)], fill=(255, 255, 255, 4), width=1)
     return im
 
@@ -191,13 +211,13 @@ SPARKS = [(float(_rng.uniform(0, 2 * math.pi)), float(_rng.uniform(0.45, 1.0)),
 def render_frame(t, bg, els, wm_size=(1180, 300)):
     """Returns an RGB Image of the full 1920x1080 frame at time t."""
     cx0, cy0 = M, M                      # overscan offset
+    FW, FH = W + 2 * M, H + 2 * M
     scene = bg.copy()
     d = ImageDraw.Draw(scene, "RGBA")
-    CX = (W + 2 * M) * 0.435             # lockup centre (mascot ke liye thoda left)
-    CY = (H + 2 * M) * 0.520
+    CX = FW * (0.50 if VERT else 0.435)  # horizontal me mascot ke liye thoda left
+    CY = FH * (0.335 if VERT else 0.520)
 
-    FW, FH = W + 2 * M, H + 2 * M
-    em = int(FH * 0.175)
+    em = int((FW if VERT else FH) * 0.175)
     cap_h = int(em * 0.72)
     p_glow = seg(t, 0.0, 0.75)
     imp = seg(t, 1.30, 1.32)
@@ -205,7 +225,7 @@ def render_frame(t, bg, els, wm_size=(1180, 300)):
 
     # glow flare on the impact
     if 1.20 <= t and imp_out > 0.01:
-        fr = int(300 + 760 * (1 - imp_out))
+        fr = int(u(300 + 760 * (1 - imp_out)))
         g = glow_sprite(360, 2.6)
         a = int(190 * imp_out ** 1.5)
         lay = Image.fromarray(g, "L").resize((fr, fr), Image.BILINEAR).point(lambda v, aa=a: int(v * aa / 255))
@@ -215,19 +235,20 @@ def render_frame(t, bg, els, wm_size=(1180, 300)):
 
     # dust motes
     for (fx, fy, sp, ph, sz) in DUST:
-        yy = (fy * (H + 2 * M) - t * sp * 26) % (H + 2 * M)
-        xx = fx * (W + 2 * M) + 22 * math.sin(t * 0.7 + ph)
+        yy = (fy * (H + 2 * M) - t * sp * u(26)) % (H + 2 * M)
+        xx = fx * (W + 2 * M) + u(22) * math.sin(t * 0.7 + ph)
         a = int(70 * p_glow * (0.40 + 0.60 * math.sin(t * 1.1 + ph) ** 2))
         if a > 3:
-            d.ellipse([xx - sz, yy - sz, xx + sz, yy + sz], fill=(255, 240, 200, a))
+            r = sz * K
+            d.ellipse([xx - r, yy - r, xx + r, yy + r], fill=(255, 240, 200, a))
 
     # thin light line that draws itself before the letters land
     lp = seg(t, 0.12, 0.72)
     if lp > 0 and t < 1.6:
         lw = int(560 * ease_out(lp))
         a = int(200 * (1 - seg(t, 1.18, 1.55)))
-        yline = CY + cap_h / 2 + 40
-        bar_gradient(d, (CX - lw / 2 + cx0, yline + cy0, CX + lw / 2 + cx0, yline + 5 + cy0),
+        yline = CY + cap_h / 2 + u(40)
+        bar_gradient(d, (CX - lw / 2 + cx0, yline + cy0, CX + lw / 2 + cx0, yline + u(5) + cy0),
                      GOLD + (a,), TEAL + (a,))
 
     # ---- wordmark: per-letter fly-in, tracking expand, two-tone
@@ -237,6 +258,16 @@ def render_frame(t, bg, els, wm_size=(1180, 300)):
     word_gap = 52 + track * 0.5
     letters = [fA._line_layer(ch) for ch in BRAND_A + BRAND_B]
     total = sum(l[3] for l in letters) + track * (len(letters) - 2) + word_gap
+    fit_w = FW * (0.74 if VERT else 0.86)               # zoom/overscan ke liye margin chhoda rakho
+    if total > fit_w:                                   # lamba naam (ya vertical canvas) ho to font chhota
+        shrink = fit_w / total
+        em = max(24, int(em * shrink))
+        cap_h = int(em * 0.72)
+        fA = font("disp", em)
+        letters = [fA._line_layer(ch) for ch in BRAND_A + BRAND_B]
+        track *= shrink
+        word_gap *= shrink
+        total = sum(l[3] for l in letters) + track * (len(letters) - 2) + word_gap
     nA = len(BRAND_A)
     pen = CX - total / 2
     ImageChops = __import__("PIL.ImageChops", fromlist=["ImageChops"])
@@ -256,13 +287,13 @@ def render_frame(t, bg, els, wm_size=(1180, 300)):
             if a < 0.995:
                 mm = mm.point(lambda v, aa=a: int(v * aa))
             cx_i = pen + ix * sc + w0 * sc / 2
-            cy_i = CY + (1 - ease_out(p)) * 92
+            cy_i = CY + (1 - ease_out(p)) * u(92)
             (inkA if i < nA else inkB).paste(255, (int(cx_i - ww / 2), int(cy_i - hh / 2)), mm)
         pen += adv + (word_gap if i == nA - 1 else track)
 
     union = ImageChops.lighter(inkA, inkB)
     shadow = Image.new("RGBA", (FW, FH), (0, 0, 0, 0))
-    shadow.paste((4, 5, 9, 185), (6, 11), union)
+    shadow.paste((4, 5, 9, 185), (int(u(6)), int(u(11))), union)
     scene.alpha_composite(shadow)
     band_h = int(em * 1.02)
     band_y = int(CY - band_h / 2)
@@ -275,41 +306,41 @@ def render_frame(t, bg, els, wm_size=(1180, 300)):
     # shine sweep across the wordmark
     sp = seg(t, 3.30, 3.95)
     if 0 < sp < 1:
-        band_cx = (CX - total / 2 - 320) + (total + 640) * sp
+        band_cx = (CX - total / 2 - u(320)) + (total + u(640)) * sp
         band = Image.new("L", (FW, FH), 0)
         bd = ImageDraw.Draw(band)
-        bw = 130
+        bw = int(u(130))
         bd.polygon([(band_cx - bw, 0), (band_cx, 0), (band_cx + bw * 2, FH), (band_cx + bw, FH)], fill=235)
-        band = band.filter(ImageFilter.GaussianBlur(22))
+        band = band.filter(ImageFilter.GaussianBlur(max(1, int(u(22)))))
         shine = Image.new("RGBA", (FW, FH), (255, 255, 252, 0))
         shine.paste((255, 255, 252, 255), (0, 0), ImageChops.multiply(band, union))
         scene.alpha_composite(shine)
 
     # underline bar grows from the centre, just under the caps
     bp = ease_out(seg(t, 1.50, 2.15))
-    ybar = CY + cap_h / 2 + 40
+    ybar = CY + cap_h / 2 + u(40)
     if bp > 0:
         lw = int(total * bp)
-        bar_gradient(d, (CX - lw / 2 + cx0, ybar + cy0, CX + lw / 2 + cx0, ybar + 9 + cy0),
+        bar_gradient(d, (CX - lw / 2 + cx0, ybar + cy0, CX + lw / 2 + cx0, ybar + u(9) + cy0),
                      GOLD + (int(240 * bp),), TEAL + (int(240 * bp),))
-        gl = Image.new("L", (max(8, lw + 60), 60), 0)
+        gl = Image.new("L", (max(8, lw + int(u(60))), int(u(60))), 0)
         gd = ImageDraw.Draw(gl)
-        gd.rounded_rectangle([30, 22, 30 + lw, 38], radius=8, fill=int(140 * bp))
-        gl = gl.filter(ImageFilter.GaussianBlur(11))
+        gd.rounded_rectangle([int(u(30)), int(u(22)), int(u(30)) + lw, int(u(38))], radius=int(u(8)), fill=int(140 * bp))
+        gl = gl.filter(ImageFilter.GaussianBlur(max(1, int(u(11)))))
         g = Image.new("RGBA", gl.size, GOLD + (0,))
         g.putalpha(gl)
-        scene.alpha_composite(g, (int(CX - lw / 2 + cx0 - 30), int(ybar - 22 + cy0)))
+        scene.alpha_composite(g, (int(CX - lw / 2 + cx0 - u(30)), int(ybar - u(22) + cy0)))
 
     # tagline (हिन्दी) + english kicker
     tp = ease_out(seg(t, 1.62, 2.35))
     if tp > 0.01:
-        ft = font("bold", int(FH * 0.040))
-        ft.text_centered(scene, CX + cx0, ybar + 92 + (1 - tp) * 26 + cy0, TAG_HI,
+        ft = font("bold", int(FH * 0.040) if not VERT else int(FW * 0.040))
+        ft.text_centered(scene, CX + cx0, ybar + u(92) + (1 - tp) * u(26) + cy0, TAG_HI,
                          fill=(226, 228, 236, int(255 * tp)))
     kp = ease_out(seg(t, 1.95, 2.6))
     if kp > 0.01:
-        fk = font("disp", int(FH * 0.018))
-        fk.text_centered(scene, CX + cx0, ybar + 158 + (1 - kp) * 18 + cy0, " ".join(list(KICKER)),
+        fk = font("disp", int((FH if not VERT else FW) * 0.018))
+        fk.text_centered(scene, CX + cx0, ybar + u(158) + (1 - kp) * u(18) + cy0, " ".join(list(KICKER)),
                          fill=(TEAL + (int(225 * kp),)))
 
     # ---- mascot: Sheru pop-up beside the lockup
@@ -324,15 +355,15 @@ def render_frame(t, bg, els, wm_size=(1180, 300)):
         st["body_squash"] = (1 + 0.10 * (1 - e), 1 - 0.12 * (1 - e))
         if 2.30 < t < 2.55:
             st["mouth_open"] = math.sin((t - 2.30) / 0.25 * math.pi)
-        mscx = (W + 2 * M) * 0.855
-        mscy = (H + 2 * M) * 0.585
-        MA.draw_dog(scene, els, st, mscx, mscy + cy0, 1.95, alpha=int(255 * clamp01(mp * 1.6)),
+        mscx = FW * (0.50 if VERT else 0.855)
+        mscy = FH * (0.615 if VERT else 0.585)
+        MA.draw_dog(scene, els, st, mscx, mscy + cy0, 1.95 * K, alpha=int(255 * clamp01(mp * 1.6)),
                     open_mouth=st["mouth_open"])
 
     # ---- subscribe pill
     spp = ease_out(seg(t, 4.05, 4.45))
     if spp > 0.01:
-        pill_w, pill_h = 300, 74
+        pill_w, pill_h = int(u(300)), int(u(74))
         px, py = CX - pill_w / 2 + cx0, (H + 2 * M) * 0.815
         pulse = 1 + 0.05 * math.sin((t - 4.05) * 6.0) * (1 if t > 4.05 else 0)
         lay = Image.new("RGBA", (int(pill_w * 1.4), int(pill_h * 2.2)), (0, 0, 0, 0))
@@ -341,16 +372,17 @@ def render_frame(t, bg, els, wm_size=(1180, 300)):
                              int(pill_h * 0.6 + pill_h * pulse)], radius=int(pill_h * 0.5 * pulse),
                              fill=CORAL + (int(245 * spp),), outline=(255, 255, 255, int(90 * spp)), width=2)
         scene.alpha_composite(lay, (int(px - pill_w * 0.2), int(py - pill_h * 0.6)))
-        fsub = font("disp", 30)
+        fsub = font("disp", int(u(30)))
         fsub.text_centered(scene, px + pill_w / 2, py + pill_h / 2 + 2, "SUBSCRIBE",
                            fill=(255, 255, 255, int(255 * spp)))
         # bell
-        bx, by = px + pill_w + 44, py + pill_h / 2
+        bx, by = px + pill_w + int(u(44)), py + pill_h / 2
         ring = math.sin((t - 4.15) * 9.0) * (10 if 4.15 < t < 4.9 else 0)
         d2 = ImageDraw.Draw(scene, "RGBA")
-        d2.pieslice([bx - 17 + ring * 0.2, by - 20, bx + 17 + ring * 0.2, by + 14], 180, 360, fill=GOLD + (int(240 * spp),))
-        d2.rectangle([bx - 17 + ring * 0.2, by - 4, bx + 17 + ring * 0.2, by + 10], fill=GOLD + (int(240 * spp),))
-        d2.ellipse([bx - 5 + ring * 0.2, by + 8, bx + 5 + ring * 0.2, by + 18], fill=GOLD + (int(240 * spp),))
+        br = u(17)
+        d2.pieslice([bx - br + ring * 0.2, by - u(20), bx + br + ring * 0.2, by + u(14)], 180, 360, fill=GOLD + (int(240 * spp),))
+        d2.rectangle([bx - br + ring * 0.2, by - u(4), bx + br + ring * 0.2, by + u(10)], fill=GOLD + (int(240 * spp),))
+        d2.ellipse([bx - u(5), by + u(8), bx + u(5), by + u(18)], fill=GOLD + (int(240 * spp),))
 
     # ---- sparks burst on impact
     if 1.30 <= t <= 1.30 + 1.1:
@@ -359,13 +391,13 @@ def render_frame(t, bg, els, wm_size=(1180, 300)):
             if pt > life:
                 continue
             k = pt / life
-            rr = dist * ease_out(k) * spd * 1.6
+            rr = dist * K * ease_out(k) * spd * 1.6
             x0 = CX + math.cos(ang) * rr * 1.25 + cx0
             y0 = CY + math.sin(ang) * rr * 0.8 + cy0
             a = int(255 * (1 - k) ** 1.6)
             col = (GOLD, LIGHT, TEAL)[col_i] + (a,)
-            ln = (26 + 46 * spd) * (1 - k) + 6
-            wd = max(2, int(5 * (1 - k) + 1.6))
+            ln = u(26 + 46 * spd) * (1 - k) + u(6)
+            wd = max(2, int(u(5 * (1 - k) + 1.6)))
             d.line([x0, y0, x0 - math.cos(ang) * ln, y0 - math.sin(ang) * ln * 0.85], fill=col, width=wd)
 
     # ---- fade in / out
@@ -377,8 +409,8 @@ def render_frame(t, bg, els, wm_size=(1180, 300)):
     # ---- impact zoom + shake (crop inside the overscan)
     zoom = 1.055 - 0.055 * ease_out(seg(t, 1.30, 1.72))
     zoom += 0.004 * seg(t, 3.0, DUR)                 # slow push-in
-    sh = math.sin(2 * math.pi * 26 * t) * 7 * (1 - seg(t, 1.30, 1.60)) * imp
-    sh2 = math.cos(2 * math.pi * 21 * t) * 6 * (1 - seg(t, 1.30, 1.60)) * imp
+    sh = math.sin(2 * math.pi * 26 * t) * u(7) * (1 - seg(t, 1.30, 1.60)) * imp
+    sh2 = math.cos(2 * math.pi * 21 * t) * u(6) * (1 - seg(t, 1.30, 1.60)) * imp
     vw, vh = (W + 2 * M) / zoom, (H + 2 * M) / zoom
     vx = (W + 2 * M - vw) / 2 + sh
     vy = (H + 2 * M - vh) / 2 + sh2
@@ -528,14 +560,14 @@ def ffmpeg_bin():
     return MA.ffmpeg_bin()
 
 
-def render(gif=False):
+def render(gif=False, tag=""):
     os.makedirs(OUT_DIR, exist_ok=True)
     vb, els = MA.load_svg(os.path.abspath(os.path.join(ANIM, "..", "cute_dog.svg")))
     bg = make_bg()
     n = int(DUR * FPS)
     audio = os.path.join(OUT_DIR, "intro_audio.wav")
     write_wav_stereo(audio, build_audio())
-    mp4 = os.path.join(HERE, "sochseth_intro_1080p60.mp4")
+    mp4 = os.path.join(HERE, f"sochseth_intro{tag}.mp4")
     print(f"rendering {n} frames @ {FPS} fps ({W}x{H}) ...", flush=True)
     MA.encode((render_frame(i / FPS, bg, els) for i in range(n)), n, audio, mp4, W, H, fps=FPS, progress=True)
     print("done:", mp4, os.path.getsize(mp4) // 1024, "KB")
@@ -545,8 +577,8 @@ def render(gif=False):
         ff = ffmpeg_bin()
         subprocess.run([ff, "-y", "-i", mp4, "-vf", "fps=24,scale=560:-1:flags=lanczos,"
                         "split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4",
-                        "-loglevel", "error", os.path.join(HERE, "sochseth_intro_preview.gif")], check=False)
-        print("done:", os.path.join(HERE, "sochseth_intro_preview.gif"))
+                        "-loglevel", "error", os.path.join(HERE, f"sochseth_intro{tag}_preview.gif")], check=False)
+        print("done:", os.path.join(HERE, f"sochseth_intro{tag}_preview.gif"))
     return mp4
 
 
@@ -556,7 +588,17 @@ def main():
     ap.add_argument("--render", action="store_true")
     ap.add_argument("--gif", action="store_true")
     ap.add_argument("--audio", action="store_true")
+    ap.add_argument("--ratio", default="16x9", help="16x9 | 9x16 | 1x1 | 4x5")
+    ap.add_argument("--scale", type=float, default=1.0, help="2 = 4K")
+    ap.add_argument("--name", default="", help="optional: 'Soch,Seth' jaisa channel name")
     a = ap.parse_args()
+    if a.name:
+        parts = [p.strip() for p in a.name.split(",")]
+        globals()["BRAND_A"], globals()["BRAND_B"] = (parts + [""])[:2]
+    global W, H, M
+    tag = "_%s%s" % (a.ratio, "k" if a.scale >= 2 else "")
+    configure(a.ratio, a.scale)
+    print("canvas:", f"{W}x{H}", "unit K=%.2f" % K, "VERT" if VERT else "")
     os.makedirs(OUT_DIR, exist_ok=True)
     if a.audio:
         write_wav_stereo(os.path.join(OUT_DIR, "intro_audio.wav"), build_audio())
@@ -567,12 +609,12 @@ def main():
     if a.preview:
         for s in [v for v in a.preview.split(",") if v.strip()]:
             t = float(s)
-            out = os.path.join(OUT_DIR, f"intro_{t:04.1f}.png")
+            out = os.path.join(OUT_DIR, f"intro_{a.ratio}_{t:04.1f}.png")
             render_frame(t, bg, els).save(out)
             print("wrote", out)
         return
     if a.render:
-        render(gif=a.gif)
+        render(gif=a.gif, tag=tag)
 
 
 if __name__ == "__main__":
