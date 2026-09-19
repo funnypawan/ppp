@@ -1,0 +1,476 @@
+{
+ "aud0": {
+  "1": 0.0,
+  "2": 79.98,
+  "3": 132.13,
+  "4": 183.6,
+  "5": 247.95,
+  "6": 304.57,
+  "7": 379.15,
+  "8": 453.69,
+  "9": 523.89,
+  "10": 608.52,
+  "11": 703.43,
+  "12": 776.8699999999999
+ },
+ "audio": 814.2299999999999,
+ "blocks": {
+  "1": {
+   "audio_dur": 79.98,
+   "lines": [
+    {
+     "i": 1,
+     "text": "एक सवाल पूछता हूँ। दो आदमी। पहला — ज़िंदगी भर एक petrol pump पर काम किया, फिर एक mall में फ़र्श पोंछा। कोई बड़ी degree नहीं, कोई business नहीं। दूसरा — Harvard, MBA, और एक बड़े American bank का vice chairman। salary करोड़ों में।",
+     "start": 0.0,
+     "dur": 18.363987915407858,
+     "chars": 228
+    },
+    {
+     "i": 2,
+     "text": "अमीर कौन मरा?",
+     "start": 18.363987915407858,
+     "dur": 1.0470694864048338,
+     "chars": 13
+    },
+    {
+     "i": 3,
+     "text": "सफ़ाई वाला आदमी। Ronald Read. मार्च 2014 में जब वो मरा, उसके पास आठ million dollar थी। और Harvard वाला? 2008 में दिवालिया — mansion जब्त, अदालत से एक लाइन निकली, I currently have no income.",
+     "start": 19.41105740181269,
+     "dur": 15.222779456193354,
+     "chars": 189
+    },
+    {
+     "i": 4,
+     "text": "इन दोनों में IQ का फ़र्क़ बहुत था। behaviour का फ़र्क़ और भी ज़्यादा। और पैसे का खेल behaviour का है। यही बात इस पूरी video में साबित करनी है।",
+     "start": 34.63383685800605,
+     "dur": 11.437220543806646,
+     "chars": 142
+    },
+    {
+     "i": 5,
+     "text": "मैंने finance की बहुत किताबें पढ़ी हैं। नब्बे फ़ीसदी यही बताती हैं कि क्या करना है — कहाँ डालो, कौन सा fund लो, टैक्स कैसे बचाओ। यह किताब वह सवाल पूछती है जो कोई नहीं पूछता: हम पैसे के साथ बेवकूफी क्यों करते हैं, जबकि हमें पता है कि करना क्या है।",
+     "start": 46.071057401812695,
+     "dur": 19.81377643504532,
+     "chars": 246
+    },
+    {
+     "i": 6,
+     "text": "किताब के बीस chapters, दो सौ पन्ने। मैं उनमें से आठ lessons लाया हूँ, सीधी हिंदी में, अपने Indian context के साथ। आख़िरी दो वो हैं जो ज़्यादातर लोग पूरी ज़िंदगी miss करते हैं।",
+     "start": 65.88483383685801,
+     "dur": 14.095166163141993,
+     "chars": 175
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip01-01.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip01-02.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip01-03.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip01-04.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip01-05.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip01-06.jpg"
+   ]
+  },
+  "2": {
+   "audio_dur": 52.15,
+   "lines": [
+    {
+     "i": 1,
+     "text": "Lesson one. कोई पागल नहीं है। हमारे यहाँ एक ही dialogue हर घर में होता है। बाप कहेगा, FD और सोना रखो, पक्का है। बेटा कहेगा, SIP लगाओ, returns देखो। झगड़ा दोनों का सही है।",
+     "start": 0.0,
+     "dur": 6.537979351032448,
+     "chars": 170
+    },
+    {
+     "i": 2,
+     "text": "universe की तरफ़ से एक छोटा सा साँस लेने वाला event, और आपकी पूरी ज़िंदगी बदल गई। इसे luck कहते हैं। वही event उल्टी दिशा में जाए, तो risk। Bill Gates की school, Lakeside, सन् 1968 में दुनिया की गिनी-चुनी जगहों में थी, जहाँ एक computer था — उस वक़्त America की बहुत सी universities के पास तक नहीं था। Gates खुद कहते हैं, Lakeside न होती तो Microsoft न होता। उस class में उनका दोस्त था Kent Evans — शायद Gates से भी तेज़। दोनों साथ में बड़े सपने देखते थे। Kent school ख़त्म होने से पहले एक mountain climbing accident में मारा गया। किसी ने कुछ ग़लत नहीं किया था। एक को luck मिला, एक को risk। Housel कहते हैं हर इंसान पैसे के बारे में अपने experience से सीखता है, किसी किताब से नहीं।",
+     "start": 6.537979351032448,
+     "dur": 26.151917404129794,
+     "chars": 680
+    },
+    {
+     "i": 3,
+     "text": "जिसने नब्बे के दशक का Harshad Mehta scam और पड़ोसी का बर्बाद होते देखा, उसके लिए शेयर बाज़ार जुआ है। और जिसने सिर्फ़ पिछले दस साल का उठता market देखा, उसके लिए FD बेवकूफी है। दोनों ने वो चीज़ पकड़ी जो उनकी ज़िंदगी में साबित हुई।",
+     "start": 32.689896755162245,
+     "dur": 8.768584070796459,
+     "chars": 228
+    },
+    {
+     "i": 4,
+     "text": "तो सबक दो तरफ़ कटता है। जब कोई पैसे को लेकर उल्टा सोचे, उसे मूर्ख़ मत समझो — उसकी history तुम्हारी history से अलग है। और अपना प्लान किसी religion की तरह मत पकड़ो। तुम भी पूरी दुनिया नहीं देख पा रहे, तुम्हें भी बस अपना छोटा सा टुकड़ा मिला है। अपना plan hypothesis है, कानून नहीं।",
+     "start": 41.4584808259587,
+     "dur": 10.691519174041296,
+     "chars": 278
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip02-01.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip02-02.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip02-03.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip02-04.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip02-05.jpg"
+   ]
+  },
+  "3": {
+   "audio_dur": 51.47,
+   "lines": [
+    {
+     "i": 1,
+     "text": "Lesson two। Luck और risk — ये दोनों असली हैं, और दोनों एक ही सिक्के के दो पहलू हैं। universe की तरफ़ से एक छोटा सा साँस लेने वाला event, और आपकी पूरी ज़िंदगी बदल गई। इसे luck कहते हैं। वही event उल्टी दिशा में जाए, तो risk। Bill Gates की school, Lakeside, सन् 1968 में दुनिया की गिनी-चुनी जगहों में थी जहाँ एक computer था। उस वक़्त America की बहुत सी universities के पास नहीं था। गेट्स कहते हैं, Lakeside न होती तो Microsoft न होता।",
+     "start": 0.0,
+     "dur": 33.537013574660634,
+     "chars": 432
+    },
+    {
+     "i": 2,
+     "text": "उस class में उनका दोस्त था Kent Evans — शायद गेट्स से भी तेज़। दोनों साथ में बड़े सपने देखते थे। Kent school ख़त्म होने से पहले एक mountain climbing accident में मारा गया। किसी ने कुछ ग़लत नहीं किया था। एक को luck मिला, एक को risk।",
+     "start": 33.537013574660634,
+     "dur": 17.932986425339365,
+     "chars": 231
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip03-01.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip03-02.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip03-03.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip03-04.jpg"
+   ]
+  },
+  "4": {
+   "audio_dur": 64.35,
+   "lines": [
+    {
+     "i": 1,
+     "text": "हमारा दिमाग़ shortcut लगाता है: मेरी सफलता मेहनत से, तेरी असफलता तेरी ग़लती से। किताब कहती है, pattern देखो, individual story नहीं। एक आदमी ने SIP की और अमीर बन गया — यह information नहीं है, यह survivorship bias है। और उल्टा भी सच है। जो नुक़सान हुआ, उसका मतलब यह नहीं कि तुम बेवकूफ़ हो। Risk तो game का हिस्सा है। खुद को माफ़ करना भी एक financial skill है।",
+     "start": 0.0,
+     "dur": 24.755334051724134,
+     "chars": 357
+    },
+    {
+     "i": 2,
+     "text": "Lesson three। पैसे से जुड़ी सबसे मुश्किल skill है — goalpost को रुकना सिखाना। पैसा आपकी ज़रूरत से नहीं, तुलना से चलता है।",
+     "start": 24.755334051724134,
+     "dur": 8.390463362068965,
+     "chars": 121
+    },
+    {
+     "i": 3,
+     "text": "पचास हज़ार salary पर खुशी थी। पता चला college का दोस्त अस्सी कमा रहा है, अब पचास हज़ार अपमान लगने लगा। अस्सी पर पहुँचे, तो Instagram पर किसी ने Dubai से reel डाल दी। हमेशा कोई न कोई आगे होगा। हमेशा। इसलिए यह दौड़ starting line पर ही हार जाती है।",
+     "start": 33.1457974137931,
+     "dur": 16.98895474137931,
+     "chars": 245
+    },
+    {
+     "i": 4,
+     "text": "किताब में एक किस्सा है। लेखक Joseph Heller से मिलने कोई आया, जो billion dollar से ज़्यादा कमा चुका था। Heller ने कहा, मैं भी एक चीज़ कमाया हूँ जो वो कभी नहीं कमा पाएगा — मुझे पता है मेरे लिए काफ़ी क्या है।",
+     "start": 50.13475215517241,
+     "dur": 14.215247844827584,
+     "chars": 205
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip04-01.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip04-02.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip04-03.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip04-04.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip04-05.jpg"
+   ]
+  },
+  "5": {
+   "audio_dur": 56.62,
+   "lines": [
+    {
+     "i": 1,
+     "text": "और हमारे अपने देश का सबसे कड़वा उदाहरण — Rajat Gupta. Kolkata के orphanage से McKinsey के CEO की कुर्सी तक, Goldman Sachs के board पर। सौ million dollar से ऊपर की net worth। फिर भी billionaire बनना था। insider trading का केस, इज़्ज़त गई, जेल गई, सब कुछ गया।",
+     "start": 0.0,
+     "dur": 12.363075615972813,
+     "chars": 257
+    },
+    {
+     "i": 2,
+     "text": "Buffett की वो line जो किताब बार-बार दोहराती है — जो है और ज़रूरी है, उसे दाँव पर मत लगाओ, उस चीज़ के लिए जो नहीं है और ज़रूरी भी नहीं। इज़्ज़त, नींद, परिवार, आज़ादी — इनका कोई auction नहीं होता। एक बार गए, तो दोबारा ख़रीदने का option नहीं मिलता।",
+     "start": 12.363075615972813,
+     "dur": 11.785811384876805,
+     "chars": 245
+    },
+    {
+     "i": 3,
+     "text": "Lesson four। यह बात सब जानते हैं, कोई मानता नहीं। Warren Buffett की net worth सौ billion dollar से ऊपर है। उसमें से लगभग नब्बे फ़ीसदी से भी ज़्यादा — करीब 99% — उन्होंने पचास की उम्र के बाद कमाया।",
+     "start": 24.14888700084962,
+     "dur": 9.428649107901443,
+     "chars": 196
+    },
+    {
+     "i": 4,
+     "text": "उनका secret यह नहीं कि वो दुनिया के सबसे अच्छे stock picker हैं। secret यह है कि उन्होंने बचपन से शुरू किया और कभी रुके ही नहीं। अस्सी साल का compounding। Housel लिखते हैं, अगर Buffett तीस की उम्र से निवेश करते और साठ में retire हो जाते, तो आज शायद उनका नाम कोई न जानता।",
+     "start": 33.57753610875106,
+     "dur": 12.988445199660152,
+     "chars": 270
+    },
+    {
+     "i": 5,
+     "text": "अब अपने India में लाओ। पच्चीस साल की उम्र में पाँच हज़ार रुपये महीने की SIP। बारह फ़ीसदी का average return मान लें। साठ तक करीब तीन करोड़ के आसपास। वही SIP तीस में शुरू करें, यानी दस साल कम, तो लगभग नब्बे लाख।",
+     "start": 46.56598130841121,
+     "dur": 10.054018691588785,
+     "chars": 209
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip05-01.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip05-02.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip05-03.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip05-04.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip05-05.jpg"
+   ]
+  },
+  "6": {
+   "audio_dur": 74.58,
+   "lines": [
+    {
+     "i": 1,
+     "text": "दस साल की देरी, दो करोड़ का फ़र्क़। और ध्यान दें — यह फ़र्क़ return से नहीं आया। यह सिर्फ़ time से आया।",
+     "start": 0.0,
+     "dur": 22.59335294117647,
+     "chars": 103
+    },
+    {
+     "i": 2,
+     "text": "इसलिए असली skill best return ढूँढना नहीं है। ठीकठाक return को तीस चालीस साल तक टूटने-गिरने के बाद भी चलने देना, यह skill है। इसी की कीमत सबसे ज़्यादा चुकाई जाती है — एक बुरे market में डर के मारे निकल जाना, और फिर पूरी compounding ख़त्म।",
+     "start": 22.59335294117647,
+     "dur": 51.98664705882353,
+     "chars": 237
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip06-01.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip06-02.jpg"
+   ]
+  },
+  "7": {
+   "audio_dur": 74.54,
+   "lines": [
+    {
+     "i": 1,
+     "text": "Lesson five। यह सीधे शुरुआत वाली कहानी से जुड़ता है। पैसा कमाने के लिए चाहिए risk लेना, optimism, हिम्मत, ऊपर देखना। पैसा बचाए रखने के लिए बिल्कुल उल्टा चाहिए — थोड़ा डर, विनम्रता, और यह हमेशा याद रखना कि जो कमाया है वो वापस भी जा सकता है।",
+     "start": 0.0,
+     "dur": 21.620218446601942,
+     "chars": 239
+    },
+    {
+     "i": 2,
+     "text": "Richard Fuscone ने कम कमाया नहीं। उसने loan पर इतना बड़ा घर बनाया कि सिर्फ़ उसे रखने में महीने के नब्बे हज़ार dollar लगते थे। उसने मान लिया कि अच्छा वक़्त हमेशा रहेगा।",
+     "start": 21.620218446601942,
+     "dur": 15.107014563106796,
+     "chars": 167
+    },
+    {
+     "i": 3,
+     "text": "अपने आसपास देखो। कितने लोग अच्छा कमाते हैं, फिर एक year में सब crypto में, दोस्त के business में, या guaranteed double scheme में लगा देते हैं?",
+     "start": 36.72723300970874,
+     "dur": 12.93594660194175,
+     "chars": 143
+    },
+    {
+     "i": 4,
+     "text": "Housel की सबसे ज़रूरी लाइन — survival ही सबसे बड़ी strategy है। compounding तभी काम करती है जब तक तुम game में हो। हमेशा यह एक सवाल पूछो, हर बड़े decision से पहले — अगर मैं ग़लत निकला, क्या मैं बच पाऊँगा? जवाब नहीं है, तो वो trade मत लो, चाहे कितना भी बड़ा return दिख रहा हो।",
+     "start": 49.66317961165049,
+     "dur": 24.876820388349515,
+     "chars": 275
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip07-01.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip07-02.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip07-03.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip07-04.jpg"
+   ]
+  },
+  "8": {
+   "audio_dur": 70.2,
+   "lines": [
+    {
+     "i": 1,
+     "text": "Lesson six। यह मुझे खुद सबसे पसंद है। पैसे से सबसे ज़्यादा कीमती क्या ख़रीदा जा सकता है? गाड़ी, घर, घड़ी? नहीं। Housel कहते हैं, पैसे का सबसे बड़ा dividend है — अपने time पर काबू।",
+     "start": 0.0,
+     "dur": 11.84335532516494,
+     "chars": 179
+    },
+    {
+     "i": 2,
+     "text": "सुबह उठकर यह कह पाना कि आज मैं वही करूँगा जो चाहता हूँ, जिसके साथ चाहूँगा, जितनी देर चाहूँगा। यही असली अमीरी है। इसे किसी shop पर नहीं मिलती, यह सिर्फ़ savings से ख़रीदी जाती है।",
+     "start": 11.84335532516494,
+     "dur": 11.777191328934967,
+     "chars": 178
+    },
+    {
+     "i": 3,
+     "text": "एक आदमी दो लाख महीने कमाता है। रात ग्यारह बजे boss की एक call, laptop खुल गया। EMI इतनी कि नौकरी के बारे में सोचना भी ख़ुद को बर्बाद करना लगता है। दूसरा साठ हज़ार कमाता है। पर उसके पास एक साल का ख़र्च बैंक में पड़ा है, और वो किसी भी दिन कह सकता है — यह काम मुझे नहीं करना। ज़्यादा अमीर कौन? कागज़ पर पहला। असल में दूसरा।",
+     "start": 23.620546654099904,
+     "dur": 21.17247879359095,
+     "chars": 320
+    },
+    {
+     "i": 4,
+     "text": "Savings का मतलब retirement की उम्र बढ़ाना नहीं है। savings का मतलब है options। ग़लत boss को ना बोलने का option। अच्छा मौक़ा मिले तो कूदने का option। घर में कोई बीमार हो, तो सिर्फ़ वहाँ बैठने का option।",
+     "start": 44.79302544769085,
+     "dur": 13.298963242224318,
+     "chars": 201
+    },
+    {
+     "i": 5,
+     "text": "और यह कोई soft सलाह नहीं है — research बार-बार यही लौटाती है कि time की आज़ादी के बाद ही ख़ुशी की सबसे बड़ी line आती है। इसलिए हर महीने पहले save करो, बच गया वो spend करो। उल्टा नहीं।",
+     "start": 58.09198868991517,
+     "dur": 12.108011310084827,
+     "chars": 183
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip08-01.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip08-02.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip08-03.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip08-04.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip08-05.jpg"
+   ]
+  },
+  "9": {
+   "audio_dur": 84.63,
+   "lines": [
+    {
+     "i": 1,
+     "text": "Lesson seven। थोड़ा उल्टा लगेगा, पर ध्यान से सुनो। सड़क पर कोई BMW में निकलता है। हमारा दिमाग़ तुरंत कहता है, अमीर आदमी।",
+     "start": 0.0,
+     "dur": 11.67310344827586,
+     "chars": 120
+    },
+    {
+     "i": 2,
+     "text": "पकड़ यह है — उस आदमी के पास जो गाड़ी है, उसका मतलब सिर्फ़ इतना है कि उतने पैसे के साथ वो अंदर बैठा है, और अब वो पैसे उसके पास नहीं हैं। हमें उसका loan नहीं दिखता, down payment नहीं दिखता, यह भी नहीं दिखता कि पैसे पिताजी के account से आए।",
+     "start": 11.67310344827586,
+     "dur": 23.054379310344824,
+     "chars": 237
+    },
+    {
+     "i": 3,
+     "text": "Housel की line — Rich is current income. Wealth is income not spent. अमीरी दिखती है। दौलत छुपी होती है। दौलत वो है जो खर्च नहीं हुई — आपकी mutual fund statement में, आपके savings account में, आपके portfolio में। garage में कभी नहीं।",
+     "start": 34.72748275862068,
+     "dur": 22.568,
+     "chars": 232
+    },
+    {
+     "i": 4,
+     "text": "और सबसे बड़ा मज़ाक यह है — लोग अमीर दिखने के लिए पैसा ख़र्च करते हैं, जबकि असली signal यही है कि आपने पैसा ख़र्च नहीं किया। और जो चीज़ अंदर बची है, वो camera में आती ही नहीं। इसलिए दुनिया कभी नहीं जानती कि आपके पास असल में क्या है। यही वजह है कि दिखाने की होड़ कभी ख़त्म नहीं होती।",
+     "start": 57.29548275862068,
+     "dur": 27.33451724137931,
+     "chars": 281
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip09-01.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip09-02.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip09-03.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip09-04.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip09-05.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip09-06.jpg"
+   ]
+  },
+  "10": {
+   "audio_dur": 94.91,
+   "lines": [
+    {
+     "i": 1,
+     "text": "Ronald Read पूरी ज़िंदगी एक पुरानी गाड़ी चलाता रहा, फटे coat को safety pin से जोड़े रहा। उसके पूरे शहर को अंदाज़ा नहीं था कि उसके पास करोड़ों हैं।",
+     "start": 0.0,
+     "dur": 11.654213624894869,
+     "chars": 146
+    },
+    {
+     "i": 2,
+     "text": "हमारे case में — शादी, त्योहार, नई गाड़ी, वो phone जो सिर्फ़ इसलिए चाहिए ताकि रिश्तेदारों को लगे हम ठीक हैं। क़र्ज़ पर चला हुआ lifestyle, asset नहीं है, ये वो काग़ज़ है जो दिखावा ख़रीदता है।",
+     "start": 11.654213624894869,
+     "dur": 15.166442388561816,
+     "chars": 190
+    },
+    {
+     "i": 3,
+     "text": "Lesson आठ। सबसे practical। हम planning करते हैं — salary इतनी, ख़र्च इतना, EMI इतनी, बस set। फिर नौकरी जाती है। कोई बीमार हो जाता है। गाड़ी का accident। Corona जैसा कुछ आ जाता है।",
+     "start": 26.820656013456684,
+     "dur": 14.288385197645079,
+     "chars": 179
+    },
+    {
+     "i": 4,
+     "text": "Housel कहते हैं हर plan का सबसे ज़रूरी हिस्सा है margin of safety — यानी इस बात का plan भी रखो कि plan नहीं चलेगा। Practically, तीन काम — एक — कम से कम छह महीने का ख़र्च emergency fund में, ऐसी जगह जो एक कॉल पर निकल जाए। दो — EMI कभी इतनी नहीं कि एक महीने salary न आए तो नींद उड़ जाए। तीन — निवेश में उतना ही risk, जितने में market चालीस फ़ीसदी गिर जाए, तब भी आप बेचें नहीं, बल्कि और डालें।",
+     "start": 41.10904121110176,
+     "dur": 31.13111858704794,
+     "chars": 390
+    },
+    {
+     "i": 5,
+     "text": "और एक और बात जो पूरा video कवर कर देती है — reasonable बनो, rational नहीं। अगर spreadsheet के हिसाब से सारा पैसा equity में डालना best है, पर उससे आपकी रात की नींद जा रही है, तो कुछ पैसा FD में रखो। Mathematically कम मिलेगा, पर आप game में बने रहोगे। और game में बने रहना ही जीतना है।",
+     "start": 72.2401597981497,
+     "dur": 22.669840201850292,
+     "chars": 284
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip10-01.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip10-02.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip10-03.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip10-04.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip10-05.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip10-06.jpg"
+   ]
+  },
+  "11": {
+   "audio_dur": 73.44,
+   "lines": [
+    {
+     "i": 1,
+     "text": "एक नज़र में आठ lessons — एक, कोई पागल नहीं है, सब अपनी history से सीखते हैं। दो, luck और risk दोनों असली हैं, एक hero की story copy मत करो। तीन, काफ़ी को पहचानो, goalpost खिसकाना बंद करो। चार, compounding का जादू return में नहीं time में है, जल्दी शुरू करो। पाँच, अमीर बनना और बने रहना दो अलग skill हैं, पहले survive करो। छह, पैसे का असली return है अपने time पर काबू। सात, दौलत वो है जो दिखती नहीं। आठ, ग़लती की गुंजाइश रखो।",
+     "start": 0.0,
+     "dur": 34.3692715231788,
+     "chars": 424
+    },
+    {
+     "i": 2,
+     "text": "और इन आठ में से बस एक बात याद रखनी हो, तो story वापस Ronald Read पर लौट आती है। वो 2014 में मरा, और अपने local hospital और library को छह million dollar से ज़्यादा दे गया। कभी कोई announcement नहीं किया, कभी कुछ साबित नहीं किया। उसका secret बचत नहीं थी। उसका secret यह था कि वो चालीस साल से game से बाहर ही नहीं हुआ। और न वो चीज़ें ख़रीदीं, जो उसे चाहिए ही नहीं थीं।",
+     "start": 34.3692715231788,
+     "dur": 29.586754966887415,
+     "chars": 365
+    },
+    {
+     "i": 3,
+     "text": "पैसे का खेल IQ का नहीं behaviour का है। और अच्छी ख़बर यह है — behaviour सीखा जा सकता है। यह video उसी का पहला कदम है।",
+     "start": 63.95602649006622,
+     "dur": 9.483973509933774,
+     "chars": 117
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip11-01.jpg",
+    "/home/user/ppp/psychology-of-money/img/clip11-02.jpg"
+   ]
+  },
+  "12": {
+   "audio_dur": 37.36,
+   "lines": [
+    {
+     "i": 1,
+     "text": "अब मेरा सवाल — इन आठ में से कौन सा lesson सबसे ज़्यादा कड़वा लगा? बस comment में उसका number लिखो, एक से आठ। मैं सारे comments पढ़ता हूँ और अगली video में सबसे ज़्यादा आए वाले lesson का पूरा deep dive बनाऊँगा। अगर एक ही finance की किताब पढ़नी है, तो यही पढ़ो। और ऐसी ही किताबें आसान भाषा में चाहिए तो subscribe कर दीजिए। यह video education के लिए था, investment advice नहीं। अपने फैसले खुद सोच-समझकर लीजिए।",
+     "start": 0.0,
+     "dur": 32.90273318872017,
+     "chars": 406
+    },
+    {
+     "i": 2,
+     "text": "तब तक के लिए — पैसा कमाओ, पर अपने time पर काबू मत खोना।",
+     "start": 32.90273318872017,
+     "dur": 4.457266811279827,
+     "chars": 55
+    }
+   ],
+   "imgs": [
+    "/home/user/ppp/psychology-of-money/img/clip12-01.jpg"
+   ]
+  }
+ }
+}

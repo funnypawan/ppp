@@ -32,3 +32,20 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Large audio stems (regenerable via build_clips.py + TTS)
+*.wav
+
+# Video encode intermediates (final mp4 is the deliverable)
+psychology-of-money/work/shots/
+psychology-of-money/work/scaled/
+psychology-of-money/work/*.mp4
+psychology-of-money/work/tmp*
+psychology-of-money/work/preview*
+psychology-of-money/work/*.log
+
+psychology-of-money/work/qc/
+psychology-of-money/work/fonts/
+psychology-of-money/test/
+__pycache__
+psychology-of-money/*.mp4

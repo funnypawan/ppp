@@ -1,0 +1,52 @@
+file,clip,section,suggested_in_tc,suggested_dur_sec,frames_at_25
+img/clip01-01.jpg,clip01,Hook + Intro,00:00:00:00,13.3,333
+img/clip01-02.jpg,clip01,Hook + Intro,00:00:13:08,13.3,333
+img/clip01-03.jpg,clip01,Hook + Intro,00:00:26:16,13.3,333
+img/clip01-04.jpg,clip01,Hook + Intro,00:00:40:00,13.3,333
+img/clip01-05.jpg,clip01,Hook + Intro,00:00:53:08,13.3,333
+img/clip01-06.jpg,clip01,Hook + Intro,00:01:06:16,13.3,333
+img/clip02-01.jpg,clip02,L1 No One is Crazy,00:01:20:00,10.4,261
+img/clip02-02.jpg,clip02,L1 No One is Crazy,00:01:30:10,10.4,261
+img/clip02-03.jpg,clip02,L1 No One is Crazy,00:01:40:21,10.4,261
+img/clip02-04.jpg,clip02,L1 No One is Crazy,00:01:51:07,10.4,261
+img/clip02-05.jpg,clip02,L1 No One is Crazy,00:02:01:17,10.4,261
+img/clip03-01.jpg,clip03,L2 Luck & Risk (Gates/Kent),00:02:12:03,12.9,322
+img/clip03-02.jpg,clip03,L2 Luck & Risk (Gates/Kent),00:02:25:00,12.9,322
+img/clip03-03.jpg,clip03,L2 Luck & Risk (Gates/Kent),00:02:37:22,12.9,322
+img/clip03-04.jpg,clip03,L2 Luck & Risk (Gates/Kent),00:02:50:18,12.9,322
+img/clip04-01.jpg,clip04,L2 tail + L3 Enough (Heller),00:03:03:15,12.9,322
+img/clip04-02.jpg,clip04,L2 tail + L3 Enough (Heller),00:03:16:12,12.9,322
+img/clip04-03.jpg,clip04,L2 tail + L3 Enough (Heller),00:03:29:09,12.9,322
+img/clip04-04.jpg,clip04,L2 tail + L3 Enough (Heller),00:03:42:05,12.9,322
+img/clip04-05.jpg,clip04,L2 tail + L3 Enough (Heller),00:03:55:02,12.9,322
+img/clip05-01.jpg,clip05,L3 Gupta + L4 Compounding,00:04:07:24,11.3,283
+img/clip05-02.jpg,clip05,L3 Gupta + L4 Compounding,00:04:19:07,11.3,283
+img/clip05-03.jpg,clip05,L3 Gupta + L4 Compounding,00:04:30:15,11.3,283
+img/clip05-04.jpg,clip05,L3 Gupta + L4 Compounding,00:04:41:23,11.3,283
+img/clip05-05.jpg,clip05,L3 Gupta + L4 Compounding,00:04:53:06,11.3,283
+img/clip06-01.jpg,clip06,L4 tail (time > return),00:05:04:14,37.3,932
+img/clip06-02.jpg,clip06,L4 tail (time > return),00:05:41:21,37.3,932
+img/clip07-01.jpg,clip07,L5 Get vs Stay Wealthy,00:06:19:04,18.6,466
+img/clip07-02.jpg,clip07,L5 Get vs Stay Wealthy,00:06:37:20,18.6,466
+img/clip07-03.jpg,clip07,L5 Get vs Stay Wealthy,00:06:56:10,18.6,466
+img/clip07-04.jpg,clip07,L5 Get vs Stay Wealthy,00:07:15:01,18.6,466
+img/clip08-01.jpg,clip08,L6 Freedom / control of time,00:07:33:17,14.0,351
+img/clip08-02.jpg,clip08,L6 Freedom / control of time,00:07:47:18,14.0,351
+img/clip08-03.jpg,clip08,L6 Freedom / control of time,00:08:01:19,14.0,351
+img/clip08-04.jpg,clip08,L6 Freedom / control of time,00:08:15:20,14.0,351
+img/clip08-05.jpg,clip08,L6 Freedom / control of time,00:08:29:21,14.0,351
+img/clip09-01.jpg,clip09,L7 Wealth is unseen,00:08:43:22,14.1,353
+img/clip09-02.jpg,clip09,L7 Wealth is unseen,00:08:58:00,14.1,353
+img/clip09-03.jpg,clip09,L7 Wealth is unseen,00:09:12:02,14.1,353
+img/clip09-04.jpg,clip09,L7 Wealth is unseen,00:09:26:05,14.1,353
+img/clip09-05.jpg,clip09,L7 Wealth is unseen,00:09:40:08,14.1,353
+img/clip09-06.jpg,clip09,L7 Wealth is unseen,00:09:54:10,14.1,353
+img/clip10-01.jpg,clip10,L7 tail + L8 Room for Error,00:10:08:13,15.8,395
+img/clip10-02.jpg,clip10,L7 tail + L8 Room for Error,00:10:24:08,15.8,395
+img/clip10-03.jpg,clip10,L7 tail + L8 Room for Error,00:10:40:04,15.8,395
+img/clip10-04.jpg,clip10,L7 tail + L8 Room for Error,00:10:55:24,15.8,395
+img/clip10-05.jpg,clip10,L7 tail + L8 Room for Error,00:11:11:20,15.8,395
+img/clip10-06.jpg,clip10,L7 tail + L8 Room for Error,00:11:27:15,15.8,395
+img/clip11-01.jpg,clip11,Recap + Read callback,00:11:43:11,36.7,918
+img/clip11-02.jpg,clip11,Recap + Read callback,00:12:20:04,36.7,918
+img/clip12-01.jpg,clip12,CTA + disclaimer + sign-off,00:12:56:22,37.4,934
