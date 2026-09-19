@@ -9,18 +9,21 @@ Ye script ek hi layout se do file banati hai:
   1. Dream-Classes-OMR-Sheet-A4.pdf  -> print ready (kisi bhi dukaan/browser se print karo)
   2. omr-sheet.html                  -> wahi design browser me dekhne / print karne ke liye
 
-Sheet ka design:
+Sheet ka design (current):
   * A4 page, "long" (landscape) me
-  * Upar: institute ka naam + mobile number
-  * 5 column, har column me 4 question  ->  total 20 question (Q1-4, Q5-8, ... Q17-20)
+  * Upar: institute ka naam + mobile number  (Name / Roll No. / Date line nahi hai)
+  * 5 column, har column me 20 question  ->  total 100 question
   * Har question ke bagal me A B C D ke 4 gole circle (bubble)
+  * Neeche: Total Marks / Marks Obtained / Examiner's Sign
 
 Chalane ke liye:
     pip install reportlab
     python3 omr-sheet-generator.py
 
-Sab kuch mm me set hai -- neeche CONFIG ke numbers badal kar layout adjust kar sakte ho
-(jaise BUBBLE_DIA bada karna, COLUMNS badalna, naam badalna, etc.)
+Sab kuch mm me set hai -- neeche CONFIG ke numbers badal kar layout adjust kar sakte ho:
+  * 20 question wali chhoti sheet chahiye  ->  QUESTIONS = 20  (per column 4 ho jayenge)
+  * 5th option (A B C D E) chahiye         ->  OPTIONS = ["A","B","C","D","E"]
+  * Name / Roll No. / Date line chahiye    ->  SHOW_INFO_ROW = True
 """
 
 import os
@@ -40,29 +43,35 @@ MARGIN_X, MARGIN_TOP, MARGIN_BOTTOM = 7.0, 6.0, 6.0
 INSTITUTE = "DREAM CLASSES KOTHWARA"
 MOBILE = "Mob. : 9708983294"
 
-QUESTIONS = 20                          # total questions
-COLUMNS = 5                             # kitne column me
+QUESTIONS = 100                         # total questions
+COLUMNS = 5                             # kitne column me (20 per column)
 OPTIONS = ["A", "B", "C", "D"]          # 4 option
+SHOW_INFO_ROW = False                   # Name / Roll No. / Date line (hatani hai to False)
 
-TITLE_SIZE = 11.0                       # institute name ka font size
-MOB_SIZE = 5.0
-INFO_SIZE = 3.8                         # Name / Roll No / Date line
-QNO_SIZE = 4.4                          # question number
-BUBBLE_DIA = 9.6                        # circle ka diameter
-BUBBLE_GAP = 1.9                        # do circles ke beech ka gap
-LETTER_SIZE = 4.2                       # A B C D letters
+TITLE_SIZE = 9.5                        # institute name ka font size
+MOB_SIZE = 4.8
+INFO_SIZE = 3.8                         # Name / Roll No / Date line (agar on ho)
+QNO_SIZE = 3.0                          # question number
+BUBBLE_DIA = 6.0                        # circle ka diameter
+BUBBLE_GAP = 1.5                        # do circles ke beech ka gap
+LETTER_SIZE = 2.9                       # A B C D letters
 FOOT_SIZE = 3.5
 
-COL_GAP = 3.0                           # columns ke beech gap
-ROW_GAP = 2.5                           # ek column ke question boxes ke beech gap
-BOX_PAD = 1.2                           # box ke andar padding
-BOX_RADIUS = 1.8
+QNO_W = 6.2                             # question number ki fixed jagah ("100." bhi fit ho)
+QNO_GAP = 1.4                           # number aur pehle bubble ke beech gap
+
+COL_GAP = 2.6                           # columns ke beech gap
+ROW_GAP = 0.0                           # rows ek dusre se chipke (separator line se alag)
+CONTAINER_PAD_X = 3.0                   # column box ke andar side padding
+CONTAINER_PAD_Y = 1.2                   # column box ke andar top/bottom padding
+BOX_RADIUS = 1.6
 
 C_TITLE = "#12306b"                     # deep blue
 C_TEXT = "#2b2b2b"
 C_LETTER = "#222222"
 C_BUBBLE = "#444444"
-C_BORDER = "#b8b8b8"
+C_BORDER = "#9a9a9a"                    # column box ka border
+C_ROW_LINE = "#dcdcdc"                  # rows ke beech ki patli line
 C_LINE = "#666666"
 
 FONT, FONT_BOLD = "Helvetica", "Helvetica-Bold"
@@ -204,81 +213,90 @@ def build_sheet():
 
     # ---------- Header ----------
     title_baseline = MARGIN_TOP + TITLE_SIZE * 0.78
-    mob_baseline = title_baseline + TITLE_SIZE * 0.42 + MOB_SIZE * 0.75
-    rule_y = mob_baseline + MOB_SIZE * 0.45 + 1.8
+    mob_baseline = title_baseline + TITLE_SIZE * 0.40 + MOB_SIZE * 0.74
+    rule_y = mob_baseline + MOB_SIZE * 0.44 + 1.6
 
     s.text(cx_page, title_baseline, INSTITUTE, TITLE_SIZE, bold=True,
            color=C_TITLE, anchor="middle")
     s.text(cx_page, mob_baseline, MOBILE, MOB_SIZE, bold=True,
            color=C_TEXT, anchor="middle")
-    # double rule (heading ke neeche patli double line)
     s.line(inner_left, rule_y, inner_right, rule_y, color=C_TITLE, sw=0.5)
-    s.line(inner_left, rule_y + 1.0, inner_right, rule_y + 1.0, color=C_TITLE, sw=0.25)
+    s.line(inner_left, rule_y + 0.9, inner_right, rule_y + 0.9, color=C_TITLE, sw=0.25)
 
-    # ---------- Name / Roll No. / Date ----------
-    info_baseline = rule_y + 1.0 + INFO_SIZE * 1.9
-    underline_y = info_baseline + 0.9
-
-    items = [("Name :", 22.0, 62.0), ("Roll No. :", 42.0, 34.0), ("Date :", 60.0, 0.0)]
-    x = inner_left
-    for label, line_len, gap_after in items:
-        s.text(x, info_baseline, label, INFO_SIZE, bold=True, color=C_TEXT)
-        lx = x + s.text_width(label, INFO_SIZE, True) + 2.0
-        if line_len:
-            s.line(lx, underline_y, lx + line_len, underline_y, color=C_LINE, sw=0.35)
-        x = lx + line_len + (gap_after if gap_after else 0.0)
+    # ---------- Name / Roll No. / Date (optional) ----------
+    y_cursor = rule_y + 0.9
+    if SHOW_INFO_ROW:
+        info_baseline = y_cursor + INFO_SIZE * 1.9
+        underline_y = info_baseline + 0.9
+        items = [("Name :", 34.0, 20.0), ("Roll No. :", 40.0, 20.0), ("Date :", 0.0, 0.0)]
+        x = inner_left
+        for label, line_len, gap_after in items:
+            s.text(x, info_baseline, label, INFO_SIZE, bold=True, color=C_TEXT)
+            lx = x + s.text_width(label, INFO_SIZE, True) + 2.0
+            if line_len:
+                s.line(lx, underline_y, lx + line_len, underline_y, color=C_LINE, sw=0.35)
+            x = lx + line_len + gap_after
+        y_cursor = underline_y
 
     # ---------- Footer (office use) ----------
-    foot_h = 11.0
+    foot_h = 10.0
     foot_top = PAGE_H - MARGIN_BOTTOM - foot_h
     s.rect(inner_left, foot_top, inner_w, foot_h, radius=BOX_RADIUS,
            fill="#ffffff", stroke=C_BORDER, sw=0.4)
     foot_base = foot_top + foot_h / 2.0 + FOOT_SIZE * 0.36
+    foot_line_y = foot_top + foot_h / 2.0 + 1.1
+    mid_y_line = foot_line_y
 
-    foot_line_y = foot_top + foot_h / 2.0 + 1.2
     txt = "Total Marks : %d" % QUESTIONS
     s.text(inner_left + 4.0, foot_base, txt, FOOT_SIZE, bold=True, color=C_TEXT)
     x2 = inner_left + 4.0 + s.text_width(txt, FOOT_SIZE, True) + 14.0
     lab = "Marks Obtained :"
     s.text(x2, foot_base, lab, FOOT_SIZE, bold=True, color=C_TEXT)
     lx = x2 + s.text_width(lab, FOOT_SIZE, True) + 2.0
-    s.line(lx, foot_line_y, lx + 30.0, foot_line_y, color=C_LINE, sw=0.35)
+    s.line(lx, mid_y_line, lx + 30.0, mid_y_line, color=C_LINE, sw=0.35)
     x3 = lx + 30.0 + 16.0
     lab2 = "Examiner's Sign :"
     s.text(x3, foot_base, lab2, FOOT_SIZE, bold=True, color=C_TEXT)
     lx2 = x3 + s.text_width(lab2, FOOT_SIZE, True) + 2.0
-    s.line(lx2, foot_line_y, inner_right - 4.0, foot_line_y, color=C_LINE, sw=0.35)
+    s.line(lx2, mid_y_line, inner_right - 4.0, mid_y_line, color=C_LINE, sw=0.35)
 
-    # ---------- Question grid ----------
-    grid_top = underline_y + 4.0
+    # ---------- Question grid (5 column x 20 question = 100) ----------
+    grid_top = y_cursor + 3.5
     grid_bottom = foot_top - 3.5
     grid_h = grid_bottom - grid_top
 
-    per_col = QUESTIONS // COLUMNS                    # 4
+    per_col = QUESTIONS // COLUMNS                    # 20
     col_w = (inner_w - (COLUMNS - 1) * COL_GAP) / COLUMNS
-    row_h = (grid_h - (per_col - 1) * ROW_GAP) / per_col
+    row_h = (grid_h - 2 * CONTAINER_PAD_Y - (per_col - 1) * ROW_GAP) / per_col
 
     bub_w = len(OPTIONS) * BUBBLE_DIA + (len(OPTIONS) - 1) * BUBBLE_GAP
-    qno_w = 6.5
-    content_w = qno_w + 1.5 + bub_w
-    start_x = (col_w - 2 * BOX_PAD - content_w) / 2.0      # box ke andar centering
+    content_w = QNO_W + QNO_GAP + bub_w
+    start_x = (col_w - 2 * CONTAINER_PAD_X - content_w) / 2.0   # box ke andar centering
 
     for c in range(COLUMNS):
         col_x = inner_left + c * (col_w + COL_GAP)
+        # ek column ka container box
+        s.rect(col_x, grid_top, col_w, grid_h, radius=BOX_RADIUS,
+               fill="#ffffff", stroke=C_BORDER, sw=0.45)
+
         for r in range(per_col):
             q_num = c * per_col + r + 1
-            box_y = grid_top + r * (row_h + ROW_GAP)
-            s.rect(col_x, box_y, col_w, row_h, radius=BOX_RADIUS,
-                   fill="#ffffff", stroke=C_BORDER, sw=0.4)
+            row_top = grid_top + CONTAINER_PAD_Y + r * (row_h + ROW_GAP)
+            mid_y = row_top + row_h / 2.0
 
-            mid_y = box_y + row_h / 2.0
+            # rows ke beech patli separator line
+            if r:
+                s.line(col_x + CONTAINER_PAD_X, row_top - ROW_GAP / 2.0,
+                       col_x + col_w - CONTAINER_PAD_X, row_top - ROW_GAP / 2.0,
+                       color=C_ROW_LINE, sw=0.25)
+
             # question number
-            num_x = col_x + BOX_PAD + start_x + qno_w
+            num_x = col_x + CONTAINER_PAD_X + start_x + QNO_W
             s.text(num_x, mid_y + QNO_SIZE * 0.36, "%d." % q_num, QNO_SIZE,
                    bold=True, color=C_TEXT, anchor="end")
 
             # A B C D bubbles
-            bub_x = col_x + BOX_PAD + start_x + qno_w + 1.5 + BUBBLE_DIA / 2.0
+            bub_x = col_x + CONTAINER_PAD_X + start_x + QNO_W + QNO_GAP + BUBBLE_DIA / 2.0
             for i, opt in enumerate(OPTIONS):
                 bx = bub_x + i * (BUBBLE_DIA + BUBBLE_GAP)
                 s.circle(bx, mid_y, BUBBLE_DIA / 2.0, fill="#ffffff",
