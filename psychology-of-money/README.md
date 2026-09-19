@@ -1,6 +1,9 @@
 # The Psychology of Money (Hindi) — script + VO + finished video
 
-**Watch / download:** `psychology-of-money.mp4` (13:34, 1920×1080, 25 fps). File is >100 MB so it lives on the GitHub Release, not in git — see the release asset on this branch.
+**Direct download (71 MB, 13:34, 1080p):**
+https://github.com/funnypawan/ppp/raw/arena/01a0b360-ppp/psychology-of-money/psychology-of-money.mp4
+
+File page: https://github.com/funnypawan/ppp/blob/arena/01a0b360-ppp/psychology-of-money/psychology-of-money.mp4
 
 Edit is picture-locked to the 12 VO stems: Ken Burns on all 51 stills, cross-faded cuts, cinematic letterbox, gold progress bar, lesson-title cards, versus/stat/quote overlays, and Mukta Devanagari subtitles. Rebuild with:
 
