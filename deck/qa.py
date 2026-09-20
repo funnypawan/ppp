@@ -94,10 +94,27 @@ def check(path):
             if sh.shape_type == 13 and (x < -0.02 or y < -0.02 or x + w > SW + 0.02 or y + h > SH + 0.02):
                 problems.append((si, 'PICTURE-OUT-OF-SLIDE', 'picture'))
         blob = " ".join(texts)
-        if "DREAM CLASSES KOTHWARA" not in blob:
-            problems.append((si, 'MISSING-HEADER', 'DREAM CLASSES KOTHWARA absent'))
-        if "DREAM SIR" not in blob:
-            problems.append((si, 'MISSING-BYLINE', 'BY – DREAM SIR absent'))
+        # top banner must be a full-width shape at y≈0 whose 1st line is the school
+        # name and 2nd line (its just below) is "BY DREAM SIR"
+        banner = None
+        for sh in sl.shapes:
+            if not (sh.has_text_frame and sh.text_frame.text.strip()):
+                continue
+            x, y, w, h = inch(sh.left), inch(sh.top), inch(sh.width), inch(sh.height)
+            if y <= 0.02 and w >= inch(prs.slide_width) - 1 and x <= 0.02:
+                banner = sh
+                break
+        if banner is None:
+            problems.append((si, 'NO-TOP-BANNER', 'full-width banner at y=0 not found'))
+        else:
+            paras = [p.text.strip() for p in banner.text_frame.paragraphs if p.text.strip()]
+            if not paras or paras[0] != "DREAM CLASSES KOTHWARA":
+                problems.append((si, 'BANNER-LINE1', (paras[0] if paras else '<empty>')[:40]))
+            if len(paras) < 2 or paras[1] != "BY DREAM SIR":
+                problems.append((si, 'BANNER-LINE2', (paras[1] if len(paras) > 1 else '<missing>')[:40]))
+            else:
+                # vertical order check : line 2 must sit below line 1
+                pass
         if 2 <= si <= 101:      # question slides
             for need_txt in ("उत्तर : (", "प्र. "):
                 if need_txt not in blob:

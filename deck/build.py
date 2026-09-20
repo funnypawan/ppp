@@ -23,7 +23,7 @@ OUT = os.path.abspath(os.path.join(HERE, "..", "Biology_Ch1_Jaiv_Jagat_100_MCQ_D
 SW, SH = 13.333, 7.5
 HI = "Nirmala UI"
 SCHOOL = "DREAM CLASSES KOTHWARA"
-BY = "BY – DREAM SIR"
+BY = "BY DREAM SIR"
 CH = "अध्याय 1 : जैव जगत  (The Living World)"
 BOARD = "जैव विज्ञान • कक्षा 11 (इंटरमीडिएट) • BSEB वस्तुनिष्ठ अभ्यास"
 LETTERS = ["A", "B", "C", "D"]
@@ -243,26 +243,34 @@ def decor(slide, pal):
         solid(s, A, alpha=55000 if i % 2 else 33000)
         no_line(s)
 
-def header(slide, pal):
-    b = rect(slide, 0.30, 0.20, SW - 0.60, 1.02, radius=0.22)
-    grad(b, [(0.0, pal[2]), (1.0, pal[3])], 32)
+def header(slide, pal, band_h=0.94):
+    """सभी स्लाइडों के सबसे ऊपर :  LINE-1 DREAM CLASSES KOTHWARA
+                                   LINE-1 के ठीक नीचे :  BY DREAM SIR"""
+    b = rect(slide, 0, 0, SW, band_h, MSO_SHAPE.RECTANGLE)
+    grad(b, [(0.0, pal[2]), (0.55, pal[3]), (1.0, pal[2])], 24)
     no_line(b)
-    soft_shadow(b, 0.09, 0.035, 36000)
-    text(b, [(SCHOOL, {'size': 27, 'bold': True, 'color': 'FFFFFF'})], align=PP_ALIGN.CENTER,
-         anchor=MSO_ANCHOR.TOP, margins=(0.3, 0.3, 0.08, 0))
-    more_para(b, [(BY, {'size': 14.5, 'bold': True, 'color': 'FFE79A'})], align=PP_ALIGN.CENTER, space_before=1)
-    st = rect(slide, 0.30, 1.265, SW - 0.60, 0.055, MSO_SHAPE.RECTANGLE, radius=0.5)
-    grad(st, [(0.0, 'FFD166'), (0.34, '06D6A0'), (0.68, '118AB2'), (1.0, 'EF476F')], 0)
+    soft_shadow(b, 0.07, 0.03, 34000)
+    # tiny side accents so the banner still looks designed
+    for ax in (0.0, SW - 0.16):
+        acc = rect(slide, ax, 0, 0.16, band_h, MSO_SHAPE.RECTANGLE)
+        solid(acc, 'FFFFFF', alpha=22000)
+        no_line(acc)
+    text(b, [(SCHOOL, {'size': 30, 'bold': True, 'color': 'FFFFFF'})], align=PP_ALIGN.CENTER,
+         anchor=MSO_ANCHOR.TOP, margins=(0.3, 0.3, 0.075, 0))
+    more_para(b, [(BY, {'size': 16.5, 'bold': True, 'color': 'FFE79A'})], align=PP_ALIGN.CENTER,
+              space_before=1)
+    st = rect(slide, 0, band_h, SW, 0.055, MSO_SHAPE.RECTANGLE)
+    grad(st, [(0.0, 'FFD166'), (0.3, '06D6A0'), (0.6, '118AB2'), (1.0, 'EF476F')], 0)
     no_line(st)
 
 def subbar(slide, pal, num, total=100):
-    s = rect(slide, 0.30, 1.40, SW - 0.60, 0.42, radius=0.5)
+    s = rect(slide, 0.30, 1.06, SW - 0.60, 0.42, radius=0.5)
     solid(s, 'FFFFFF', alpha=62000)
     line(s, pal[2], 1.0)
     text(s, [(CH, {'size': 13, 'bold': True, 'color': pal[2]}),
              ("     |     " + BOARD, {'size': 11, 'color': '3B4A63'})],
          align=PP_ALIGN.LEFT, margins=(0.22, 2.5, 0.0, 0.0))
-    bd = rect(slide, SW - 2.30, 1.43, 1.98, 0.36, radius=0.5)
+    bd = rect(slide, SW - 2.30, 1.09, 1.98, 0.36, radius=0.5)
     solid(bd, pal[3])
     no_line(bd)
     text(bd, "प्रश्न %d / %d" % (num, total), size=12.5, bold=True, color='FFFFFF',
@@ -601,11 +609,11 @@ def question_slide(prs, idx, rec, pal):
     qtext_w = body_w - 0.62
 
     # --- question card (height auto-fits the question text)
-    qsizes = [21.5, 20.5, 19.5, 18.5, 17.5, 16.5, 15.5, 14.5]
+    qsizes = [23, 22, 21, 20, 19, 18, 17, 16]
     qsize, qlines, qh_text = choose_size(qq, qtext_w, qsizes, 1.02, bold=True, spacing=1.24)
     chip_h = 0.36
     card_h = chip_h + qh_text + 0.26
-    cy = 1.94
+    cy = 1.56
     card = rect(s, X0, cy, body_w, card_h, radius=0.09)
     solid(card, 'FFFFFF')
     line(card, pal[2], 1.5)
@@ -631,11 +639,11 @@ def question_slide(prs, idx, rec, pal):
 
     # --- options
     oy = cy + card_h + 0.14
-    obot = 6.38
+    obot = 6.40
     gap = 0.085
     rowh = (obot - oy - gap * 3) / 4.0
     ow = body_w - 1.52
-    osizes = [17.5, 16.5, 15.5, 14.5, 13.5, 12.5]
+    osizes = [19, 18, 17, 16, 15, 14]
     osize = osizes[0]
     for cand in osizes:
         if max(fit_height(est_lines(o, cand, ow, i == ans), cand, 1.24) for i, o in enumerate(opts)) <= rowh - 0.14:
@@ -673,7 +681,7 @@ def question_slide(prs, idx, rec, pal):
     if has_side:
         px = X0 + body_w + 0.14
         pw = SW - M - px
-        py, ph = 1.94, obot - 1.94
+        py, ph = 1.56, obot - 1.56
         panel = rect(s, px, py, pw, ph, radius=0.06)
         solid(panel, 'FFFFFF', alpha=45000)
         no_line(panel)
@@ -691,7 +699,7 @@ def question_slide(prs, idx, rec, pal):
             diagram(vis, s, pal, px + 0.05, top, pw - 0.10, py + ph - top - pad + 0.05)
 
     # --- answer strip (label pill + explanation, both auto-fitted)
-    ay, ah = 6.50, 0.62
+    ay, ah = 6.52, 0.62
     aw_full = (SW - 2 * M) if not has_side else body_w
     aS = rect(s, X0, ay, aw_full, ah, radius=0.26)
     grad(aS, [(0.0, '0F8A3E'), (1.0, '05B45F')], 18)
@@ -747,24 +755,28 @@ def title_slide(prs, pal):
     no_line(bg)
     decor(s, pal)
 
-    band = rect(s, 0.30, 0.24, SW - 0.60, 1.10, radius=0.20)
-    grad(band, [(0.0, pal[2]), (1.0, pal[3])], 28)
+    band = rect(s, 0, 0, SW, 1.12, MSO_SHAPE.RECTANGLE)
+    grad(band, [(0.0, pal[2]), (0.55, pal[3]), (1.0, pal[2])], 22)
     no_line(band)
-    soft_shadow(band, 0.10, 0.04, 38000)
-    text(band, [(SCHOOL, {'size': 31, 'bold': True, 'color': 'FFFFFF'})], align=PP_ALIGN.CENTER,
-         anchor=MSO_ANCHOR.TOP, margins=(0.3, 0.3, 0.07, 0))
-    more_para(band, [(BY, {'size': 15.5, 'bold': True, 'color': 'FFE79A'})], align=PP_ALIGN.CENTER)
+    soft_shadow(band, 0.09, 0.035, 34000)
+    text(band, [(SCHOOL, {'size': 34, 'bold': True, 'color': 'FFFFFF'})], align=PP_ALIGN.CENTER,
+         anchor=MSO_ANCHOR.TOP, margins=(0.3, 0.3, 0.10, 0))
+    more_para(band, [(BY, {'size': 18, 'bold': True, 'color': 'FFE79A'})], align=PP_ALIGN.CENTER,
+              space_before=2)
+    st = rect(s, 0, 1.12, SW, 0.06, MSO_SHAPE.RECTANGLE)
+    grad(st, [(0.0, 'FFD166'), (0.3, '06D6A0'), (0.6, '118AB2'), (1.0, 'EF476F')], 0)
+    no_line(st)
 
-    picture(s, "hero", 7.60, 1.70, 5.30, 3.60)
+    picture(s, "hero", 7.60, 1.40, 5.30, 3.70)
 
-    t1 = textbox(s, 0.60, 1.72, 6.80, 1.46)
+    t1 = textbox(s, 0.60, 1.44, 6.80, 1.46)
     text(t1, [("जैव विज्ञान  •  कक्षा 11", {'size': 19, 'bold': True, 'color': pal[3]}),
               ("\nअध्याय 1 : ", {'size': 25, 'bold': True, 'color': '17324F'}),
               ("जैव जगत", {'size': 38, 'bold': True, 'color': pal[2]}),
               ("   The Living World", {'size': 17, 'bold': True, 'italic': True, 'color': '3B5A78'})],
          align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.TOP, margins=(0, 0, 0, 0), line_spacing=1.0)
 
-    t2 = textbox(s, 0.60, 3.22, 6.80, 0.66)
+    t2 = textbox(s, 0.60, 2.92, 6.80, 0.66)
     text(t2, [("100 ", {'size': 32, 'bold': True, 'color': 'D62828'}),
               ("वस्तुनिष्ठ प्रश्न ", {'size': 22, 'bold': True, 'color': '17324F'}),
               ("(BSEB Board Level)", {'size': 17, 'bold': True, 'color': pal[2]})],
@@ -773,7 +785,7 @@ def title_slide(prs, pal):
     chips = ["BSEB कक्षा 11 • अध्याय-आधारित", "प्रति स्लाइड 1 प्रश्न + 4 विकल्प",
              "उत्तर + संक्षिप्त कारण सहित", "NCERT तथ्यों पर पूर्णतः आधारित",
              "छोटे आरेख, चित्र व टैग", "अंत में सम्पूर्ण उत्तर-कुंजी"]
-    x, y = 0.60, 3.98
+    x, y = 0.60, 3.62
     for i, lab in enumerate(chips):
         w = 3.28
         c = rect(s, x, y, w, 0.44, radius=0.42)
@@ -789,7 +801,7 @@ def title_slide(prs, pal):
         else:
             x = 0.60 + 3.44
 
-    note = rect(s, 0.60, 5.74, 6.60, 1.02, radius=0.12)
+    note = rect(s, 0.60, 5.28, 6.60, 1.02, radius=0.12)
     grad(note, [(0.0, pal[2]), (1.0, pal[3])], 24)
     no_line(note)
     soft_shadow(note)
@@ -799,7 +811,24 @@ def title_slide(prs, pal):
                 (" व कारण से मिलाइए। हर 25 प्रश्न पर एक बार रिवीज़न ज़रूर करें।", {'size': 12.5, 'color': 'FFFFFF'})],
          align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.MIDDLE, margins=(0.20, 0.16, 0.04, 0.04), line_spacing=1.04)
 
-    t3 = textbox(s, 7.55, 5.55, 5.35, 1.30)
+    # अध्याय का विषय-विभाजन (प्रश्न-रेंज)
+    strip = rect(s, 0.30, 6.46, SW - 0.60, 0.78, radius=0.16)
+    solid(strip, 'FFFFFF', alpha=72000)
+    line(strip, pal[2], 1.2)
+    parts = [("अंश 1 : 'जीवित' क्या है?", "प्र. 1 – 20"), ("अंश 2 : विविधता व नामकरण", "प्र. 21 – 39"),
+              ("अंश 3 : वर्गीकोटियाँ", "प्र. 40 – 61"), ("अंश 4 : वर्गीकरण पद्धतियाँ", "प्र. 62 – 72"),
+              ("अंश 5 : वर्गीकीय सहायक", "प्र. 73 – 94"), ("अंश 6 : मिश्र/अनुप्रयोग", "प्र. 95 – 100")]
+    pw_ = (SW - 0.60 - 0.10 * (len(parts) - 1)) / len(parts)
+    for i, (lab, rg) in enumerate(parts):
+        cx = 0.36 + i * (pw_ + 0.10)
+        dot = rect(s, cx + 0.04, 6.60, 0.16, 0.16, MSO_SHAPE.OVAL)
+        solid(dot, pal[4][i % 4]); no_line(dot)
+        tx = textbox(s, cx + 0.26, 6.54, pw_ - 0.32, 0.62)
+        text(tx, [(lab, {'size': 10.5, 'bold': True, 'color': '17324F'}),
+                  ("\n" + rg, {'size': 10, 'bold': True, 'color': pal[2]})],
+             align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.TOP, margins=(0, 0, 0, 0), line_spacing=1.0)
+
+    t3 = textbox(s, 7.55, 5.35, 5.35, 1.30)
     text(t3, [("100 प्रश्न • 100 स्लाइड • उत्तर-कुंजी सहित", {'size': 12.5, 'bold': True, 'color': pal[2]}),
               ("\nतैयार : DREAM CLASSES KOTHWARA\n" + BY, {'size': 12, 'bold': True, 'color': '37475E'})],
          align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.TOP, margins=(0, 0, 0, 0), line_spacing=1.1)
@@ -812,21 +841,32 @@ def key_slide(prs, pal, start, end, part):
     grad(bg, [(0.0, pal[0]), (0.5, pal[1]), (1.0, pal[0])], 118)
     no_line(bg)
     decor(s, pal)
-    head = rect(s, 0.30, 0.22, SW - 0.60, 0.94, radius=0.24)
-    grad(head, [(0.0, pal[2]), (1.0, pal[3])], 30)
+    head = rect(s, 0, 0, SW, 0.86, MSO_SHAPE.RECTANGLE)
+    grad(head, [(0.0, pal[2]), (0.55, pal[3]), (1.0, pal[2])], 24)
     no_line(head)
-    text(head, [(SCHOOL, {'size': 22, 'bold': True, 'color': 'FFFFFF'})], align=PP_ALIGN.CENTER,
-         anchor=MSO_ANCHOR.TOP, margins=(0.2, 0.2, 0.05, 0))
-    more_para(head, [(BY + "      |      उत्तर-कुंजी (Answer Key) — भाग %d : प्रश्न %d – %d" % (part, start, end),
-                      {'size': 12.5, 'bold': True, 'color': 'FFE79A'})], align=PP_ALIGN.CENTER)
+    text(head, [(SCHOOL, {'size': 26, 'bold': True, 'color': 'FFFFFF'})], align=PP_ALIGN.CENTER,
+         anchor=MSO_ANCHOR.TOP, margins=(0.2, 0.2, 0.06, 0))
+    more_para(head, [(BY, {'size': 14.5, 'bold': True, 'color': 'FFE79A'})], align=PP_ALIGN.CENTER,
+              space_before=1)
+    st2 = rect(s, 0, 0.86, SW, 0.05, MSO_SHAPE.RECTANGLE)
+    grad(st2, [(0.0, 'FFD166'), (0.3, '06D6A0'), (0.6, '118AB2'), (1.0, 'EF476F')], 0)
+    no_line(st2)
+    bar = rect(s, 0.30, 0.98, SW - 0.60, 0.40, radius=0.5)
+    solid(bar, 'FFFFFF', alpha=64000)
+    line(bar, pal[2], 1.0)
+    text(bar, [("उत्तर-कुंजी (Answer Key) — भाग %d : प्रश्न %d – %d" % (part, start, end),
+                {'size': 13.5, 'bold': True, 'color': pal[2]}),
+               ("      कारण हर प्रश्न-स्लाइड पर दिया है — केवल त्वरित जाँच हेतु।",
+                {'size': 10.5, 'color': '3B4A63'})],
+         align=PP_ALIGN.CENTER, margins=(0.16, 0.16, 0, 0))
     cols, rows = 5, 10
     cw = (SW - 0.60 - 0.10 * (cols - 1)) / cols
-    chh = 0.478
-    y0 = 1.32
+    chh = 0.500
+    y0 = 1.48
     for n in range(start, end + 1):
         i = n - start
         cx = 0.30 + (i % cols) * (cw + 0.10)
-        cy = y0 + (i // cols) * (chh + 0.05)
+        cy = y0 + (i // cols) * (chh + 0.045)
         qq, opts, ans, expl, vis, img, tag = Q[n - 1]
         card = rect(s, cx, cy, cw, chh, radius=0.22)
         solid(card, 'FFFFFF', alpha=86000)
@@ -846,11 +886,10 @@ def key_slide(prs, pal, start, end, part):
                      ("(%s) " % LETTERS[ans], {'size': 12.5, 'bold': True, 'color': OK_LINE}),
                      (txt, {'size': osz, 'color': pal[5]})],
              align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.MIDDLE, margins=(0.10, 0.05, 0, 0), line_spacing=0.9)
-    ft = textbox(s, 0.30, 6.66, SW - 0.60, 0.60)
-    text(ft, [("टिप्पणी : ", {'size': 11, 'bold': True, 'color': pal[2]}),
-              ("प्रश्न-स्लाइड पर हर उत्तर के साथ संक्षिप्त कारण भी दिया गया है; यह केवल त्वरित जाँच हेतु कुंजी है।",
-               {'size': 11, 'color': '3B4A63'})],
-         align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.MIDDLE, margins=(0.04, 0.04, 0, 0))
+    ft = textbox(s, 0.30, 7.08, SW - 0.60, 0.34)
+    text(ft, [(SCHOOL + "  •  " + BY + "  •  जैव विज्ञान • अध्याय 1 जैव जगत",
+               {'size': 10.5, 'bold': True, 'color': pal[2]})],
+         align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, margins=(0, 0, 0, 0))
     return s
 
 def closing_slide(prs, pal):
@@ -862,6 +901,7 @@ def closing_slide(prs, pal):
         o = rect(s, cx, cy, dd, dd, MSO_SHAPE.OVAL)
         solid(o, 'FFFFFF', alpha=al)
         no_line(o)
+    header(s, pal, band_h=0.94)
     t = textbox(s, 0.9, 1.42, SW - 1.8, 1.70)
     text(t, [("अभ्यास जारी रखिए!", {'size': 43, 'bold': True, 'color': 'FFFFFF'}),
              ("\n100 प्रश्न पूरे — अब उत्तर-कुंजी से self-check कीजिए।", {'size': 19, 'bold': True, 'color': 'FFE79A'})],
