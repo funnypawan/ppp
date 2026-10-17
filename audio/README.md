@@ -1,7 +1,7 @@
 # Hindi Voice-over — "जब मन न करे, तब भी काम कैसे करें?"
 
 **Voice:** voice-01 (चुनी हुई warm, mature male narration voice)
-**Format:** WAV · 24 kHz · mono · 16-bit (tool की native lossless rate; speech के लिए studio-clean)
+**Format:** WAV · 44.1 kHz · mono · 16-bit · lossless (कुल ~129 MB)
 **कुल अवधि:** 1537.5 सेकंड ≈ **25.6 मिनट** (एडिटिंग में विराम/B-roll ठहराव के साथ ~28–30 मिनट के वीडियो में फ़िट)
 **पाठ:** `scripts/jab-mann-na-kare-tab-bhi-kaam-kaise-kare.md` का शब्दशः स्पोकन बॉडी (सेक्शन हेडिंग नहीं बोली गईं)
 
