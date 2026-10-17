@@ -1,0 +1,714 @@
+{
+ "001": {
+  "image": "images/scene-001.jpg",
+  "motion": "LOW",
+  "duration": "5–8 सेकंड",
+  "camera": "Slow Push-in (high angle, लगभग अदृश्य गति)",
+  "prompt": "Source image: a night bedroom, a 22-year-old Indian man in a dark navy T-shirt lies on his back on the bed, eyes open, staring at the ceiling, hands resting on his chest, a warm table-lamp glow reaching him from the left, cool blue-grey darkness elsewhere. Animate: he breathes slowly and deeply, chest rising and falling; he blinks naturally two or three times; his jaw tightens slightly as quiet resolve settles on his face; his eyes stay fixed on the ceiling. Camera: very slow push-in from the high angle above the bed, almost imperceptible. Environment: the lamp glow holds steady, faint dust drifts in the light. Mood: heavy, silent late-night determination. Preserve the original face, hairstyle, clothing, room layout, lamp on the left, lighting direction and color palette. No scene change, no sudden movement, no sitting up.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, sitting up, standing, smiling, phone in hand, second person, readable clock digits"
+ },
+ "002": {
+  "image": "images/scene-002.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "5 सेकंड",
+  "camera": "Slow Push-in (over-the-shoulder close-up)",
+  "prompt": "Source image: early morning, over-the-shoulder close-up of a half-awake young Indian man reaching for a phone at the edge of the bed, his thumb pressing the screen which shows only a soft blurred glow with no readable digits, face partially visible in soft focus. Animate: his heavy sleepy thumb presses the screen once in a slow tap, the hand hesitates a moment, then lowers the phone back onto the bed edge; his shoulder shifts slightly, eyes still half closed. Camera: slow gentle push-in on the hand and screen. Environment: dim morning light barely changes. Mood: groggy surrender to the snooze. Preserve the original face, hair, clothing, bedding, phone position, lighting and palette. No readable numbers or app icons on the screen, no scene change, no sudden movement.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable digits on screen, app icons, bright screen content, fully waking up, sitting up"
+ },
+ "003": {
+  "image": "images/scene-003.jpg",
+  "motion": "LOW",
+  "duration": "6 सेकंड",
+  "camera": "Gentle Sideways Dolly (दरवाज़े से, पात्र फ़्रेम में छोटा)",
+  "prompt": "Source image: a wide shot from the room doorway, morning light spread across a small urban Indian bedroom, a young man in a dark navy T-shirt sits half upright on the bed scrolling a phone, the untouched book lying on the desk, he looks small in the larger frame. Animate: his thumb swipes the screen slowly again and again, the faint screen glow flickers softly on his face, heavy eyelids blink slowly, his body slouches a little deeper without him noticing. Camera: gentle slow sideways dolly from the doorway, keeping him small in frame. Environment: soft morning light stays steady, faint dust in the air. Mood: an hour quietly dissolving into the phone. Preserve room layout, character identity and clothing, desk and book positions, lighting direction. No readable screen content, no scene change, no new objects.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable screen content, standing up, energetic movement"
+ },
+ "004": {
+  "image": "images/scene-004.jpg",
+  "motion": "LOW",
+  "duration": "5–6 सेकंड",
+  "camera": "Slow Push-in (side profile, eye level)",
+  "prompt": "Source image: side profile medium close-up at eye level, a young Indian man sits on the edge of the bed, head lowered, a phone dangling loosely in one hand, soft morning light from the window on his face. Animate: the dangling phone sways very slightly, he takes one slow heavy breath, his head shakes once in a small self-denial, eyes stay fixed on the floor, brow slightly creased with a quiet old question. Camera: slow steady push-in on his profile. Environment: window light holds steady, nothing else moves. Mood: self-doubt, 'why can't I do this'. Preserve the original face, hairstyle, navy T-shirt, phone in hand, bed and room, lighting direction and palette. No scene change, no standing up, no exaggerated crying.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, crying, standing up, phone dropping, second person"
+ },
+ "005": {
+  "image": "images/scene-005.jpg",
+  "motion": "LOW",
+  "duration": "6–8 सेकंड",
+  "camera": "Controlled Rack Focus (खाली कुर्सी से पीछे पात्र पर)",
+  "prompt": "Source image: a daylit small Indian bedroom, a wide shot focused on the empty wooden chair and the desk with a book and notebook waiting, the young man in a navy T-shirt sits small on the bed in the background staring at a blank wall. Animate: the empty chair and desk stay perfectly still; in the background he breathes slowly, once shifts his gaze from the wall toward the waiting desk, then lets it fall back; a subtle posture slump. Camera: slow controlled rack focus from the empty chair in the foreground to his face in the background. Environment: steady daylight, faint dust in the light. Mood: the gap between the ready desk and the unmoving body. Preserve room layout, object positions, character identity and clothing, lighting. No scene change, no person appearing at the desk, no new objects.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, person sitting at desk, moving chair, objects shifting"
+ },
+ "006": {
+  "image": "images/scene-006.jpg",
+  "motion": "LOW",
+  "duration": "5–6 सेकंड",
+  "camera": "Slow Push-in (slightly low angle)",
+  "prompt": "Source image: slightly low-angle medium shot from across the desk, a young Indian man sits facing a closed book with no pen in hand, one hand pressed on his forehead, eyes drifting away from the desk. Animate: his hand slides slowly down from his forehead, he exhales a long tired breath, his gaze drops to the closed book and drifts away again, fingers tap the table once without intent. Camera: slow subtle push-in from across the desk. Environment: room light steady, nothing else moves. Mood: exhausted by thinking about the work, not by the work. Preserve the original face, clothing, closed book position, desk layout, lighting and palette. No scene change, no book opening, no pen appearing, no exaggerated gesture.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, book opening, pen appearing in hand, standing up"
+ },
+ "007": {
+  "image": "images/scene-007.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Slow Push-in (top-down, बेहद धीमी)",
+  "prompt": "Source image: a top-down detail shot of a desk surface with an open book, a notebook and three pens arranged neatly in a row, a table lamp glowing at the edge, no hands and no person visible. Animate: keep every object perfectly still; only the lamp glow breathes with the faintest natural variation and tiny dust particles drift slowly through the light. Camera: very slow top-down push-in toward the open book. Mood: everything planned, nothing started — a silent accusation. Preserve the exact positions of the book, notebook, pens and lamp, the desk texture, lighting direction and palette. No hands entering frame, no objects moving or appearing, no scene change, no readable text becoming legible.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, hands entering frame, person, objects moving, pens rolling, readable handwriting"
+ },
+ "008": {
+  "image": "images/scene-008.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (over-the-shoulder)",
+  "prompt": "Source image: an over-the-shoulder shot from behind a chair, a young Indian man leans backwards watching videos on his phone, finger swiping the glowing screen, the study book blurred on the desk behind him. Animate: his thumb swipes again and again in an endless rhythm, the cool screen glow shifts softly across his face as one video ends and another begins, his expression stays blank and hypnotized, occasional slow blink, body sunk deeper into the chair. Camera: slow steady push-in over his shoulder toward the screen. Environment: background desk stays soft and still. Mood: cheap entertainment replacing real rest. Preserve character identity, clothing, chair and desk layout, lighting. No readable screen content or app UI, no scene change, no sudden movement.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable screen content, video UI elements, sitting up straight, book moving"
+ },
+ "009": {
+  "image": "images/scene-009.jpg",
+  "motion": "LOW",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Pull-back (कमरे के अंदर से)",
+  "prompt": "Source image: a wide evening shot from inside the room, a young Indian man stands silhouetted near the window, shoulders heavy, watching outside in dim orange-blue dusk light. Animate: he takes one slow weighted breath, his shoulders sag a fraction, his head dips very slightly as the evening light outside dims imperceptibly; no other movement. Camera: slow steady pull-back widening the room around him, deepening the loneliness. Environment: dusk light slowly settles, faint dust in the air. Mood: neither work happened nor rest — a restless day ending in burden. Preserve character identity and clothing, window and room layout, lighting direction and dusk palette. No scene change, no turning around, no new objects, no rain unless present.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, turning around, walking away, rain appearing, bright lights"
+ },
+ "010": {
+  "image": "images/scene-010.jpg",
+  "motion": "LOW",
+  "duration": "5–6 सेकंड",
+  "camera": "Slow Push-in (eye level, shallow focus)",
+  "prompt": "Source image: a night medium close-up at eye level with shallow depth of field, a young Indian man rests his head on the desk, an open book with untouched pages beside him, warm lamp glow reaching only his face, dark room around. Animate: he breathes slowly against his folded arms, his eye opens once with fatigue and closes again, the open book stays perfectly still, lamp glow steady. Camera: very slow push-in toward his face. Environment: darkness holds, faint dust in the lamplight. Mood: another day gone empty, tiredness without work. Preserve face, hair, clothing, book position, desk layout, lamp on the left, night palette. No scene change, no sitting up, no pages turning, no readable text.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, sitting up, pages turning, daylight, second person"
+ },
+ "011": {
+  "image": "images/scene-011.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Static Cinematic Shot (बमुश्किल दिखता माइक्रो पुश-इन)",
+  "prompt": "Source image: an extreme close-up of a young Indian man's face, slightly off-centre, tired eyes, lips faintly pressed together, a silent question on his expression. Animate: he blinks slowly, his brows tighten very slightly then release, his lips press once, subtle breathing moves his skin naturally; nothing more. Camera: locked static cinematic frame with an almost invisible micro push-in. Environment: background stays completely soft and unchanged. Mood: 'is something wrong with me?' — vulnerable, quiet. Preserve the exact face identity, skin texture, hairstyle, stubble, lighting direction and color palette. No scene change, no head turning away, no tears, no exaggerated expression, no smile.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, tears, crying, smiling, head turning, zooming out, identity drift"
+ },
+ "012": {
+  "image": "images/scene-012.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Slow Push-in (floor level, जूतों की तरफ़)",
+  "prompt": "Source image: a floor-level low-angle detail shot of sports shoes kept beside a mat and a chair in a dim room, cold early-morning light, the rest of the room blurred, no person visible. Animate: keep the shoes, mat and chair perfectly still; only the cool morning light brightens imperceptibly and faint dust drifts through the air. Camera: slow low push-in toward the shoes, making them feel like the heaviest thing in the room. Mood: the hardest part is just putting on the shoes. Preserve exact object positions, floor texture, chair legs, lighting direction and cold morning palette. No person entering frame, no shoes moving, no scene change, no invented objects.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, person, feet, hands, shoes moving or shifting, warm daylight"
+ },
+ "013": {
+  "image": "images/scene-013.jpg",
+  "motion": "MEDIUM",
+  "duration": "6–7 सेकंड",
+  "camera": "Static Cinematic Shot (पात्र फ़्रेम में आगे बढ़ता है)",
+  "prompt": "Source image: a wide establishing shot of a simple gym interior as a young Indian man in a grey sports jacket enters through the door, towel on his shoulder, water bottle in hand, a faint liveliness returning to his face. Animate: he walks in with realistic natural body mechanics — steady steps, towel swaying slightly with his stride, bottle held firmly, he glances once into the gym, his shoulders open up as he crosses the doorway and moves a few steps inside. Camera: locked wide cinematic frame, letting him travel into the depth of the shot. Environment: gym lights steady, faint dust in the air. Mood: the hardest part is already over — he has arrived. Preserve character identity, jacket, towel, bottle, gym layout and lighting. No scene change, no extra people appearing, no unnatural walking.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, extra gym members, equipment moving, floating towel, warped legs, teleporting"
+ },
+ "014": {
+  "image": "images/scene-014.jpg",
+  "motion": "MEDIUM",
+  "duration": "6 सेकंड",
+  "camera": "Slow Push-in (slightly low angle)",
+  "prompt": "Source image: a slightly low-angle medium shot, the young man in a grey sports jacket warming up in the gym, light sweat on his forehead, face concentrated but not joyful, framed centre-left. Animate: he performs one slow realistic stretch — arms and shoulders extending smoothly, weight shifting subtly for balance, chest rising with a controlled breath, sweat sheen holding steady on his forehead, eyes focused ahead. Camera: slow steady push-in from the low angle, giving quiet weight to the effort. Environment: gym background stays soft and still. Mood: work in motion before motivation arrives. Preserve character identity, jacket, gym equipment positions, lighting and palette. No exaggerated exercise, no jumping, no extra people, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, jumping, fast workout, extra people, equipment moving, smiling broadly"
+ },
+ "015": {
+  "image": "images/scene-015.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Pull-back (backlit)",
+  "prompt": "Source image: a backlit medium close-up, the young man stands by the gym's large window after his workout, wiping his face with the towel, shoulders loose, a faint smile on his tired face. Animate: he lowers the towel slowly from his face, his shoulders drop with visible relief, he exhales a satisfied breath, and the small smile deepens just slightly — natural, not theatrical; window backlight glows steadily around him. Camera: slow gentle pull-back letting the window light widen around him. Mood: the happiness that came after the work, not before it. Preserve character identity, jacket, towel, window frame, gym background and backlight. No scene change, no laughing, no exaggerated celebration, no extra people.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, laughing, celebrating with fists, extra people, harsh light flare"
+ },
+ "016": {
+  "image": "images/scene-016.jpg",
+  "motion": "LOW",
+  "duration": "6 सेकंड",
+  "camera": "Gentle Sideways Dolly (जूतों → किताब)",
+  "prompt": "Source image: a wide still-life composition across two areas of the same room — sports shoes kept on the floor on one side, an open book on the desk on the other, empty space between them, no person. Animate: keep both objects perfectly still; only faint dust drifts through the steady daylight. Camera: one slow smooth sideways dolly traveling from the shoes to the open book, holding the empty space between them in clear view — the visual link from first step to willing mind. Mood: quiet, symbolic, resolved. Preserve exact positions of shoes, book, desk and floor, room layout, lighting direction and palette. No person entering frame, no objects moving, no scene change, no readable text.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, person, feet, hands, objects shifting, camera stopping abruptly, readable pages"
+ },
+ "017": {
+  "image": "images/scene-017.jpg",
+  "motion": "LOW",
+  "duration": "6 सेकंड",
+  "camera": "Slow Push-in (OTS, खिड़की की तरफ़)",
+  "prompt": "Source image: an over-the-shoulder shot from behind a young Indian man seated on his chair, looking toward the window where clouds have gathered outside but no rain is falling. Animate: outside, the clouds drift very slowly across the grey sky; inside, he breathes once and gives a tiny head movement, body otherwise still in a waiting posture; his fingers rest motionless. Camera: slow push-in over his shoulder toward the window. Environment: clouds moving gently is the only environmental motion; light stays flat and overcast. Mood: waiting for motivation like people wait for weather. Preserve character identity, clothing, chair, window frame, room layout and overcast palette. No rain starting, no scene change, no standing up.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, rain, sun breaking through, standing up, birds flying in"
+ },
+ "018": {
+  "image": "images/scene-018.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Slow Pull-back (कमरा और खाली होता जाता)",
+  "prompt": "Source image: a wide empty-room shot — an empty wooden chair, an open book on the desk, a closed door, the same small Indian bedroom with nobody present. Animate: keep every object perfectly still; only faint dust floats in the steady light and the ambient brightness shifts imperceptibly. Camera: very slow pull-back, making the empty room feel larger and more accusatory. Mood: the brain invents a new excuse daily while the desk waits. Preserve room layout, chair, book, door positions, lighting direction and palette. No person appearing, no door opening, no objects moving, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, person appearing, door opening, objects moving, chair shifting"
+ },
+ "019": {
+  "image": "images/scene-019.jpg",
+  "motion": "LOW",
+  "duration": "5–6 सेकंड",
+  "camera": "Slow Push-in (front three-quarter)",
+  "prompt": "Source image: a front three-quarter medium shot, a young Indian man sits on the edge of the bed, empty hands on his knees, a light crease on his forehead, lost in vague thought with no direction. Animate: his fingers rub together slowly in quiet restlessness, his gaze drifts without settling anywhere, he takes one heavy breath, the crease on his forehead deepens slightly. Camera: slow push-in from the front. Environment: room and light stay unchanged. Mood: the vague sentence 'I have to study' — creating weight but no movement. Preserve face identity, clothing, bed and room layout, lighting. No scene change, no standing up, no objects appearing in hands.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, standing up, phone or book appearing in hands, exaggerated gestures"
+ },
+ "020": {
+  "image": "images/scene-020.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "5–6 सेकंड",
+  "camera": "Static Cinematic Shot + micro push-in",
+  "prompt": "Source image: a close-up detail shot over an open book with a clean visible page, a notebook and pen beside it, a hand resting at the edge of frame — direction now clear. Animate: the resting hand shifts slightly forward with quiet resolve, fingers settling firm on the page corner, the page lifts and settles with the faintest movement, everything else stays still. Camera: locked frame with a micro push-in toward the page. Environment: desk light steady. Mood: the specific first step — 'chapter three, the first question' — replacing vague weight. Preserve hand anatomy, book and notebook positions, desk surface, lighting and palette. No readable text becoming legible, no page turning fully, no new objects, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable handwriting or print, page flipping, pen grabbing, warped fingers, extra hands"
+ },
+ "021": {
+  "image": "images/scene-021.jpg",
+  "motion": "MEDIUM",
+  "duration": "5 सेकंड",
+  "camera": "Static / micro push-in (hands और page पर)",
+  "prompt": "Source image: an extreme close-up on hands and an open book page — one hand turning the page, the other holding a pen poised above it, the man's lowered eyes partially visible. Animate: the fingers turn the page with a natural realistic flick, the page settles flat; the pen descends and makes one small deliberate stroke on the paper, hand-to-pen contact anatomically correct; no legible letters form. Camera: locked tight frame with a barely perceptible push-in. Environment: desk light steady. Mood: the brain now knows where the body goes and what the hand does. Preserve hand anatomy and skin, book texture, pen, sleeve and lighting. No warped hands, no extra fingers, no readable text, no page tearing, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable handwriting, warped hands, extra fingers, pen morphing, page tearing, face coming fully into frame"
+ },
+ "022": {
+  "image": "images/scene-022.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Slow Push-in (नोट की तरफ़)",
+  "prompt": "Source image: a detail shot of a small plain note stuck on the wall beside the desk, no readable letters on it, a closed book and a pen on the desk below, no clock or calendar in frame. Animate: keep the note, book and pen perfectly still; only the warm light breathes faintly and tiny dust particles drift near the note. Camera: slow deliberate push-in toward the note until it fills more of the frame. Mood: the decision was already made earlier — nothing needs deciding now. Preserve note position and blankness, wall texture, book and pen placement, lighting direction. No text appearing on the note, no objects moving, no hand entering, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, text appearing on note, handwriting forming, hand entering frame, clock appearing"
+ },
+ "023": {
+  "image": "images/scene-023.jpg",
+  "motion": "MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Static wide + हल्का Slow Push-in",
+  "prompt": "Source image: a medium wide shot from the side of the desk at evening, a young Indian man pulls out his chair to sit down, a book in his hand — the decision is not being made, it is being honored. Animate: he slides the chair back slightly, sits down naturally with realistic body mechanics, places the book on the desk and opens it in one unhurried practiced sequence, face calm and routine. Camera: mostly locked wide frame with a gentle slow push-in as he settles. Environment: warm lamp glow steady, evening room unchanged. Mood: automatic execution of a pre-made decision. Preserve character identity, clothing, chair, desk and book positions, lighting and palette. No hesitation acting, no scene change, no extra objects, no readable text.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, hesitation, standing back up, extra objects, readable pages"
+ },
+ "024": {
+  "image": "images/scene-024.jpg",
+  "motion": "HIGH",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (low angle, पीछे से)",
+  "prompt": "Source image: a low-angle wide shot from behind an old parked car in a narrow lane, a lone young man bent over with both hands on the rear, pushing with visible effort. Animate: he strains with his whole body — back bent, legs braced, arms locked, muscles tensed, breathing hard; the car shudders and rocks slightly under the force but does not roll yet; his feet press and adjust against the ground realistically. Camera: slow push-in from the low rear angle, amplifying the weight of starting. Environment: lane walls and background stay still, faint dust shaken loose near the tyres. Mood: maximum effort at zero speed — activation energy. Preserve the man's identity, clothing, car shape and position, lane environment and lighting. No car suddenly moving fast, no extra people, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, car rolling away quickly, extra people helping, wheels spinning, exaggerated cartoonish strain"
+ },
+ "025": {
+  "image": "images/scene-025.jpg",
+  "motion": "MEDIUM",
+  "duration": "6 सेकंड",
+  "camera": "Slow Tracking Shot (side, कार के साथ)",
+  "prompt": "Source image: the same old car now rolling slowly along the narrow lane, the same young man walking beside it with one hand resting lightly on the body, posture upright and relaxed. Animate: the car rolls smoothly at walking pace, wheels turning realistically, the man strides alongside with an easy gait, his hand barely guiding, shoulders loose, breathing calm — the effort has visibly become effortless. Camera: slow smooth side tracking shot moving with the car. Environment: lane background slides past naturally, light dust behind the tyres. Mood: once moving, momentum carries it. Preserve the man's identity and clothing, the car's exact look, lane environment and lighting. No car speeding up, no extra people or vehicles, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, car accelerating, engine smoke, extra vehicles, people appearing, running"
+ },
+ "026": {
+  "image": "images/scene-026.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "5–6 सेकंड",
+  "camera": "Slow Push-in / micro tilt-down (पन्ने पर)",
+  "prompt": "Source image: a close-up detail shot in a dark room lit only at the desk, two hands of the young man opening a closed book under the lamplight. Animate: the hands rest on the cover, open it slowly and deliberately, the pages fan and settle naturally, fingertips press gently on the open page to hold it — the smallest possible action, done. Camera: slow push-in with a micro tilt-down onto the opened page. Environment: darkness around holds steady, lamp glow warm and stable, faint dust in the light. Mood: the two-minute rule — today only the book has to open. Preserve hand anatomy, book cover and page texture, desk surface, lamp light direction. No readable text becoming legible, no page tearing, no extra objects, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable text, pages tearing, extra objects appearing, hands morphing, room lights turning on"
+ },
+ "027": {
+  "image": "images/scene-027.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Slow Push-in (निशान की तरफ़)",
+  "prompt": "Source image: a detail shot of a plain wall calendar with one faint mark on a single day, the remaining squares clean, no readable numbers or month names. Animate: keep the calendar perfectly still; only the ambient light shifts imperceptibly to emphasize the lone mark while faint dust drifts past. Camera: slow steady push-in toward the marked square. Mood: one day of doing nothing and one day of quitting entirely are very different things — this mark is the difference. Preserve the calendar's blank legibility state, mark position, wall texture and lighting. No numbers becoming readable, no new marks appearing, no hand entering, no page flipping, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable numbers or month names, new marks appearing, hand entering, calendar page flipping"
+ },
+ "028": {
+  "image": "images/scene-028.jpg",
+  "motion": "MEDIUM",
+  "duration": "8 सेकंड",
+  "camera": "Gentle Pan (टहलते पात्र का पीछा)",
+  "prompt": "Source image: a medium wide shot, the young man paces the room while a half-open book page waits on the desk behind him, his gaze repeatedly pulled back toward the desk. Animate: he paces with slow restless realistic steps, turns at the room's edge with natural body mechanics; each time he passes, his eyes flick toward the desk, once he pauses mid-step to look at the open book, then resumes pacing — an unfinished task tugging at him. Camera: gentle slow pan following his path, keeping the desk in background view. Environment: room and light stay steady. Mood: the Zeigarnik pull — started work refuses to leave the head. Preserve character identity and clothing, desk and book positions, room layout, lighting. No scene change, no sitting down, no exaggerated gesturing.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, sitting down, book closing, fast running, exaggerated arm waving"
+ },
+ "029": {
+  "image": "images/scene-029.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Static Cinematic Shot (बमुश्किल माइक्रो पुश)",
+  "prompt": "Source image: a close-up of the young man's face in a dark room, lit only by the cold blue glow of a phone held in his lap, screen content unreadable. Animate: the blue glow shifts subtly across his face as if the screen content changes, his eyes track the screen slowly, he blinks a few times, his body stays sunk and still — attention fully captured. Camera: locked cinematic frame with an almost invisible micro push-in. Environment: the dark room holds, no other light changes. Mood: 'be honest — where is your phone right now?' — caught red-handed. Preserve face identity, stubble, hair, phone position, blue-cold lighting ratio. No readable screen content, no scene change, no looking up at camera.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable screen content, app UI, looking at camera, room lights turning on"
+ },
+ "030": {
+  "image": "images/scene-030.jpg",
+  "motion": "MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Static overhead + slow push-in",
+  "prompt": "Source image: an overhead shot of a desk split in halves — a phone lying in the near half, a book in the far half, and one hand in the blurred background reaching toward the book, a visible tug-of-war in one frame. Animate: the hand hovers between the two halves, drifts slightly toward the phone, hesitates, then turns decisively and settles on the book's edge; the phone stays perfectly still and untouched. Camera: locked overhead frame with a slow subtle push-in. Environment: desk light steady. Mood: every five minutes you make the same small decision — pick up or not pick up. Preserve hand anatomy, phone and book positions, desk surface and lighting. No phone lighting up, no hand grabbing phone, no readable text, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, phone lighting up, hand touching phone, readable text, warped fingers, extra hands"
+ },
+ "031": {
+  "image": "images/scene-031.jpg",
+  "motion": "LOW",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (slightly high angle)",
+  "prompt": "Source image: a slightly high-angle medium shot looking down at the young man slumped in his chair, head tilted back, eyes closed, the phone slipped loose into his lap, unfinished work on the desk. Animate: his chest rises and falls in slow exhausted breaths, his head rolls very slightly to one side, fingers stay completely limp, the phone rests motionless in his lap; the unfinished pages on the desk stay still. Camera: slow push-in from above, compressing the fatigue. Environment: evening light holds dim and steady. Mood: decision fatigue — the brain defaults to whatever asks the least effort. Preserve character identity, slumped posture, phone position, desk state, lighting. No waking up, no phone grabbing, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, waking up suddenly, grabbing phone, sitting upright, daylight shift"
+ },
+ "032": {
+  "image": "images/scene-032.jpg",
+  "motion": "MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (कमरे के अंदर से दरवाज़े की ओर)",
+  "prompt": "Source image: a medium shot from inside the room toward the open doorway, the young man standing at the threshold placing his phone outside on the far side — out of arm's reach. Animate: he bends slightly and sets the phone down with a deliberate calm motion, straightens up with empty hands, pauses one beat looking at the doorway, then turns back into the room with visible lightness in his shoulders. Camera: slow push-in from inside the room toward the doorway. Environment: room light steady, corridor dim. Mood: the solution is not gripping harder — it is moving the temptation out of reach. Preserve character identity, clothing, doorframe and room layout, phone position after placement, lighting. No phone buzzing or lighting, no scene change, no extra people.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, phone lighting up, person walking out of room, door slamming, extra people in corridor"
+ },
+ "033": {
+  "image": "images/scene-033.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Slow Push-in (दराज के अंदर)",
+  "prompt": "Source image: a close-up detail shot inside an open drawer where a phone lies face-down, the desk edge and dim room light visible outside the drawer. Animate: keep the phone and drawer perfectly still; the light inside the drawer dims very slowly as if evening deepens, faint dust drifts near the desk edge; nothing moves physically. Camera: slow push-in into the drawer, the face-down phone filling more of the frame. Mood: a phone closed in a drawer and a phone lying on the table are two different worlds. Preserve phone position and orientation, drawer interior, desk edge, lighting direction and palette. No hand entering, no drawer closing, no phone lighting up, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, hand entering frame, drawer sliding, phone screen lighting, phone vibrating"
+ },
+ "034": {
+  "image": "images/scene-034.jpg",
+  "motion": "LOW",
+  "duration": "4–5 सेकंड",
+  "camera": "Slow Push-in (किताब के किनारे पर)",
+  "prompt": "Source image: a detail shot on the bed and pillow — a book half-hidden under the pillow with only its edge sticking out, ignored, no person visible. Animate: keep the book, pillow and bedding completely still; only the ambient light breathes faintly and a speck or two of dust drifts across the frame. Camera: slow push-in on the protruding book edge. Mood: hiding the book changes nothing — it stays unseen where it lies. Preserve the exact position of book, pillow and blanket folds, lighting direction and palette. No hand pulling the book, no person appearing, no bedding shifting, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, hand entering, person appearing, book sliding out, blanket moving"
+ },
+ "035": {
+  "image": "images/scene-035.jpg",
+  "motion": "LOW",
+  "duration": "6 सेकंड",
+  "camera": "Slow Push-in / gentle drift (डेस्क की ओर)",
+  "prompt": "Source image: a wide quiet morning shot of the prepared desk — an open book with a pen resting on the page in the first morning light, the chair empty, the room calm, no person. Animate: the room stays perfectly still while the soft morning light slowly strengthens and creeps across the open page; faint dust floats in the growing light. Camera: one slow gentle drift/push-in toward the waiting desk. Mood: tomorrow morning no decision will be needed — just sit down. Preserve book, pen and chair positions, desk layout, window light direction and warm-morning palette. No person entering, no pages turning, no readable text, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, person entering, pages turning, pen rolling, readable text, light flickering"
+ },
+ "036": {
+  "image": "images/scene-036.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Gentle Sideways Dolly (जैकेट → बोतल)",
+  "prompt": "Source image: a medium detail shot at night — a light sports jacket hanging on the chair back, shoes kept on the floor below, a filled water bottle at the desk edge, no person. Animate: everything stays perfectly still; only the night light shifts imperceptibly across the jacket fabric and faint dust drifts near the lamp. Camera: one slow smooth sideways dolly from the hanging jacket to the filled bottle, cataloguing the quiet preparations. Mood: discipline as boring preparation, not bravery. Preserve jacket folds, shoe positions, bottle and desk layout, night palette and lamp glow from the left. No person appearing, no clothing moving in wind, no objects shifting, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, person, jacket swinging, shoes moving, bottle falling, daylight"
+ },
+ "037": {
+  "image": "images/scene-037.jpg",
+  "motion": "MEDIUM",
+  "duration": "8 सेकंड",
+  "camera": "Static + micro push-in (हरकत पर)",
+  "prompt": "Source image: an eye-level medium night shot, the young man calmly tidying his desk — straightening the book, setting down the pen, switching on the table lamp, no drama on his face. Animate: in one unhurried practiced sequence he squares the book with both hands, lays the pen neatly beside it, reaches over and switches on the lamp so warm light blooms across the desk, his expression staying calm and routine throughout. Camera: mostly locked frame with a micro push-in during the lamp switch. Environment: the lamp glow is the main light change; room otherwise steady. Mood: discipline as a quiet everyday ritual. Preserve character identity and clothing, desk objects and their final positions, lamp on the left, night palette. No scene change, no extra objects, no exaggerated expressions, no readable text.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, exaggerated gestures, extra objects appearing, readable text, lights flickering"
+ },
+ "038": {
+  "image": "images/scene-038.jpg",
+  "motion": "LOW",
+  "duration": "5–6 सेकंड",
+  "camera": "Slow Push-in (straight-on)",
+  "prompt": "Source image: a straight-on medium shot with a plain background, the young man sits on the bed in the evening, shoulders dropped, both hands resting on his knees, a defeated expression as if stating a fact. Animate: his shoulders sink a fraction lower, he lets out one heavy audible-looking sigh, his gaze stays fixed downward, hands remain still on his knees; only breathing moves him. Camera: slow steady frontal push-in. Environment: evening light holds flat and dim. Mood: surrender dressed up as a fact — 'I don't feel like it'. Preserve face identity, clothing, bed and room, lighting and palette. No standing up, no crying, no phone, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, standing up, crying, phone appearing, smiling, dramatic head drop"
+ },
+ "039": {
+  "image": "images/scene-039.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Static / micro push-in (टाइट)",
+  "prompt": "Source image: a tight close-up on half of the young man's face — eyes slightly narrowed in thought, lit from two different directions casting a split quality of shadow. Animate: his eyes narrow and widen slowly in thinking, his gaze shifts from one unseen point to another, one eyebrow lifts faintly as the old sentence is examined; the rest of the face stays still. Camera: locked tight frame with an invisible micro push-in. Environment: both light sources stay constant. Mood: breaking the sentence apart — whose mind? the mind of which moment? Analytical, not emotional. Preserve exact facial identity, stubble, skin texture, dual lighting setup and palette. No head turning away, no scene change, no expression swing to smile or anger.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, head turning away, smiling, angry expression, lighting change, identity drift"
+ },
+ "040": {
+  "image": "images/scene-040.jpg",
+  "motion": "LOW",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Pull-back (अलगाव बढ़ाने के लिए)",
+  "prompt": "Source image: a wide shot of the young man at his desk with the room around him rendered unusually deep and hazy, the book pages sinking into shadow — mood coloring the entire world. Animate: he stays small and still, gaze lowered, shoulders curved inward; the darkness around him seems to thicken and creep very slowly closer, the hazy edges of the room breathing subtly; dust hangs heavy in the dim air. Camera: very slow pull-back, widening the oppressive space around him. Mood: when tired or sad, the work looks heavier and the future looks blurred. Preserve character identity and clothing, desk and book positions, the exaggerated-darkness look and palette. No sudden light change, no person moving away, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, brightening light, standing up, objects moving, horror elements, monsters"
+ },
+ "041": {
+  "image": "images/scene-041.jpg",
+  "motion": "LOW",
+  "duration": "6 सेकंड",
+  "camera": "Static / very slow push-in",
+  "prompt": "Source image: a wide quiet night shot of the young man sleeping on his side in bed, blanket pulled to his shoulders, soft night light in the room, the closed book waiting on the desk. Animate: his body breathes in a slow even sleep rhythm, the blanket rises and falls barely perceptibly with each breath, his face stays relaxed and untroubled; the closed book and the rest of the room remain perfectly still. Camera: locked or very slow push-in, respectful and quiet. Environment: night light holds steady. Mood: real rest as part of the work, not escape from it. Preserve character identity even in sleep, bedding folds, desk and book positions, night palette. No tossing and turning, no waking, no scene change, no dramatic shadows.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, waking up, tossing, eyes opening, daylight, dramatic lightning"
+ },
+ "042": {
+  "image": "images/scene-042.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (फ़ोरग्राउंड किताब के साथ)",
+  "prompt": "Source image: a medium shot with the open book in the foreground corner, the young man sits with one hand pressed over his face, the other hand near the book, eyes pointed at the window instead of the pages. Animate: the hand over his face slides slowly down, he turns his gaze from the window toward the open book, holds it a beat, then it drifts away again; a small tired exhale moves his shoulders. Camera: slow push-in keeping the foreground book softly in frame. Environment: room light steady. Mood: 'I am tired' and 'I am bored' — two different things, confusion on the face. Preserve character identity and clothing, hand positions, book and desk layout, lighting. No phone appearing, no standing up, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, phone appearing, standing up, book closing, exaggerated frustration"
+ },
+ "043": {
+  "image": "images/scene-043.jpg",
+  "motion": "MEDIUM",
+  "duration": "6 सेकंड",
+  "camera": "Slow Push-in (फ़्रंट थ्री-क्वार्टर)",
+  "prompt": "Source image: a front three-quarter medium close-up, the young man leans forward on the chair with one finger raised as if making a promise to himself, the open book on the desk, no phone anywhere. Animate: with the raised finger he gives himself one small firm nod, his finger trembles slightly with emphasis, then he leans further forward toward the desk, expression settling into calm seriousness — the five-minute deal is struck. Camera: slow steady push-in from the front. Environment: room and light unchanged. Mood: a negotiation with the self, quiet and decisive. Preserve character identity, clothing, raised-hand anatomy, book and desk positions, lighting. No phone appearing, no exaggerated pointing at camera, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, phone appearing, pointing at camera, extra people, warped fingers"
+ },
+ "044": {
+  "image": "images/scene-044.jpg",
+  "motion": "MEDIUM",
+  "duration": "8 सेकंड",
+  "camera": "Slow Push-in (side)",
+  "prompt": "Source image: a medium side shot, the young man now fully absorbed in work — pen moving across the notebook in soft blurred strokes, book pages folded, face in quiet focus. Animate: he writes in a steady natural rhythm, glances down at the open book, turns one page with his free hand, then continues writing without breaking flow; small absorbed micro-expressions, breathing even. Camera: slow push-in from the side, drawing the viewer into the flow. Environment: desk light steady, room quiet. Mood: five minutes passed — and he did not stop. Preserve character identity and clothing, notebook and book positions, desk layout, lighting. No readable handwriting forming, no phone, no scene change, no sudden stop.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable handwriting, phone appearing, stopping work abruptly, standing up"
+ },
+ "045": {
+  "image": "images/scene-045.jpg",
+  "motion": "LOW",
+  "duration": "6 सेकंड",
+  "camera": "Slow Push-in (low angle)",
+  "prompt": "Source image: a low-angle medium shot, the young man stands holding an open book easily in one hand — the book is visibly light, his face now calm, his desk behind him. Animate: he lifts and settles the book effortlessly in his hand to show its real lightness, raises his gaze slowly from the pages, his shoulders release tension, one calm steady breath; no strain anywhere. Camera: slow push-in from the low angle. Environment: room and desk stay still. Mood: not-feeling-like-it rarely reports the real weight of the work — only the weight of the fear of starting. Preserve character identity and clothing, book in hand, desk behind, lighting and palette. No book dropping, no exaggerated lifting effort, no extra objects, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, book dropping, straining to lift, extra objects, weights appearing"
+ },
+ "046": {
+  "image": "images/scene-046.jpg",
+  "motion": "MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Static two-shot + micro push-in",
+  "prompt": "Source image: a medium two-shot at a kitchen table — an acquaintance holds out a plate of cake while the young man raises a hand to refuse, pressure and hesitation visible on his face. Animate: the young man's raised hand makes a small declining gesture, his head shakes slightly, his brow tightens with visible inner effort; the other person keeps the plate extended, tilting their head in quiet insistence; both stay in the same positions, the tension held between them. Camera: locked two-shot with a micro push-in. Environment: kitchen light steady. Mood: refusing by willpower — it costs something. Preserve both character identities, clothing, cake plate and table setting, kitchen layout, lighting. No cake being eaten, no plate dropping, no extra people, no scene change, no readable text.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, cake eaten, plate dropping, third person appearing, laughing, identity swap between characters"
+ },
+ "047": {
+  "image": "images/scene-047.jpg",
+  "motion": "MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Static two-shot + slow push-in (मुख्य पात्र पर)",
+  "prompt": "Source image: the same kitchen two-shot repeated, but now the young man is calm and at ease — a light relaxed hand, quiet confidence on his face, no strain at all. Animate: he declines with one easy unhurried hand gesture and a gentle head shake, a small polite smile on his face, shoulders loose; the other person lowers the plate back naturally; the moment costs him nothing. Camera: locked two-shot with a slow push-in favoring the young man's calm face. Environment: kitchen light steady, same setting. Mood: identity-based refusal — 'I don't eat this kind of food' — effortlessness. Preserve both character identities and clothing exactly, cake plate, table and kitchen layout, lighting. No tension acting, no cake eaten, no extra people, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, strained expression, arguing, cake eaten, third person, identity swap"
+ },
+ "048": {
+  "image": "images/scene-048.jpg",
+  "motion": "MEDIUM",
+  "duration": "6 सेकंड",
+  "camera": "Slow Pan (उठते-मुड़ते पात्र के साथ)",
+  "prompt": "Source image: a side-profile medium shot, the young man rises from the dining table and turns toward the window, a half-empty plate left behind, calm satisfaction on his face. Animate: he pushes back lightly and stands up with natural body mechanics, turns toward the window, takes one or two unhurried steps, shoulders carrying a new lightness, a faint contented expression; the plate and table setting stay exactly as left behind. Camera: slow gentle pan following his rise and turn. Environment: room light steady. Mood: identity is stronger than rules — breaking a rule feels like weakness, breaking an identity feels like shame. Preserve character identity and clothing, plate and table positions, window and room layout, lighting. No scene change, no looking at camera, no extra people.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, looking at camera, dishes moving, extra people, exaggerated celebration"
+ },
+ "049": {
+  "image": "images/scene-049.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Slow Push-in (निशानों पर)",
+  "prompt": "Source image: a detail shot of the plain wall calendar now carrying three or four faint marks, the open book visible on the desk nearby, no readable numbers. Animate: keep the calendar and book completely still; the ambient light slides slowly across the marks, quietly counting them, faint dust drifting through the air. Camera: slow steady push-in onto the cluster of marks. Mood: identity is built by votes — every small act is one. Preserve mark positions and count, calendar blankness of numbers, book and desk placement, lighting direction. No new marks appearing, no hand entering, no numbers becoming readable, no page flipping, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, new marks appearing, hand entering, readable numbers, calendar flipping"
+ },
+ "050": {
+  "image": "images/scene-050.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (medium)",
+  "prompt": "Source image: a night medium shot, the young man sits at the desk closing his book — only a little work was done, but his face shows peace rather than defeat. Animate: he smooths the pages once with his hand, closes the book gently, lays the pen on top of it, then exhales with quiet satisfaction, a faint tired smile touching his face for a moment. Camera: slow push-in at eye level. Environment: warm lamp glow steady, night room unchanged. Mood: ten minutes still counts as a vote. Preserve character identity and clothing, book, pen and desk positions, lamp on the left, night palette. No readable text, no lamp switching off unless natural, no scene change, no exaggerated joy.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable text, exaggerated celebration, lamp flickering out, extra objects"
+ },
+ "051": {
+  "image": "images/scene-051.jpg",
+  "motion": "LOW",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (high angle)",
+  "prompt": "Source image: a high-angle medium shot looking down at the overwhelmed desk — the young man sits amid scattered items and many books pulled out all at once, head lowered, hand on his forehead. Animate: his hand slides slowly down from his forehead, shoulders slump deeper, his tired gaze travels once across the scattered pile and stops nowhere, one heavy breath; nothing is picked up. Camera: slow push-in from above, pressing the weight down. Environment: desk clutter stays exactly as scattered. Mood: the big promise broken — 'four hours every day' collapsed in one day, and self-trust with it. Preserve character identity, clothing, every object's scattered position, lighting. No tidying up, no book opening, no scene change, no new objects.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, tidying the desk, picking up books, new objects appearing, standing up"
+ },
+ "052": {
+  "image": "images/scene-052.jpg",
+  "motion": "MEDIUM",
+  "duration": "5–6 सेकंड",
+  "camera": "Slow Push-in (high angle, above bed)",
+  "prompt": "Source image: a high-angle close-up from above the bed, the young man lies with half-open eyes while his hand reaches for the phone near the pillow, soft morning light in the room. Animate: his hand fumbles slightly by the pillow, closes around the phone and lifts it toward his face; the screen's cool glow lights up his drowsy features; his eyes stay half open, blinking slowly against the light — the very first action of the day. Camera: slow push-in from above the bed. Environment: morning light steady. Mood: the day begins with the cheapest reward. Preserve character identity, bedding, phone position and glow, morning palette. No readable screen content, no sitting up, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable screen content, sitting up, bright daylight, second person in bed"
+ },
+ "053": {
+  "image": "images/scene-053.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "6 सेकंड",
+  "camera": "Static / micro push-in",
+  "prompt": "Source image: an extreme close-up of the face bathed in cold phone-screen glow, thumb swiping continuously, a tired shine in the eyes. Animate: the thumb swipes upward again and again in an endless rhythm, each swipe subtly shifting the cold glow across his face, his eyes stay locked on the screen with a hollow tired shine, blinking slowly; no other movement. Camera: locked extreme close-up with a micro push-in. Environment: darkness around holds. Mood: every swipe delivers something new — nothing certain, always different. Preserve facial identity, skin texture, phone glow color, lighting ratio. No readable screen content, no head turning, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable screen content, app UI, head turning away, smiling broadly"
+ },
+ "054": {
+  "image": "images/scene-054.jpg",
+  "motion": "LOW",
+  "duration": "5–6 सेकंड",
+  "camera": "Slow Push-in (आँखों की तरफ़)",
+  "prompt": "Source image: a close-up of the young man's waiting face with an uncertain phone-screen glow reflecting in his eyes, no readable screen content. Animate: the glow in his eyes brightens and dims unpredictably, his body leans a fraction closer in anticipation, blinks slow down, his breath holds in a small suspended rhythm — the gambler's trance, realistic and quiet. Camera: slow push-in toward the reflecting eyes. Environment: dark room holds steady. Mood: he keeps going because the next result is unknown. Preserve facial identity, screen-glow color, lighting ratio, palette. No readable screen content, no sudden expression change, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable screen content, sudden laughter, screen flashing wildly, identity drift"
+ },
+ "055": {
+  "image": "images/scene-055.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Very slow push-in (top-down)",
+  "prompt": "Source image: a top-down detail shot of quiet study materials — an open book, a notebook and a pen lying calmly on the desk in moderate light, no glow anywhere, the opposite of the phone's shine. Animate: keep everything perfectly still; only faint dust drifts slowly through the steady light and the page corner lifts once in a barely-there breath of air. Camera: very slow top-down push-in. Mood: the slow reward — books and projects pay late and pay slowly, and that is exactly why they look boring. Preserve exact positions of book, notebook and pen, desk texture, neutral lighting. No glowing light, no hand entering, no readable text, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, glowing light, hand entering, readable text, objects moving, phone appearing"
+ },
+ "056": {
+  "image": "images/scene-056.jpg",
+  "motion": "LOW",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (OTS)",
+  "prompt": "Source image: an over-the-shoulder medium shot toward the desk, the young man sits in front of the open book with a wandering gaze, one hand still angled toward his phone, lethargy on his face. Animate: his eyes try to settle on the page and slide away twice, the hand near the phone twitches and starts to reach, then stops mid-air and withdraws slightly, his shoulders stay heavy with a slow lethargic breath. Camera: slow push-in over his shoulder toward the book. Environment: morning light steady. Mood: the book is not boring — the morning was already spent on the phone. Preserve character identity and clothing, book, phone and desk positions, lighting. No readable text, no phone grabbed, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, phone grabbed, readable text, sudden energy, standing up"
+ },
+ "057": {
+  "image": "images/scene-057.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Static / micro push-in",
+  "prompt": "Source image: a close-up of the young man's face with the soft-blurred open book in the lower frame, eyes on the pages but no interest on the face, a gentle sadness without complaint. Animate: he blinks slowly and flatly, his gaze rests on the pages without absorbing anything, one small sad exhale moves his lips faintly; expression otherwise nearly still. Camera: locked close-up with a micro push-in. Environment: light steady. Mood: 'studying used to be fun, now it is not' — a quiet loss, not drama. Preserve facial identity, skin texture, stubble, blurred book position, lighting and palette. No tears, no scene change, no looking at camera, no expression swing.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, tears, looking at camera, smiling, book coming into sharp focus, identity drift"
+ },
+ "058": {
+  "image": "images/scene-058.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Slow Push-in (किताब पर, फ़ोन को फ़्रेम में रखते हुए)",
+  "prompt": "Source image: a top-down detail shot showing the new order of objects — the book open and placed forward, the phone lying face-down behind it, no person. Animate: keep both objects perfectly still; the light very slowly settles brighter over the open book while the phone stays in its dimmer place; faint dust drifts across. Camera: slow push-in that keeps both objects in frame, favoring the book. Mood: the solution is not quitting the phone — it is changing the order. Preserve exact positions of book and phone, desk surface, lighting direction. No hand entering, no phone moving or lighting, no readable text, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, hand entering, phone lighting or moving, readable text, objects swapping places"
+ },
+ "059": {
+  "image": "images/scene-059.jpg",
+  "motion": "MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (फ़ोन के पास से होते हुए पात्र की ओर)",
+  "prompt": "Source image: a wide morning shot, the young man sits writing at the desk in the foreground of the frame's action while his phone lies face-down far behind near the drawer — distant but visible in frame. Animate: he writes in a steady rhythm, pauses once to lift his head and think, then leans back into the work; the distant phone never moves, never lights up, stays ignored. Camera: one slow push-in traveling past the out-of-focus phone region toward the working figure, visually placing work before reward. Environment: soft morning light steady. Mood: the most important work of the day goes first. Preserve character identity, clothing, desk layout, phone's distant position, lighting. No readable handwriting, no phone glowing, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, phone lighting up, readable handwriting, person reaching for phone, daylight flicker"
+ },
+ "060": {
+  "image": "images/scene-060.jpg",
+  "motion": "LOW",
+  "duration": "6 सेकंड",
+  "camera": "Slow Push-in (रुके हाथ और चेहरे पर)",
+  "prompt": "Source image: a close-up of the stalled hand and confused face — the young man holds his pen paused above a page, brow creased, hand not moving toward any phone, simply stuck. Animate: the pen hovers motionless above one difficult line, his fingers tighten slightly around it, the crease on his forehead deepens, his breath pauses for a beat, eyes locked on the same spot on the page. Camera: slow push-in on the stalled hand, tilting subtly toward his face. Environment: light steady. Mood: the urge to escape was born exactly here — at the hard part. Preserve character identity, pen and page positions, hand anatomy, lighting. No phone appearing, no writing resuming, no scene change, no readable text.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, phone appearing, pen writing, readable text, hand relaxing, smiling"
+ },
+ "061": {
+  "image": "images/scene-061.jpg",
+  "motion": "LOW",
+  "duration": "5–6 सेकंड",
+  "camera": "Static / micro push-in (टाइट)",
+  "prompt": "Source image: a tight close-up of half the young man's face with the open book in front of him, the book edge soft in the lower frame, a faint fear and defensiveness in his eyes as he looks at the pages. Animate: his eyes hold on the book, flick away for one instant and return, a subtle swallow moves his throat, blinks come slightly faster with quiet apprehension; everything else stays still. Camera: locked tight frame with a micro push-in. Environment: light steady. Mood: 'I am not bored — I am afraid this will not make sense to me.' Preserve facial identity, stubble, skin texture, book position and softness, lighting. No crying, no scene change, no book closing, no exaggerated terror.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, crying, terror, book closing, identity drift, camera pulling away"
+ },
+ "062": {
+  "image": "images/scene-062.jpg",
+  "motion": "MEDIUM",
+  "duration": "8 सेकंड",
+  "camera": "Slow Pull-back (पूरा कमरा दिखाते हुए)",
+  "prompt": "Source image: a wide evening shot, the young man lies on the bed talking on the phone, one leg dangling off the edge, light laughter on his face, darkness settling outside the window, the closed book untouched on the desk. Animate: he gestures loosely with his free hand while talking, his shoulders shake with soft laughter, the dangling leg swings gently, and the light outside the window slowly deepens as the evening slips away unnoticed; the closed book stays still. Camera: very slow pull-back revealing the whole room and the ignored desk. Mood: day six — a friend's call and the evening gone. Preserve character identity, clothing, bed and desk layout, book position, evening palette. No readable phone screen, no scene change, no second person in room.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, second person in room, book opening, daylight returning, exaggerated laughing fit"
+ },
+ "063": {
+  "image": "images/scene-063.jpg",
+  "motion": "LOW",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (पात्र और कैलेंडर के बीच)",
+  "prompt": "Source image: a morning medium shot, the young man sits on the bed looking at the wall calendar with several empty squares, a postponing kind of comfort on his face. Animate: his gaze stays locked on the calendar, he gives one small nod of self-agreement, his hand pats his knee once lightly, and a false calm settles over his expression — 'fine, we will start again from Monday'. Camera: slow push-in from behind his shoulder line toward the calendar. Environment: soft morning light steady. Mood: the real damage happens here — not the missed day, but the postponed restart. Preserve character identity, clothing, bed and calendar positions, lighting. No readable numbers on calendar, no standing up, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable calendar numbers, standing up, marks appearing, phone in hand"
+ },
+ "064": {
+  "image": "images/scene-064.jpg",
+  "motion": "LOW",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (high angle)",
+  "prompt": "Source image: a high-angle wide shot emphasizing isolation — the young man sits on the bed in the evening with his head buried in his knees, guilt on his hidden face, the room scattered, books lying untouched on the desk. Animate: his buried head shifts very slightly, one heavy shuddering breath moves his whole back, his fingers tighten briefly in his hair; the scattered room stays perfectly still around him. Camera: slow push-in from the high angle, tightening the isolation. Environment: dim evening light holds. Mood: guilt as the fake substitute for effort — self-scolding burning the next three days too. Preserve character identity, clothing, room clutter positions exactly, lighting. No crying out, no standing up, no tidying, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, standing up, tidying room, wailing, objects moving, daylight"
+ },
+ "065": {
+  "image": "images/scene-065.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (side, understated)",
+  "prompt": "Source image: a quiet side medium close-up next morning, the young man sits at the desk opening his notebook to write just one line — no guilt, no excitement on his face, only a return. Animate: he opens the notebook, picks up the pen, writes one short line in unreadable strokes, sets the pen down and takes one calm even breath; his face stays steady and uncelebratory throughout. Camera: slow understated push-in from the side. Environment: soft morning light, room calm. Mood: after the fall, the next start is small, not big — just the two-minute step. Preserve character identity, clothing, notebook, pen and desk positions, lighting. No readable handwriting, no smile breaking out, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable handwriting, big smile, celebrating, extra objects, standing up"
+ },
+ "066": {
+  "image": "images/scene-066.jpg",
+  "motion": "LOW",
+  "duration": "6 सेकंड",
+  "camera": "Slow drift/push (चार्ट → बंद किताब)",
+  "prompt": "Source image: a top-down detail shot of elaborate planning materials — several sheets, colored pens, a beautiful but empty chart framework drawn with a ruler, while the study book still lies closed at the edge, no person. Animate: keep every sheet and pen perfectly still; only faint dust drifts across the desk and the light shifts imperceptibly. Camera: one slow smooth drift from the pretty empty chart to the closed book at the edge, letting the contrast land. Mood: perfectionism as procrastination's most presentable outfit. Preserve exact positions of sheets, pens, chart and closed book, desk texture, lighting. No hand entering, no chart filling in, no book opening, no readable text becoming legible, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, hand entering, chart filling with content, book opening, readable text, papers shuffling"
+ },
+ "067": {
+  "image": "images/scene-067.jpg",
+  "motion": "MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (काग़ज़ और किताब दोनों फ़्रेम में)",
+  "prompt": "Source image: a medium shot with both a small plain note and the open book in frame, the young man writing briefly on the note while his study book lies open beside it — half plan, half work, together. Animate: he writes two or three short unreadable lines on the note, sets the pen down decisively, turns toward the open book and rests his hand on the page to begin; the shift from planning to doing is smooth and immediate. Camera: slow push-in keeping both note and book in frame. Environment: room light steady. Mood: a plan that runs beats a plan that only looks beautiful. Preserve character identity, clothing, note, pen and book positions, desk layout, lighting. No readable text, no extra papers appearing, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable text, extra papers piling up, hesitation, phone appearing"
+ },
+ "068": {
+  "image": "images/scene-068.jpg",
+  "motion": "MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (OTS, काग़ज़ पर)",
+  "prompt": "Source image: a night over-the-shoulder close-up, the young man writes a single line on a small sheet of paper under the lamp glow, only that sheet, a pen and a closed book on the desk. Animate: he writes one deliberate unreadable line, lifts the pen, glances down at the sheet for a beat, then places it neatly at the center of the desk — tomorrow's one task, fixed. Camera: slow push-in over his shoulder onto the sheet. Environment: warm lamp glow steady, dark room around. Mood: step one — write tomorrow's one task at night, only one. Preserve character identity, clothing, sheet, pen, closed book positions, lamp on the left, night palette. No readable text, no second sheet appearing, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable handwriting, extra papers appearing, list growing, daylight"
+ },
+ "069": {
+  "image": "images/scene-069.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Static / micro push-in (उँगली और पंक्ति पर)",
+  "prompt": "Source image: an extreme close-up detail shot of a single open book page with one finger resting on its first line — the smallness of the start made visible. Animate: the finger presses gently on the line, slides slowly across just the width of that one line, and stops; the page stays flat and steady, only its corner trembles faintly once. Camera: locked macro-like frame with a micro push-in on the fingertip. Environment: desk light steady. Mood: step two — make the start so small that refusing feels absurd. Preserve finger anatomy, page texture and position, lighting. No readable text becoming legible, no page turning, no extra fingers or hands, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable text, page turning, extra hands, warped finger, pen appearing"
+ },
+ "070": {
+  "image": "images/scene-070.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (टाइमर के पास से पात्र की ओर)",
+  "prompt": "Source image: a medium wide shot, the young man sits at the desk facing a small plain timer on the table, while far behind him his phone lies face-down on a shelf outside the doorway — both steps visible in one frame. Animate: he looks at the timer, takes one settling breath, then moves his hand toward the open book to start; the distant phone stays motionless and untouched, the timer stays exactly where it is. Camera: slow push-in passing the timer in the near foreground toward his face. Environment: room light steady. Mood: the five-minute deal, phone in the other room — conditions arranged before willpower is needed. Preserve character identity, timer and phone positions, doorframe and shelf, desk layout, lighting. No timer digits readable, no phone lighting, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable timer digits, phone lighting up, timer moving, hand grabbing phone"
+ },
+ "071": {
+  "image": "images/scene-071.jpg",
+  "motion": "MEDIUM",
+  "duration": "6 सेकंड",
+  "camera": "Slow Push-in (हाथ और कैलेंडर पर)",
+  "prompt": "Source image: a medium shot of the young man's hand marking the wall calendar, several faint marks already on it, half his calm face visible in frame. Animate: his hand rises to the calendar and draws one small clean mark on the current square, lowers the hand, and his half-visible face holds a quiet beat of acknowledgment as the row of marks grows by one; no celebration. Camera: slow push-in on the marking hand, easing toward his face. Environment: room light steady. Mood: step five — keep measuring, just measure differently. Preserve character identity, calendar mark positions and count, wall and room layout, lighting. No readable numbers, no extra marks appearing elsewhere, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable numbers, extra marks multiplying, hand morphing, calendar flipping"
+ },
+ "072": {
+  "image": "images/scene-072.jpg",
+  "motion": "MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Static / micro push-in (floor level)",
+  "prompt": "Source image: a low-angle medium shot at floor level, the exhausted young man performs a partial push-up on the floor, tiredness on his face but no defeat, the open book on the desk nearby. Animate: he completes one slow partial push-up — arms trembling faintly with honest effort — lowers himself and sits back on his heels taking one deep tired breath, jaw set, eyes steady; the open book stays in soft background view. Camera: locked floor-level frame with a micro push-in during the effort. Environment: room light steady. Mood: step six — the bad-day minimum version; one paragraph, one push-up, five minutes, never zero. Preserve character identity, clothing, floor and desk layout, book position, lighting. No full workout, no jumping up, no extra equipment, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, full energetic workout, jumping up, weights appearing, extra people, exaggerated strain"
+ },
+ "073": {
+  "image": "images/scene-073.jpg",
+  "motion": "LOW",
+  "duration": "5 सेकंड",
+  "camera": "Micro push-in (दो खानों पर)",
+  "prompt": "Source image: an extreme close-up of two adjacent calendar squares — one left empty, the next one carrying a fresh mark; the chain broken for a day but returned. Animate: keep the calendar completely still; the light drifts slowly from the empty square onto the newly marked one, faint dust passes through the frame. Camera: micro push-in settling on the new mark. Mood: step seven — never miss twice; one day forgiven, two days not. Preserve mark positions, square boundaries, wall and paper texture, lighting. No new marks appearing, no hand entering, no numbers becoming readable, no page flipping, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, hand entering, new marks appearing, readable numbers, calendar flipping"
+ },
+ "074": {
+  "image": "images/scene-074.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (side)",
+  "prompt": "Source image: a side medium shot, the young man sits at the desk calmly examining a small paper and the objects around — inspecting the method, not condemning himself, an analytical calm expression. Animate: he lifts the small sheet, looks it over with steady eyes, scans the desk objects one by one as if checking suspects — the time, the size of the task, the phone's usual spot — then sets the sheet down and gives one slow thoughtful nod. Camera: slow push-in from the side. Environment: room light steady. Mood: when you fall, examine the method, not the self. Preserve character identity, clothing, sheet and desk object positions, lighting. No readable text, no self-blame acting, no head dropping, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable text, crying, head dropping in guilt, objects disappearing"
+ },
+ "075": {
+  "image": "images/scene-075.jpg",
+  "motion": "LOW",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (पीछे से, खिड़की की रोशनी में)",
+  "prompt": "Source image: a wide shot from behind, the young man sits backwards on his desk chair gazing out of the window at a clear bright morning, while the fully prepared desk beside him sits unused. Animate: he stares out of the window, slowly turns his head to look at the ready desk, holds the look for one weighted beat, then turns back to the window — waiting for a 'right time' that already exists. Camera: slow push-in from behind toward the window light. Environment: clear morning light steady outside. Mood: Monday is no magical day — today's clear morning is the witness. Preserve character identity, clothing, chair orientation, desk arrangement, window and room layout, lighting. No standing up, no sitting properly at desk, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, standing up, sitting at desk properly, rain outside, extra people"
+ },
+ "076": {
+  "image": "images/scene-076.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (मामूली, सम्मानजनक)",
+  "prompt": "Source image: a medium shot in a simple home kitchen corner, a middle-aged Indian woman in a saree performs her everyday cooking task without any enthusiasm, her face calm and tired. Animate: her hands continue the practiced routine motion shown in the image — steady, unhurried, muscle-memory rhythm; her shoulders carry tired ease, her expression stays calm without complaint or joy; any natural kitchen element already present in the image, such as faint steam, drifts gently. Camera: very slow respectful push-in. Environment: kitchen light steady. Mood: the cook in the kitchen is not inspired every day — she does it because it must be done. Preserve her exact identity, saree and jewelry, kitchen layout and object positions, lighting. No smiling for camera, no extra people, no new objects, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, smiling at camera, extra people, new kitchen objects, exaggerated gestures, identity drift"
+ },
+ "077": {
+  "image": "images/scene-077.jpg",
+  "motion": "MEDIUM",
+  "duration": "6 सेकंड",
+  "camera": "Gentle Sideways Dolly (डेस्क के साथ)",
+  "prompt": "Source image: a medium wide shot of an ordinary office desk, a man in a white shirt (CHARACTER_02) leans toward his screen working, his face showing neither happiness nor complaint — only routine. Animate: his hands type or write in a continuous practiced rhythm, he shifts his posture once slightly, his eyes track the screen steadily, his expression stays flat and professional; the office around him remains still. Camera: one gentle slow sideways dolly along the desk line. Environment: office light even and steady. Mood: the office worker does not go to work happy every day — he goes because it must be done. Preserve CHARACTER_02's identity, white shirt, desk items and screen position, office layout, lighting. No smiling, no colleagues appearing, no readable screen content, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, colleagues appearing, readable screen content, smiling, papers flying, identity drift"
+ },
+ "078": {
+  "image": "images/scene-078.jpg",
+  "motion": "MEDIUM",
+  "duration": "8 सेकंड",
+  "camera": "Slow Push-in (top-down wide)",
+  "prompt": "Source image: a top-down wide shot of the desk showing the imbalance — the young man reads in front of a laptop and stacks of books while the notebook beside him lies completely blank and the pen stays capped. Animate: he keeps reading with steady rhythm, turns a page or shifts his gaze across the screen; once his eyes drop to the blank notebook, his hand starts toward the capped pen and stops without lifting it; reading continues, writing never begins. Camera: very slow top-down push-in emphasizing the blank side of the desk. Environment: light steady. Mood: collecting information versus acting on it — two different things. Preserve character identity, clothing, laptop, book stacks, blank notebook and capped pen positions, desk layout, lighting. No readable screen or page text, no notebook getting written in, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable screen content, notebook filling with writing, pen uncapped, objects rearranging"
+ },
+ "079": {
+  "image": "images/scene-079.jpg",
+  "motion": "LOW",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Pull-back (कमरा और फीका करते हुए)",
+  "prompt": "Source image: a medium shot contrasting the bright phone screen with the dull room — the young man sits on the bed watching the screen, its glow on his face, while the scattered lifeless room surrounds him. Animate: his thumb scrolls slowly, the screen glow shifts across his flat envious face, and the messy faded room stays perfectly still around him; the contrast deepens without anything moving. Camera: very slow pull-back widening the dull room around the bright rectangle. Environment: room light stays dim and lifeless. Mood: on social media you see someone's shining picture and your own scattered day. Preserve character identity, clothing, phone and bed positions, room clutter layout, lighting. No readable screen content, no standing up, no tidying, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable screen content, smiling, standing up, room tidying itself"
+ },
+ "080": {
+  "image": "images/scene-080.jpg",
+  "motion": "LOW",
+  "duration": "6 सेकंड",
+  "camera": "Very slow push-in / light drift",
+  "prompt": "Source image: a close-up detail shot of a single calendar page spread with time — half the squares filled with faint old marks, the rest still empty, progress visible but incomplete, no person. Animate: keep the page perfectly still; the light creeps very slowly across from the filled squares toward the empty ones, as if time itself is being shown, faint dust drifting through the frame. Camera: very slow push-in following the light's path. Mood: a new habit takes on average about two months — and the individual range is huge; some squares fill early, some late. Preserve mark positions and counts, page texture, lighting direction. No new marks appearing, no hand entering, no numbers becoming readable, no page flipping, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, new marks appearing, hand entering, readable numbers or month names, page flipping"
+ },
+ "081": {
+  "image": "images/scene-081.jpg",
+  "motion": "LOW",
+  "duration": "6–8 सेकंड",
+  "camera": "Slow Push-in (हाथों से चेहरे की ओर)",
+  "prompt": "Source image: a close-up of the young man sitting with both hands resting on the closed book, eyes fixed on it but hands not opening it — his face shows fear, not laziness. Animate: his fingers tighten on the cover, hold with a faint tremor of hesitation, then loosen without opening the book; his eyes stay locked on the closed cover, he swallows once, the fear settling quietly on his face. Camera: slow push-in traveling from the gripping hands up to his face. Environment: light steady. Mood: sometimes 'I don't feel like it' is really 'I fear the result may still be bad after all the effort'. Preserve character identity, clothing, hand anatomy, closed book position, lighting. No book opening, no crying, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, book opening, crying, hands morphing, exaggerated terror, standing up"
+ },
+ "082": {
+  "image": "images/scene-082.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "8 सेकंड",
+  "camera": "Gentle Sideways Dolly (पूरा रूटीन दिखाते हुए)",
+  "prompt": "Source image: a wide early-morning shot of a steady working routine — the young man reads at his tidy desk, the marked calendar visible with several faint marks, his face showing neither excitement nor sadness, only consistency. Animate: he reads and writes in a calm practiced rhythm, turns one page, his expression stays even; the morning light slowly strengthens across the clean room while the marked calendar stands as a quiet witness. Camera: one gentle slow sideways dolly across the orderly room. Mood: he who does a little even without feeling like it quietly pulls ahead until people call him lucky. Preserve character identity, clothing, tidy room and desk layout, calendar marks, lighting. No readable text, no visitors, no celebration, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable text, people entering, celebration, room becoming messy"
+ },
+ "083": {
+  "image": "images/scene-083.jpg",
+  "motion": "MEDIUM",
+  "duration": "8 सेकंड",
+  "camera": "Slow Pull-back (उठते पात्र के साथ)",
+  "prompt": "Source image: a medium shot of the young man finishing a small thoughtful sequence at his desk — the book opened to tomorrow's page, the pen laid on it, the chair being straightened as he rises. Animate: in one calm sequence he opens the book to the right page, rests the pen neatly on it, nudges the chair straight, and stands up with quiet ease, a small uncelebrated satisfaction on his face. Camera: slow gentle pull-back as he rises, letting the prepared desk stay visible in frame. Environment: room light steady. Mood: discipline is not self-punishment — it is one small favor done today for your future self. Preserve character identity, clothing, book, pen and chair final positions, desk layout, lighting. No readable text, no lamp switching, no scene change, no extra objects.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable text, objects vanishing, extra objects, exaggerated smile, lamp going off"
+ },
+ "084": {
+  "image": "images/scene-084.jpg",
+  "motion": "LOW",
+  "duration": "6 सेकंड",
+  "camera": "Slow drift (उँगली → टाइमर → दराज)",
+  "prompt": "Source image: a clean top-down detail shot of the desk holding the three practical elements — a finger resting on one page of the open book, a small timer at the edge, and the closed drawer far away with no phone anywhere. Animate: the finger holds still on the first line of the page with a tiny settling press; the timer and drawer stay motionless; light stays clean and direct; faint dust drifts. Camera: one slow smooth drift across the frame linking finger, timer, and closed drawer — the three conditions in one movement. Mood: make the work so small that starting stays possible, the phone so far that no five-minute decision is needed, and always return the next day. Preserve hand anatomy, book, timer and drawer positions, desk surface, lighting. No readable text or timer digits, no phone appearing, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable text, timer digits readable, phone appearing, drawer opening, extra hands"
+ },
+ "085": {
+  "image": "images/scene-085.jpg",
+  "motion": "MEDIUM",
+  "duration": "5–6 सेकंड",
+  "camera": "Static POV / micro push-in",
+  "prompt": "Source image: a first-person perspective close-up of two hands opening a closed book or file on a clean desk in direct light, no face in frame. Animate: the hands settle on the cover, open it in one smooth natural motion, the pages fan and level, and the fingertips press the first page flat — as if these are the viewer's own hands starting right now; only natural subtle hand motion, no camera theatrics. Camera: locked POV frame with a micro push-in toward the opening pages. Environment: clean desk, steady direct light. Mood: the two-minute start — after this video ends, begin the thing you have been postponing. Preserve hand anatomy, book and desk appearance, lighting. No readable text, no face appearing, no extra objects, no warped fingers, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, face appearing, readable text, warped fingers, extra objects, camera lifting up"
+ },
+ "086": {
+  "image": "images/scene-086.jpg",
+  "motion": "LOW",
+  "duration": "8 सेकंड",
+  "camera": "Slow Push-in (वाइड से डेस्क की तरफ़)",
+  "prompt": "Source image: a wide night shot of a single lit desk in a dark room — the young man leans over writing under the only pool of lamplight, deep darkness beyond the window. Animate: he writes in a slow continuous rhythm inside the small circle of light, his breathing even, the lamp glow holding steady like the only world that exists; the darkness outside stays absolute and still. Camera: very slow push-in from the wide room toward the lit desk. Mood: this whole video was about one moment — the moment you don't feel like it, and start anyway; big changes are built from such moments. Preserve character identity, clothing, desk and lamp positions, window, night palette. No readable handwriting, no lights turning on elsewhere, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable handwriting, room lights turning on, people appearing, daylight leaking"
+ },
+ "087": {
+  "image": "images/scene-087.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "8 सेकंड",
+  "camera": "Slow Track (खिड़की से कैलेंडर/डेस्क की ओर)",
+  "prompt": "Source image: the same room now flooded with open morning light — the desk tidy with the book open, the calendar showing a long row of faint marks, the young man standing thoughtfully near the window. Animate: he turns slowly from the window, his gaze travels to the long row of marks on the calendar, then to the ready desk; he gives one small satisfied nod and takes a single step toward the desk. Camera: one slow smooth track following his look from the calendar to the desk. Environment: bright steady morning light, room unchanged in layout. Mood: 'if I keep doing a little every day for thirty days, what will my day look like then?' — the answer visible on the wall. Preserve character identity, clothing, room layout, calendar marks count, desk arrangement, lighting. No readable numbers, no new marks appearing, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, readable numbers, new marks appearing, extra people, room layout changing"
+ },
+ "088": {
+  "image": "images/scene-088.jpg",
+  "motion": "LOW–MEDIUM",
+  "duration": "6 सेकंड",
+  "camera": "Static / very slow push-in (सीधा, ईमानदार फ़्रेम)",
+  "prompt": "Source image: a front-facing medium close-up, the young man sits upright at his desk, one hand on the open notebook, the other holding a pen, looking straight ahead as if speaking to the viewer — the only direct camera contact in the whole film. Animate: he holds steady honest eye contact with the lens, gives one small warm nod, the pen rests with a light tap on the notebook, his lips move faintly as if finishing a sentence, expression sincere and calm. Camera: locked frontal frame with a very slow push-in, intimate and direct. Environment: room light steady. Mood: a personal request — write in the comments the task you have been postponing longest and your two-minute first step. Preserve character identity, clothing, notebook, pen and desk positions, lighting. No readable text, no looking away, no smile breaking into laugh, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, looking away from camera, readable text, laughing, waving at camera, identity drift"
+ },
+ "089": {
+  "image": "images/scene-089.jpg",
+  "motion": "LOW",
+  "duration": "8–10 सेकंड",
+  "camera": "Slow Pull-back (एंड-स्क्रीन स्पेस छोड़ते हुए)",
+  "prompt": "Source image: the closing wide still-life of the ready desk — the open book with the pen on its page, the small timer at the edge, direct morning light, the chair pushed slightly back as if someone is about to arrive, empty space in the upper right for an end screen. Animate: keep every object perfectly still; the morning light slowly warms and spreads across the desk, faint dust drifts through the beam, the empty chair waits. Camera: one very slow pull-back settling into the final wide composition with the upper-right area staying clean and empty. Mood: calm quiet confidence — less motivation talk, more method; the seat is ready, the next move belongs to the viewer. Preserve exact positions of book, pen, timer and chair, desk and room layout, warm morning palette. No person entering, no objects moving, no readable text or timer digits, no scene change.",
+  "negative": "scene change, cut inside clip, unexpected transition, new characters, extra people, identity change, face morphing, clothing change, hairstyle change, body distortion, warped hands, extra fingers, missing fingers, duplicated limbs, unnatural walking, floating objects, objects appearing or disappearing, background deformation, flickering textures, jitter, unnatural eye movement, exaggerated motion, sudden zoom, fast camera movement, camera shake, speed ramp, readable text, legible letters, subtitles, captions, watermark, logo, blurry, low resolution, person entering or sitting, objects moving, readable text, timer digits, light flickering"
+ }
+}
