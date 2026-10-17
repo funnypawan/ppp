@@ -133,6 +133,6 @@
 
 1. पात्रों की AI हरकतें (blinking/hand motion) नहीं — visuals Ken Burns animatic हैं; असली image-to-video clips (Kling/Runway prompts `video/prompts.json` में) इसी timeline में drop-in बदली जा सकती हैं (हर scene का in/out ऊपर)।
 2. Scene 066–067 का chunk attribution अनुमानित है (VO chunk 11 की शुरुआत परफ़ेक्शनिज़्म से होती है) — timing पर असर नहीं, सिर्फ़ label।
-3. 495 MB का final GitHub की 100 MB/file सीमा से बड़ा — sandbox preview link से download करें, या कहें तो ~7 भागों में split करके push कर दूँ।
+3. Full-quality master (495 MB, 2.7 Mbps) sandbox preview link पर है; GitHub पर सीमा के अंदर रखने के लिए हल्का encode push हुआ है: `downloads/final-video-1080p-github.mp4` (97.6 MiB, 420k ABR video + 96k AAC, हल्का hqdn3d denoise) — direct: https://raw.githubusercontent.com/funnypawan/ppp/arena/9831c19d-ppp/downloads/final-video-1080p-github.mp4
 
 ## E. Final QC — 14/14 ✅ (नमूना frame-check: t=8s scene001, t=209.7s dip@016, t=210.8s scene017, t=681.5s scene044, t=1545.7s scene089 fade-out)
