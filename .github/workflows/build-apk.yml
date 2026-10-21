@@ -28,22 +28,44 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Android SDK 34 packages
-        run: sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
+      - name: Ensure Android SDK 34 (runner image has the SDK preinstalled)
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          ls "$ANDROID_HOME/platforms" || true
+          if [ ! -d "$ANDROID_HOME/platforms/android-34" ]; then
+            yes | sdkmanager --licenses >/dev/null 2>&1 || true
+            sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
+          fi
 
       - name: Build debug APK
         working-directory: FocusLock
         run: |
+          set -o pipefail
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleDebug --stacktrace 2>&1 | tee ../ci-build-log.txt
 
       - name: Run unit tests (non-blocking)
         working-directory: FocusLock
         continue-on-error: true
-        run: ./gradlew testDebugUnitTest
+        run: |
+          set -o pipefail
+          ./gradlew testDebugUnitTest 2>&1 | tee ../ci-test-log.txt
+
+      # Sandbox/debugging aid: if the build fails, commit the tail of the
+      # Gradle log back to the branch so the failure can be inspected
+      # without downloading CI artifacts. (Token pushes do not retrigger CI.)
+      - name: Commit build log for debugging (only on failure)
+        if: failure()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          tail -n 500 ci-build-log.txt > ci-build-log-tail.txt 2>/dev/null || echo "no build log" > ci-build-log-tail.txt
+          echo "===== TEST LOG =====" >> ci-build-log-tail.txt
+          tail -n 200 ci-test-log.txt >> ci-build-log-tail.txt 2>/dev/null || true
+          git add ci-build-log-tail.txt
+          git commit -m "CI: failed build log (debug)" || true
+          git push || true
 
       - name: Prepare APK for publishing
         run: |
