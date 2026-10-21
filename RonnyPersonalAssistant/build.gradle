@@ -1,0 +1,11 @@
+// Top level build file.
+//
+// The app itself has zero third-party dependencies: everything is built on the
+// Android framework, which keeps the APK small, private and battery friendly.
+plugins {
+    id 'com.android.application' version '8.5.2' apply false
+}
+
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
+}

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_alarm"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingTop="56dp"
+    android:paddingBottom="36dp">
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:letterSpacing="0.14"
+        android:text="@string/alarm_ringing"
+        android:textColor="#8FB4EE"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <FrameLayout
+        android:id="@+id/icon_holder"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="26dp"
+        android:background="@drawable/shape_circle">
+
+        <TextView
+            android:id="@+id/emoji"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="🏃"
+            android:textSize="46sp" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:gravity="center"
+        android:text="Running"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="05:00 AM"
+        android:textColor="@color/accent"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:background="@drawable/shape_chip"
+        android:gravity="center"
+        android:lineSpacingExtra="3dp"
+        android:padding="18dp"
+        android:textColor="#DCE8FA"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/speaking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@drawable/ic_volume"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/text_muted"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/btn_done"
+        style="@style/BtnPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:drawableLeft="@drawable/ic_check"
+        android:drawablePadding="10dp"
+        android:text="@string/action_done" />
+
+    <TextView
+        android:id="@+id/btn_snooze"
+        style="@style/BtnGhost"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="12dp"
+        android:drawableLeft="@drawable/ic_alarm"
+        android:drawablePadding="10dp"
+        android:text="@string/action_snooze" />
+</LinearLayout>

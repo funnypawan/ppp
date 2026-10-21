@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Deep navy base -->
+    <color name="bg_deep">#FF060C18</color>
+    <color name="bg">#FF0B1428</color>
+    <color name="bg_top">#FF101E3C</color>
+    <color name="surface">#FF152A4E</color>
+
+    <color name="card">#FF162A4D</color>
+    <color name="card_2">#FF1D355E</color>
+    <color name="card_solid">#FF122442</color>
+
+    <!-- Brand / accents -->
+    <color name="brand">#FF3B7BFF</color>
+    <color name="brand_deep">#FF1D4ED8</color>
+    <color name="accent">#FF3BE8CE</color>
+    <color name="accent_warm">#FFFFB347</color>
+    <color name="accent_pink">#FFFF7BA9</color>
+
+    <!-- State -->
+    <color name="success">#FF3DDC84</color>
+    <color name="danger">#FFFF6B6B</color>
+    <color name="muted">#FF7C8DB5</color>
+
+    <!-- Text -->
+    <color name="text_primary">#FFF4F8FF</color>
+    <color name="text_secondary">#FFA9B8DA</color>
+    <color name="text_muted">#FF6E80A8</color>
+
+    <!-- Utility -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="stroke">#26FFFFFF</color>
+    <color name="stroke_strong">#40FFFFFF</color>
+    <color name="scrim">#CC050B16</color>
+    <color name="track">#FF0E1C36</color>
+    <color name="ripple_soft">#33FFFFFF</color>
+</resources>
