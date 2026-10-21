@@ -2,7 +2,7 @@
 
 Recorded **2026-10-21**. “Implemented” does not mean “device tested.” No adult images, pages or videos were loaded for testing.
 
-## Executed in this workspace
+## Verification results
 
 | Check | Result | Scope |
 |---|---|---|
@@ -10,8 +10,9 @@ Recorded **2026-10-21**. “Implemented” does not mean “device tested.” No
 | All application Java sources | **PASS, source-level compilation** | Eclipse Java compiler 3.16, Java 8 bytecode, Android 35 API classes from the Reginer/aosp-android-jar mirror, Java base classes, and a temporary synthetic `R` containing the one drawable symbol. This is NOT Android resource linking, DEX compilation, lint, or APK assembly. Gradle uses Java 17 source/target; code uses Java 8-compatible syntax. Validation tooling is outside the repository. |
 | Manifest / resource XML syntax | **PASS** | Python XML parse; not Android resource validation |
 | `./gradlew :app:assembleDebug --no-daemon` | **BLOCKED** | Gradle distribution HTTPS download failed with SSL handshake termination under sandbox host restrictions. No Android SDK installed. Google Maven/SDK and Gradle distribution hosts unavailable. |
-| Debug/release APK installation and launch | **NOT RUN** | No emulator, physical device or assembled APK |
-| CI build / Android lint | **NOT RUN** | Workflow supplied; not pushed or executed here |
+| Debug/release APK installation and launch | **NOT RUN** | APK now available, but no emulator or physical device installation test |
+| GitHub Actions Gradle debug build | **PASS** | Run [39549519942](https://github.com/funnypawan/ppp/actions/runs/39549519942), Ubuntu 24.04, Temurin JDK 17, official Android SDK 35. Core tests passed and `:app:assembleDebug` generated the APK. Published as prerelease `safeshield-debug-2` (52,734 bytes). |
+| Android lint | **NOT RUN** | Still required before release |
 
 Run core tests with a full JDK (17 recommended):
 
