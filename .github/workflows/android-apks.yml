@@ -4,6 +4,8 @@ on:
   push:
     branches: [arena/f7d29d7e-ppp]
     paths: ['**/*.kt', '**/*.kts', 'gradle.properties', '.github/workflows/android-apks.yml']
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -22,6 +24,16 @@ jobs:
         run: set -o pipefail; gradle :teacherApp:assembleDebug :studentApp:assembleDebug --stacktrace 2>&1 | tee build.log
       - if: failure()
         run: grep -E "FAILURE|What went wrong|^e:|error:|Could not|Caused by" build.log | tail -40 | while IFS= read -r line; do echo "::error::$line"; done
+      - name: Publish APKs to branch
+        run: |
+          mkdir -p apks
+          cp teacherApp/build/outputs/apk/debug/*.apk apks/dream-classes-teacher.apk
+          cp studentApp/build/outputs/apk/debug/*.apk apks/dream-classes-student.apk
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f apks/*.apk
+          git commit -m "build: publish Dream Classes debug APKs"
+          git push
       - uses: actions/upload-artifact@v4
         with:
           name: dream-classes-apks
