@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.focuslock.app.R
+import com.google.android.material.R as MaterialR
 import com.focuslock.app.data.AppIconCache
 import com.focuslock.app.data.AppUiModel
 import com.focuslock.app.databinding.FragmentDashboardBinding
@@ -128,7 +129,7 @@ class DashboardFragment : Fragment() {
                         ContextCompat.getDrawable(context, R.drawable.ic_warning)
                     )
                     b.statusIcon.setColorFilter(
-                        MaterialColors.getColor(b.root, R.attr.colorError)
+                        MaterialColors.getColor(b.root, MaterialR.attr.colorError)
                     )
                     b.statusTitle.text = getString(R.string.protection_off)
                     b.statusDesc.text = getString(R.string.global_protection_desc)
@@ -139,7 +140,7 @@ class DashboardFragment : Fragment() {
                         ContextCompat.getDrawable(context, R.drawable.ic_warning)
                     )
                     b.statusIcon.setColorFilter(
-                        MaterialColors.getColor(b.root, R.attr.colorError)
+                        MaterialColors.getColor(b.root, MaterialR.attr.colorError)
                     )
                     b.statusTitle.text = getString(R.string.protection_degraded)
                     b.statusDesc.text = getString(R.string.protection_degraded_desc)
@@ -150,7 +151,7 @@ class DashboardFragment : Fragment() {
                         ContextCompat.getDrawable(context, R.drawable.ic_check_circle)
                     )
                     b.statusIcon.setColorFilter(
-                        MaterialColors.getColor(b.root, R.attr.colorPrimary)
+                        MaterialColors.getColor(b.root, MaterialR.attr.colorPrimary)
                     )
                     b.statusTitle.text = getString(R.string.protection_active)
                     b.statusDesc.text = getString(

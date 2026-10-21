@@ -1,12 +1,11 @@
 package com.focuslock.app.domain
 
-import android.app.role.RoleManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.provider.Settings
+import android.telecom.TelecomManager
 import com.focuslock.app.data.AppsRepository
 import com.focuslock.app.data.FocusLockDatabase
 import com.focuslock.app.data.SettingsStore

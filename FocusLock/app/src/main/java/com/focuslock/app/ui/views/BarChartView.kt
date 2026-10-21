@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.focuslock.app.R
+import com.google.android.material.R as MaterialR
 import com.focuslock.app.util.TimeUtils
 import com.google.android.material.color.MaterialColors
 import kotlin.math.ceil
@@ -43,12 +44,12 @@ class BarChartView @JvmOverloads constructor(
         color = ContextCompat.getColor(context, R.color.chart_bar_track)
     }
     private val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = MaterialColors.getColor(this@BarChartView, R.attr.colorOnSurfaceVariant)
+        color = MaterialColors.getColor(this@BarChartView, MaterialR.attr.colorOnSurfaceVariant)
         textAlign = Paint.Align.CENTER
         textSize = 10f * density
     }
     private val valuePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = MaterialColors.getColor(this@BarChartView, R.attr.colorOnSurface)
+        color = MaterialColors.getColor(this@BarChartView, MaterialR.attr.colorOnSurface)
         textAlign = Paint.Align.CENTER
         textSize = 9f * density
     }

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.focuslock.app.R
+import com.google.android.material.R as MaterialR
 import com.focuslock.app.data.AppIconCache
 import com.focuslock.app.data.AppUiModel
 import com.focuslock.app.databinding.FragmentAppsBinding
@@ -239,23 +240,23 @@ class AppsAdapter(
             val (statusTextRes, bgAttr, fgAttr) = when {
                 model.isExempt -> Triple(
                     R.string.status_exempt,
-                    R.attr.colorTertiaryContainer, R.attr.colorOnTertiaryContainer
+                    MaterialR.attr.colorTertiaryContainer, MaterialR.attr.colorOnTertiaryContainer
                 )
                 model.limit == null -> Triple(
                     R.string.status_no_limit,
-                    R.attr.colorSurfaceVariant, R.attr.colorOnSurfaceVariant
+                    MaterialR.attr.colorSurfaceVariant, MaterialR.attr.colorOnSurfaceVariant
                 )
                 !model.limit.enabled -> Triple(
                     R.string.status_disabled,
-                    R.attr.colorSurfaceVariant, R.attr.colorOnSurfaceVariant
+                    MaterialR.attr.colorSurfaceVariant, MaterialR.attr.colorOnSurfaceVariant
                 )
                 model.isOverLimit -> Triple(
                     R.string.status_over_limit,
-                    R.attr.colorErrorContainer, R.attr.colorOnErrorContainer
+                    MaterialR.attr.colorErrorContainer, MaterialR.attr.colorOnErrorContainer
                 )
                 else -> Triple(
                     R.string.status_protected,
-                    R.attr.colorPrimaryContainer, R.attr.colorOnPrimaryContainer
+                    MaterialR.attr.colorPrimaryContainer, MaterialR.attr.colorOnPrimaryContainer
                 )
             }
             binding.statusChip.text = context.getString(statusTextRes)

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.focuslock.app.R
+import com.google.android.material.R as MaterialR
 import com.focuslock.app.databinding.ActivityPermissionSetupBinding
 import com.focuslock.app.databinding.ItemPermissionBinding
 import com.focuslock.app.focusLockApp
@@ -153,7 +154,7 @@ class PermissionSetupActivity : AppCompatActivity() {
                     else R.string.perm_status_missing
                 )
                 val colorAttr =
-                    if (granted) R.attr.colorPrimary else R.attr.colorError
+                    if (granted) MaterialR.attr.colorPrimary else MaterialR.attr.colorError
                 row.binding.permStatus.setTextColor(
                     MaterialColors.getColor(row.binding.root, colorAttr)
                 )
