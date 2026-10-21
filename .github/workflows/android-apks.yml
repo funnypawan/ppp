@@ -21,7 +21,7 @@ jobs:
         shell: bash
         run: set -o pipefail; gradle :teacherApp:assembleDebug :studentApp:assembleDebug --stacktrace 2>&1 | tee build.log
       - if: failure()
-        run: tail -60 build.log | while IFS= read -r line; do echo "::error::$line"; done
+        run: grep -E "FAILURE|What went wrong|^e:|error:|Could not|Caused by" build.log | tail -40 | while IFS= read -r line; do echo "::error::$line"; done
       - uses: actions/upload-artifact@v4
         with:
           name: dream-classes-apks
