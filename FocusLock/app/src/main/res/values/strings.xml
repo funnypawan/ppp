@@ -1,0 +1,254 @@
+<resources>
+    <string name="app_name">FocusLock</string>
+    <string name="app_tagline">Smart App Time Limiter</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_apps">All Apps</string>
+    <string name="nav_stats">Statistics</string>
+    <string name="nav_emergency">Emergency</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Permission setup -->
+    <string name="setup_title">Set up FocusLock</string>
+    <string name="setup_intro">FocusLock needs a few permissions to measure app usage and enforce the daily limits you set. Everything stays on this phone — no account, no server, no tracking.</string>
+    <string name="perm_usage_title">Usage Access</string>
+    <string name="perm_usage_desc">Required. Lets FocusLock see how long each app has been used today (Android UsageStats). Without it, usage cannot be measured and limits cannot be enforced.</string>
+    <string name="perm_accessibility_title">Accessibility Service</string>
+    <string name="perm_accessibility_desc">Required for instant blocking. It only tells FocusLock which app is in the foreground so an over-limit app can be blocked immediately. FocusLock is configured so it can NEVER read screen content, text or passwords.</string>
+    <string name="perm_overlay_title">Display over other apps</string>
+    <string name="perm_overlay_desc">Recommended. Allows the blocking screen to appear reliably over the blocked app on all Android versions.</string>
+    <string name="perm_notifications_title">Notifications</string>
+    <string name="perm_notifications_desc">Recommended. Shows the protection status and the live emergency-session countdown.</string>
+    <string name="perm_battery_title">Ignore battery optimization</string>
+    <string name="perm_battery_desc">Recommended. Stops Android from putting FocusLock to sleep, so limits keep working all day.</string>
+    <string name="perm_autostart_title">Autostart (some phones)</string>
+    <string name="perm_autostart_desc">On Xiaomi, Oppo, Vivo and similar phones, also allow “Autostart” for FocusLock so protection restarts after a reboot.</string>
+    <string name="perm_status_granted">Granted</string>
+    <string name="perm_status_missing">Not granted</string>
+    <string name="perm_open_settings">Open settings</string>
+    <string name="perm_required_badge">Required</string>
+    <string name="perm_recommended_badge">Recommended</string>
+    <string name="setup_continue">Continue</string>
+    <string name="setup_skip_note">You can continue now, but protection will stay limited until the required permissions are granted. You can change them anytime in Settings.</string>
+
+    <!-- Dashboard -->
+    <string name="today_screen_time">Today\'s screen time</string>
+    <string name="protected_apps">Protected apps</string>
+    <string name="over_limit_apps">Over limit now</string>
+    <string name="emergency_remaining_short">Emergency left</string>
+    <string name="protection_active">Protection active</string>
+    <string name="protection_off">Protection is off</string>
+    <string name="protection_degraded">Protection needs attention</string>
+    <string name="protection_degraded_desc">A required permission is off, so blocking may not work correctly.</string>
+    <string name="fix_permissions">Fix permissions</string>
+    <string name="top_apps_today">Top apps today</string>
+    <string name="no_usage_yet">No usage recorded yet today.</string>
+    <string name="usage_permission_needed_title">Usage Access needed</string>
+    <string name="usage_permission_needed_desc">Grant Usage Access so FocusLock can measure app usage.</string>
+    <string name="break_active_until">Break mode until %1$s</string>
+    <string name="emergency_active_banner">Emergency access active</string>
+    <string name="view_all_apps">View all apps</string>
+
+    <!-- All apps -->
+    <string name="apps_title">All Apps</string>
+    <string name="search_hint">Search apps</string>
+    <string name="sort_usage">Highest usage</string>
+    <string name="sort_name">A–Z</string>
+    <string name="filter_all">All</string>
+    <string name="filter_with_limits">With limits</string>
+    <string name="filter_without_limits">Without limits</string>
+    <string name="filter_exempt">Exempt</string>
+    <string name="status_protected">Protected</string>
+    <string name="status_over_limit">Over limit</string>
+    <string name="status_no_limit">No limit</string>
+    <string name="status_exempt">Exempt</string>
+    <string name="status_disabled">Limit off</string>
+    <string name="limit_label">Limit %1$s/day</string>
+    <string name="remaining_label">%1$s left</string>
+    <string name="used_today_label">%1$s used today</string>
+    <string name="no_limit_set">No daily limit set</string>
+    <string name="edit_limit">Edit limit</string>
+    <string name="apps_empty_search">No apps match your search.</string>
+    <string name="apps_loading">Loading apps…</string>
+
+    <!-- Edit limit -->
+    <string name="edit_limit_title">Daily limit</string>
+    <string name="current_limit">Current limit</string>
+    <string name="new_limit">New limit</string>
+    <string name="used_today">Used today</string>
+    <string name="remaining_after_save">Remaining after saving: %1$s</string>
+    <string name="quick_presets">Quick settings</string>
+    <string name="custom_duration">Custom duration</string>
+    <string name="hours_label">Hours</string>
+    <string name="minutes_label">Minutes</string>
+    <string name="no_limit_option">No limit (remove)</string>
+    <string name="exempt_checkbox">Exempt — never block this app</string>
+    <string name="exempt_hint">For essential apps such as phone calls, banking or work tools. Exempt apps are measured but never blocked.</string>
+    <string name="reset_usage_option">Reset today\'s counted usage</string>
+    <string name="reset_usage_hint">Starts today\'s counter for this app from zero. Android\'s own usage history is not changed.</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="limit_saved">Limit saved</string>
+    <string name="block_immediately_note">This limit is below today\'s usage, so the app will be blocked right away.</string>
+    <string name="confirm_disable_title">Turn off this limit?</string>
+    <string name="confirm_disable_msg">%1$s will no longer be blocked today. You can turn the limit back on at any time.</string>
+    <string name="confirm_remove_limit_msg">Remove the daily limit for %1$s? The app will no longer be blocked.</string>
+    <string name="turn_off">Turn off</string>
+    <string name="keep_limit">Keep limit</string>
+
+    <!-- Blocking screen -->
+    <string name="blocking_title">App blocked</string>
+    <string name="blocking_message">Your daily time limit has been reached.</string>
+    <string name="blocking_used">Used today: %1$s</string>
+    <string name="blocking_limit">Daily limit: %1$s</string>
+    <string name="blocking_reset">Limit resets at %1$s</string>
+    <string name="blocking_home">Return to Home</string>
+    <string name="blocking_emergency_button">Emergency Access</string>
+    <string name="blocking_emergency_left">Emergency sessions left today: %1$d of %2$d</string>
+    <string name="blocking_open_app">Open %1$s</string>
+
+    <!-- Emergency -->
+    <string name="emergency_title">Emergency Access</string>
+    <string name="emergency_sessions_remaining">Sessions remaining: %1$d/%2$d</string>
+    <string name="emergency_session_duration">Session duration: 10 minutes</string>
+    <string name="emergency_start_button">Start Emergency Session</string>
+    <string name="emergency_confirm_title">Start emergency session?</string>
+    <string name="emergency_confirm_msg">This gives you exactly 10 minutes in %1$s. You have %2$d of 3 sessions left today. The timer cannot be paused, extended or refunded, and it keeps running even if you leave the app.</string>
+    <string name="emergency_start_confirm">Start 10 minutes</string>
+    <string name="emergency_active_title">Emergency Access Active</string>
+    <string name="emergency_time_remaining">Time remaining: %1$s</string>
+    <string name="emergency_all_used">You have used all 3 emergency sessions for today.</string>
+    <string name="emergency_all_used_desc">Emergency sessions reset at midnight. Blocked apps become available again when their daily limit resets.</string>
+    <string name="emergency_rules">How it works:\n• 3 sessions per day, 10 minutes each (30 minutes maximum).\n• Only one session can run at a time, for one blocked app.\n• Leaving the app does not pause the countdown.\n• Restarting the phone does not reset the timer or the session count.\n• Sessions reset at midnight, local time.</string>
+    <string name="emergency_no_blocked_apps">No apps are over their limit right now. When an app gets blocked, you can start an emergency session here or directly from the blocking screen.</string>
+    <string name="emergency_used_today">Emergency time used today: %1$s</string>
+    <string name="emergency_blocked_apps">Currently blocked apps</string>
+    <string name="emergency_session_running_for">Running for %1$s</string>
+    <string name="emergency_other_active">An emergency session is already active for %1$s (%2$s left). Only one session can run at a time.</string>
+    <string name="emergency_open_app">Open app</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">Statistics</string>
+    <string name="range_today">Today</string>
+    <string name="range_yesterday">Yesterday</string>
+    <string name="range_7days">Last 7 days</string>
+    <string name="range_30days">Last 30 days</string>
+    <string name="total_screen_time">Total screen time</string>
+    <string name="daily_overview">Daily totals</string>
+    <string name="per_app_usage">Per-app usage</string>
+    <string name="blocked_attempts">Blocked attempts</string>
+    <string name="blocked_attempts_note">Counted by FocusLock each time a blocked app was opened after reaching its limit.</string>
+    <string name="emergency_sessions_used">Emergency sessions used</string>
+    <string name="emergency_time_used">Emergency time used</string>
+    <string name="time_protected">Time protected (est.)</string>
+    <string name="time_protected_note">Estimate: time apps stayed blocked after first reaching their limit, minus emergency use. Shown for today.</string>
+    <string name="no_stats">No usage data for this period.</string>
+    <string name="stats_today_only_note">Blocked attempts, emergency use and time protected are measured by FocusLock for today.</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="section_protection">Protection</string>
+    <string name="global_protection">App limit protection</string>
+    <string name="global_protection_desc">Master switch. When off, no app is blocked (limits and statistics are kept).</string>
+    <string name="permissions_row">Permissions &amp; setup</string>
+    <string name="permissions_row_desc">Usage Access, accessibility, overlay, battery</string>
+    <string name="section_schedule">Protection schedule</string>
+    <string name="schedule_enable">Only enforce limits during set hours</string>
+    <string name="schedule_enable_desc">Outside these hours apps are never blocked.</string>
+    <string name="schedule_from">From</string>
+    <string name="schedule_until">Until</string>
+    <string name="section_break">Break mode</string>
+    <string name="break_desc">A break pauses blocking for a while. It never resets daily usage or emergency sessions.</string>
+    <string name="break_start_now">Start a break now</string>
+    <string name="break_end">End break now</string>
+    <string name="break_scheduled_enable">Daily scheduled break</string>
+    <string name="break_scheduled_start">Break starts at</string>
+    <string name="break_scheduled_duration">Break length (minutes)</string>
+    <string name="section_strict">Strict Mode</string>
+    <string name="strict_enable">Enable Strict Mode</string>
+    <string name="strict_desc">PIN-protects limit changes, adds an optional editing cooldown, and asks for confirmation before protection is weakened. Note: like any normal app, FocusLock cannot stop the phone\'s owner from uninstalling it or turning off its permissions in Android Settings.</string>
+    <string name="pin_set">Set PIN</string>
+    <string name="pin_change">Change PIN</string>
+    <string name="pin_remove">Remove PIN</string>
+    <string name="pin_not_set_note">Set a PIN first to use Strict Mode.</string>
+    <string name="pin_is_set_note">A PIN is set.</string>
+    <string name="cooldown_label">Cooldown before editing limits</string>
+    <string name="cooldown_none">No cooldown</string>
+    <string name="minutes_short">%1$d min</string>
+    <string name="section_appearance">Appearance</string>
+    <string name="theme_label">Theme</string>
+    <string name="theme_system">Follow system</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="section_data">Data backup</string>
+    <string name="backup_export">Export settings</string>
+    <string name="backup_export_desc">Save app limits and settings to a file you choose. Nothing is uploaded anywhere.</string>
+    <string name="backup_import">Import settings</string>
+    <string name="backup_import_desc">Restore limits and settings from a previously exported file.</string>
+    <string name="backup_success">Settings exported</string>
+    <string name="backup_failed">Export failed</string>
+    <string name="import_success">Settings imported</string>
+    <string name="import_failed">Import failed — invalid file</string>
+    <string name="import_confirm_title">Import settings?</string>
+    <string name="import_confirm_msg">This replaces your current app limits and FocusLock settings with the ones in the file. Usage history and emergency counters are not changed.</string>
+    <string name="section_about">About</string>
+    <string name="about_version">FocusLock version %1$s</string>
+    <string name="about_developer">Developed by ronny raj</string>
+    <string name="about_email">funnypawan8@gmail.com</string>
+    <string name="about_privacy">Privacy: FocusLock stores limits, usage summaries and emergency counters only on this device. It has no internet access, collects no contacts, messages, location or screen content, and sends nothing to any server.\n\nHonest limits: FocusLock is a self-control tool, not a lock against the device owner. A determined owner can uninstall it, force-stop it, or revoke its permissions in Android Settings (FocusLock warns you when protection degrades). True tamper-proof control requires Android\'s managed-device / parental-control features (e.g. a supervised device), which FocusLock does not pretend to replace.</string>
+    <string name="confirm_disable_protection_title">Turn off all protection?</string>
+    <string name="confirm_disable_protection_msg">No app will be blocked until you turn protection back on. Your limits, statistics and emergency counters are kept.</string>
+
+    <!-- PIN -->
+    <string name="pin_enter_title">Enter PIN</string>
+    <string name="pin_enter_msg">Strict Mode is on. Enter your PIN to continue.</string>
+    <string name="pin_create_title">Create PIN</string>
+    <string name="pin_field">PIN (4–6 digits)</string>
+    <string name="pin_confirm_field">Confirm PIN</string>
+    <string name="pin_current_field">Current PIN</string>
+    <string name="pin_wrong">Incorrect PIN</string>
+    <string name="pin_mismatch">PINs do not match</string>
+    <string name="pin_too_short">PIN must be 4–6 digits</string>
+    <string name="pin_saved">PIN saved</string>
+    <string name="pin_removed">PIN removed</string>
+    <string name="unlock">Unlock</string>
+    <string name="strict_cooldown_title">Strict Mode cooldown</string>
+    <string name="strict_cooldown_msg">Strict Mode is on. Limit editing unlocks in %1$s. Take a breath — is changing this limit really what you want?</string>
+    <string name="wait_label">Wait %1$s</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_protection">Protection status</string>
+    <string name="notif_channel_protection_desc">Shows that FocusLock protection is running</string>
+    <string name="notif_channel_emergency">Emergency access</string>
+    <string name="notif_channel_emergency_desc">Live countdown for the active emergency session</string>
+    <string name="notif_channel_warnings">Protection warnings</string>
+    <string name="notif_channel_warnings_desc">Warns when a required permission is turned off</string>
+    <string name="notif_protection_running">FocusLock protection is active</string>
+    <string name="notif_protection_sub">%1$d apps protected · %2$d over limit</string>
+    <string name="notif_protection_paused">FocusLock protection is paused</string>
+    <string name="notif_emergency_title">Emergency Access Active</string>
+    <string name="notif_emergency_text">%1$s — %2$s remaining</string>
+    <string name="notif_emergency_ended">Emergency session ended — %1$s is blocked again</string>
+    <string name="notif_warning_title">FocusLock protection needs attention</string>
+    <string name="notif_warning_text">A required permission was turned off, so app blocking may not work. Tap to fix.</string>
+    <string name="notif_resume_title">Resume FocusLock protection</string>
+    <string name="notif_resume_text">Tap to restart protection.</string>
+
+    <!-- Accessibility disclosure (shown by Android in accessibility settings) -->
+    <string name="accessibility_service_name">FocusLock App Limiter</string>
+    <string name="accessibility_service_description">FocusLock uses this accessibility service for one purpose only: to know which app is currently in the foreground, so the daily time limits YOU set can be enforced and a blocking screen can be shown when a limit is reached.\n\nThe service is configured so it cannot read screen content, text, passwords or notifications. No accessibility data is stored remotely or shared with anyone. You can turn it off at any time here in Android Settings.</string>
+
+    <!-- Misc -->
+    <string name="limit_switch_label">Limit</string>
+    <string name="sort_by_label">Sort by</string>
+    <string name="error_limit_zero">Choose at least 1 minute, or remove the limit.</string>
+    <string name="setup_restricted_note">Android 13+ tip: if you see “Restricted setting”, first open App info for FocusLock, tap the ⋮ menu, choose “Allow restricted settings”, then try again.</string>
+    <string name="focuslock_today_title">FocusLock today</string>
+    <string name="unlimited">Unlimited</string>
+    <string name="generic_error">Something went wrong. Please try again.</string>
+    <string name="cd_app_icon">App icon</string>
+    <string name="cd_edit_limit">Edit daily limit</string>
+    <string name="cd_limit_switch">Enable or disable this app\'s limit</string>
+    <string name="midnight_label">12:00 AM</string>
+</resources>

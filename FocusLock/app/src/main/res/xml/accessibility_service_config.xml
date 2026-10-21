@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FocusLock accessibility service configuration.
+
+  PRIVACY BY DESIGN:
+  * canRetrieveWindowContent="false"  -> the service can NEVER read text,
+    passwords or any other content shown on screen.
+  * Only typeWindowStateChanged events are requested. All FocusLock receives
+    is "the foreground window changed to package X", which is exactly what is
+    needed to enforce the app limits the user created.
+  * No gestures, no key logging, no data ever leaves the device.
+-->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeWindowStateChanged"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagDefault"
+    android:canRetrieveWindowContent="false"
+    android:description="@string/accessibility_service_description"
+    android:notificationTimeout="100" />

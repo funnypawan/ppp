@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Material 3 color tokens (light scheme). values-night/colors.xml overrides these. -->
+<resources>
+    <color name="md_primary">#00696D</color>
+    <color name="md_onPrimary">#FFFFFF</color>
+    <color name="md_primaryContainer">#9EF0EF</color>
+    <color name="md_onPrimaryContainer">#002020</color>
+    <color name="md_secondary">#4A6363</color>
+    <color name="md_onSecondary">#FFFFFF</color>
+    <color name="md_secondaryContainer">#CCE8E7</color>
+    <color name="md_onSecondaryContainer">#051F1F</color>
+    <color name="md_tertiary">#4B607C</color>
+    <color name="md_onTertiary">#FFFFFF</color>
+    <color name="md_tertiaryContainer">#D3E4FF</color>
+    <color name="md_onTertiaryContainer">#041C35</color>
+    <color name="md_error">#BA1A1A</color>
+    <color name="md_onError">#FFFFFF</color>
+    <color name="md_errorContainer">#FFDAD6</color>
+    <color name="md_onErrorContainer">#410002</color>
+    <color name="md_background">#FAFDFC</color>
+    <color name="md_onBackground">#191C1C</color>
+    <color name="md_surface">#FAFDFC</color>
+    <color name="md_onSurface">#191C1C</color>
+    <color name="md_surfaceVariant">#DAE5E4</color>
+    <color name="md_onSurfaceVariant">#3F4948</color>
+    <color name="md_outline">#6F7978</color>
+    <color name="md_inverseSurface">#2D3131</color>
+    <color name="md_inverseOnSurface">#EFF1F0</color>
+    <color name="md_inversePrimary">#4CD8D8</color>
+
+    <color name="ic_launcher_background">#00696D</color>
+    <color name="chart_bar">#00696D</color>
+    <color name="chart_bar_track">#DAE5E4</color>
+</resources>

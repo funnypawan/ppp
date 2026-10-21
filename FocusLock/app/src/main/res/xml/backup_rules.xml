@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pre-Android 12 backup rules: keep the user's limits/settings, nothing else. -->
+<full-backup-content>
+    <include domain="database" path="focuslock.db" />
+    <include domain="file" path="datastore/" />
+</full-backup-content>
