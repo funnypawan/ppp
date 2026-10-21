@@ -58,6 +58,10 @@ class MainActivity : AppCompatActivity() {
             MonitorService.startIfProtectionEnabled(this@MainActivity)
         }
 
+        // Ads (Google AdMob): consent + SDK init. Banners har screen par
+        // lazily load hote hain (AdsManager dekhein).
+        AdsManager.initialize(this)
+
         requestNotificationPermissionIfNeeded()
     }
 

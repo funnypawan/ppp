@@ -11,7 +11,7 @@
 
     <!-- Permission setup -->
     <string name="setup_title">Set up FocusLock</string>
-    <string name="setup_intro">FocusLock needs a few permissions to measure app usage and enforce the daily limits you set. Everything stays on this phone — no account, no server, no tracking.</string>
+    <string name="setup_intro">FocusLock needs a few permissions to measure app usage and enforce the daily limits you set. Your limits and usage data always stay on this phone — no account, no server. The app is free with ads (Google AdMob).</string>
     <string name="perm_usage_title">Usage Access</string>
     <string name="perm_usage_desc">Required. Lets FocusLock see how long each app has been used today (Android UsageStats). Without it, usage cannot be measured and limits cannot be enforced.</string>
     <string name="perm_accessibility_title">Accessibility Service</string>
@@ -196,7 +196,7 @@
     <string name="about_version">FocusLock version %1$s</string>
     <string name="about_developer">Developed by ronny raj</string>
     <string name="about_email">funnypawan8@gmail.com</string>
-    <string name="about_privacy">Privacy: FocusLock stores limits, usage summaries and emergency counters only on this device. It has no internet access, collects no contacts, messages, location or screen content, and sends nothing to any server.\n\nHonest limits: FocusLock is a self-control tool, not a lock against the device owner. A determined owner can uninstall it, force-stop it, or revoke its permissions in Android Settings (FocusLock warns you when protection degrades). True tamper-proof control requires Android\'s managed-device / parental-control features (e.g. a supervised device), which FocusLock does not pretend to replace.</string>
+    <string name="about_privacy">Privacy: FocusLock stores limits, usage summaries and emergency counters only on this device. It never uploads your limits or usage data, and collects no contacts, messages, location or screen content. Internet is used only to show ads via Google AdMob, which may use the device advertising ID to show ads. Accessibility data never leaves this device.\n\nHonest limits: FocusLock is a self-control tool, not a lock against the device owner. A determined owner can uninstall it, force-stop it, or revoke its permissions in Android Settings (FocusLock warns you when protection degrades). True tamper-proof control requires Android\'s managed-device / parental-control features (e.g. a supervised device), which FocusLock does not pretend to replace.</string>
     <string name="confirm_disable_protection_title">Turn off all protection?</string>
     <string name="confirm_disable_protection_msg">No app will be blocked until you turn protection back on. Your limits, statistics and emergency counters are kept.</string>
 

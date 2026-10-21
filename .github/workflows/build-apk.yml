@@ -2,7 +2,7 @@ name: Build FocusLock APK
 
 # Builds the FocusLock debug APK on GitHub's cloud runners and publishes it
 # to a GitHub Release, so it can be downloaded & installed directly:
-# https://github.com/funnypawan/ppp/releases/download/focuslock-apk-v1.0.0/FocusLock-v1.0.0.apk
+# https://github.com/funnypawan/ppp/releases/download/focuslock-apk-v1.1.0/FocusLock-v1.1.0.apk
 
 on:
   push:
@@ -69,26 +69,26 @@ jobs:
 
       - name: Prepare APK for publishing
         run: |
-          cp FocusLock/app/build/outputs/apk/debug/app-debug.apk FocusLock-v1.0.0.apk
-          ls -lh FocusLock-v1.0.0.apk
+          cp FocusLock/app/build/outputs/apk/debug/app-debug.apk FocusLock-v1.1.0.apk
+          ls -lh FocusLock-v1.1.0.apk
 
       - name: Upload APK as workflow artifact
         uses: actions/upload-artifact@v4
         with:
           name: FocusLock-APK
-          path: FocusLock-v1.0.0.apk
+          path: FocusLock-v1.1.0.apk
 
       - name: Publish APK to GitHub Release (direct download link)
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: focuslock-apk-v1.0.0
-          name: "FocusLock v1.0.0 APK – Smart App Time Limiter"
+          tag_name: focuslock-apk-v1.1.0
+          name: "FocusLock v1.1.0 APK – Smart App Time Limiter"
           body: |
-            📱 **FocusLock-v1.0.0.apk** download karke seedha install karo (Android 8.0+ / API 26+).
+            📱 **FocusLock-v1.1.0.apk** download karke seedha install karo (Android 8.0+ / API 26+).
 
             **Features:** har installed app ke liye alag daily time limit, real app blocking, Emergency Access (roz 3 sessions × 10 minute), Strict Mode PIN, usage statistics, exempt apps, protection schedule, break mode.
 
             **Install notes:** Pehli baar install par "Install unknown apps" allow karna pad sakta hai. App kholkar Usage Access + Accessibility ka permission setup complete karein (app khud guide karega).
 
             Developed by ronny raj (funnypawan8@gmail.com)
-          files: FocusLock-v1.0.0.apk
+          files: FocusLock-v1.1.0.apk

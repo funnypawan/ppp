@@ -21,6 +21,7 @@ import com.focuslock.app.focusLockApp
 import com.focuslock.app.util.PermissionUtils
 import com.focuslock.app.util.TimeUtils
 import com.google.android.material.color.MaterialColors
+import com.google.android.gms.ads.AdView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -37,6 +38,7 @@ class DashboardFragment : Fragment() {
 
     private var emergencyEndsAt: Long = 0L
     private var emergencyActivePackage: String? = null
+    private var adView: AdView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,6 +64,9 @@ class DashboardFragment : Fragment() {
             (activity as? MainActivity)?.selectTab(MainActivity.TAB_EMERGENCY)
         }
 
+        // Banner ad (AdsManager dekhein — abhi Google ke TEST ads chalte hain)
+        AdsManager.loadAdaptiveBanner(requireActivity(), binding.adContainer) { adView = it }
+
         // Keeps the emergency countdown ticking while the dashboard is shown.
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -76,9 +81,17 @@ class DashboardFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         refresh()
+        adView?.resume()
+    }
+
+    override fun onPause() {
+        adView?.pause()
+        super.onPause()
     }
 
     override fun onDestroyView() {
+        adView?.destroy()
+        adView = null
         _binding = null
         super.onDestroyView()
     }

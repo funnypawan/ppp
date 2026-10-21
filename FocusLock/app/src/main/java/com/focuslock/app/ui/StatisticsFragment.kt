@@ -13,6 +13,7 @@ import com.focuslock.app.data.AppIconCache
 import com.focuslock.app.databinding.FragmentStatisticsBinding
 import com.focuslock.app.databinding.ItemStatAppBinding
 import com.focuslock.app.focusLockApp
+import com.google.android.gms.ads.AdView
 import com.focuslock.app.ui.views.BarChartView
 import com.focuslock.app.util.PermissionUtils
 import com.focuslock.app.util.TimeUtils
@@ -37,6 +38,7 @@ class StatisticsFragment : Fragment() {
 
     private enum class Range { TODAY, YESTERDAY, LAST_7, LAST_30 }
     private var currentRange: Range = Range.TODAY
+    private var adView: AdView? = null
 
     private data class PerAppRow(
         val packageName: String,
@@ -73,6 +75,9 @@ class StatisticsFragment : Fragment() {
             startActivity(Intent(requireContext(), PermissionSetupActivity::class.java))
         }
 
+        // Banner ad (AdsManager dekhein — abhi Google ke TEST ads chalte hain)
+        AdsManager.loadAdaptiveBanner(requireActivity(), binding.adContainer) { adView = it }
+
         binding.rangeChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             currentRange = when {
                 checkedIds.contains(R.id.chipRangeYesterday) -> Range.YESTERDAY
@@ -87,9 +92,17 @@ class StatisticsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         if (_binding != null) load()
+        adView?.resume()
+    }
+
+    override fun onPause() {
+        adView?.pause()
+        super.onPause()
     }
 
     override fun onDestroyView() {
+        adView?.destroy()
+        adView = null
         _binding = null
         super.onDestroyView()
     }

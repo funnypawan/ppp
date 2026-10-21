@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
  *  - `canRetrieveWindowContent` is false: the service is technically unable
  *    to read text, passwords or anything displayed on screen.
  *  - The only data used is the package name from window-change events.
- *  - Nothing is uploaded anywhere; FocusLock has no network access at all.
+ *  - Accessibility data is never uploaded anywhere.
  *
  * The user enables this service manually in Android Settings after reading
  * the in-app explanation, and can disable it there at any time.

@@ -30,7 +30,7 @@ Developed by **ronny raj** · funnypawan8@gmail.com
 | **Break mode** | Manual breaks (15/30/60 min) and/or a daily scheduled break. Breaks never reset usage or emergency allowances. |
 | **Statistics** | Today / Yesterday / Last 7 days / Last 30 days: total screen time, daily bar chart, per-app usage. Plus FocusLock's own *measured* numbers: blocked attempts (counted only when blocking actually happens), emergency sessions used, emergency time consumed, and a clearly-labelled "time protected" estimate. |
 | **Anti-bypass health** | Detects revoked Usage Access / Accessibility and a stopped monitor service, warns on the Dashboard and via notification, and deep-links to the fix. Boot receiver restores protection after restart/update. |
-| **Backup** | Export/import limits + settings as a JSON file you choose (Storage Access Framework). The PIN is never exported. No server involved — the app has **no internet permission at all**. |
+| **Backup** | Export/import limits + settings as a JSON file you choose (Storage Access Framework). The PIN is never exported. The backup file stays fully under your control — your limits/usage data is never uploaded. |
 | **UI** | Material Design 3, dynamic color on Android 12+, light/dark/system themes, bottom navigation (Dashboard, All Apps, Statistics, Emergency, Settings), readable type scale, content descriptions for accessibility. |
 
 ---
@@ -94,12 +94,32 @@ app/src/androidTest/                Instrumented Room tests
 | Ignore battery optimization | Stops Android from sleeping FocusLock | Recommended |
 | `QUERY_ALL_PACKAGES` | Core feature: list every installed app so each can have a limit | Required |
 | `RECEIVE_BOOT_COMPLETED`, `FOREGROUND_SERVICE(_SPECIAL_USE)` | Restore/run protection | Required |
+| `INTERNET`, `ACCESS_NETWORK_STATE` | Only for showing ads (Google AdMob). Your limits/usage data is never uploaded | Required for ads |
 
 All data (limits, usage summaries, emergency counters, PIN hash) stays **on the
-device**. FocusLock declares **no `INTERNET` permission**, collects no contacts,
-SMS, location, microphone or screen content, and uploads nothing.
+device**. FocusLock never uploads your limits or usage data and collects no contacts, SMS, location, microphone or screen content. Internet is used only to show ads via Google AdMob, which may use the device advertising ID.
 
 ---
+
+## Ads (Google AdMob) — apna real Ad ID kaise lagaye
+
+App me abhi Google ke **TEST ads** lage hain (Dashboard + Statistics par banner).
+Test ads hamesha dikhte hain lekin **inse paise nahi milte**. Real earning ke liye:
+
+1. https://admob.google.com par free AdMob account banayein (Google account se sign in karein).
+2. **Add app** → Android → app ka naam dein → aapko **App ID** milega (`ca-app-pub-XXXX~YYYY`).
+3. **Ad units → Add ad unit → Banner** → naam dein → **Ad unit ID** milega (`ca-app-pub-XXXX/ZZZZ`).
+4. Code me sirf **2 jagah** badlein:
+   - `app/build.gradle` me `admobAppId` ki value = apna **App ID**
+   - `app/src/main/java/com/focuslock/app/ui/AdsManager.kt` me `BANNER_AD_UNIT_ID` = apna **Banner unit ID**
+     (ya dono ID mujhe/Arena ko de dein — "ads me ye ID lagao" bolne par naya APK ban jayega)
+5. App ko dobara build karke publish karein.
+
+Rules (dhyan dein):
+- Apne khud ke **real ads par kabhi click na karein**, doston se bhi na karwayein — AdMob account ban ho sakta hai. (Test ads par click safe hai.)
+- AdMob payment tab deta hai jab balance **$100** (lagbhag ₹8,500) ho jaye; AdSense/AdMob me bank account + tax details bharni hoti hain.
+- Kisi store par publish karte samay "Contains ads" declare karein aur Data Safety form me Advertising ID ka use batayein.
+- Ads sirf Dashboard/Statistics par hain — blocking screen aur emergency flow me jaan-boojh kar ads nahi lagaye gaye.
 
 ## Building the APK
 
