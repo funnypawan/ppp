@@ -201,13 +201,14 @@ class ProtectionCoordinator private constructor(context: Context) {
             pm.queryIntentActivities(Intent(Intent.ACTION_DIAL), PackageManager.MATCH_ALL)
                 .forEach { result += it.activityInfo.packageName }
         } catch (e: Exception) { /* keep defaults */ }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            try {
-                val roleManager = appContext.getSystemService(RoleManager::class.java)
-                roleManager?.getRoleHolders(RoleManager.ROLE_DIALER)?.forEach { result += it }
-                roleManager?.getRoleHolders(RoleManager.ROLE_EMERGENCY)?.forEach { result += it }
-            } catch (e: Exception) { /* roles unavailable on this device */ }
-        }
+        // The current default dialer (phone calls must always work).
+        // TelecomManager exposes this publicly; RoleManager's holder list is
+        // a system-only API, so it deliberately isn't used here.
+        try {
+            val telecomManager =
+                appContext.getSystemService(TelecomManager::class.java)
+            telecomManager?.defaultDialerPackage?.let { result += it }
+        } catch (e: Exception) { /* telephony unavailable on this device */ }
         try {
             val ime = Settings.Secure.getString(
                 appContext.contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD
