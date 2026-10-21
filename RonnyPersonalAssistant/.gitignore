@@ -1,0 +1,17 @@
+# Gradle / Android Studio
+.gradle/
+.idea/
+*.iml
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+build/
+
+# Offline toolchain (re-download with tools/fetch-toolchain.py)
+tools/toolchain/
+tools/.piptmp/
+
+# Python
+__pycache__/
+*.pyc

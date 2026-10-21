@@ -1,0 +1,39 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.ronny.assistant'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.ronny.assistant"
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        // The only text in the app that is not in strings.xml is the Hindi
+        // sample text; everything else is translatable.
+        resConfigs "en"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // No AndroidX, no support libraries, no third party SDKs: this app uses
+    // only the Android framework, so there is nothing here to resolve.
+}
+
+dependencies {
+    // Deliberately empty.
+}

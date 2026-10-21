@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ronny Personal Assistant</string>
+    <string name="user_name">Ronny</string>
+
+    <!-- Greetings -->
+    <string name="greet_morning">Good Morning, %1$s!</string>
+    <string name="greet_afternoon">Good Afternoon, %1$s!</string>
+    <string name="greet_evening">Good Evening, %1$s!</string>
+    <string name="greet_night">Good Night, %1$s!</string>
+
+    <!-- Dashboard -->
+    <string name="dash_next_up">NEXT UP</string>
+    <string name="dash_no_more">No more reminders today</string>
+    <string name="dash_all_done">All activities completed. Excellent discipline, %1$s!</string>
+    <string name="dash_countdown_h">%1$dh %2$dm</string>
+    <string name="dash_countdown_m">%1$dm %2$ds</string>
+    <string name="dash_countdown_s">%1$ds</string>
+    <string name="dash_progress">Today\'s progress</string>
+    <string name="dash_completed_of">%1$d of %2$d activities completed</string>
+    <string name="dash_timeline">Today\'s routine</string>
+    <string name="dash_now">NOW</string>
+    <string name="dash_done">DONE</string>
+    <string name="dash_upcoming">UPCOMING</string>
+    <string name="dash_missed">MISSED</string>
+    <string name="dash_quick_actions">Quick actions</string>
+
+    <!-- Actions -->
+    <string name="action_routine">My Routine</string>
+    <string name="action_assistant">AI Assistant</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_done">Done</string>
+    <string name="action_snooze">Snooze</string>
+    <string name="action_skip">Skip</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_add">Add activity</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_close">Close</string>
+    <string name="action_send">Send</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_test">Test</string>
+    <string name="action_reset">Reset to default routine</string>
+    <string name="action_enable_all">Enable all</string>
+    <string name="action_disable_all">Disable all</string>
+
+    <!-- Routine screen -->
+    <string name="routine_title">My Daily Routine</string>
+    <string name="routine_empty">No activities yet. Tap + to add one.</string>
+    <string name="routine_deleted">Activity deleted</string>
+    <string name="routine_saved">Activity saved</string>
+    <string name="edit_title_new">New activity</string>
+    <string name="edit_title_existing">Edit activity</string>
+    <string name="edit_name">Activity name</string>
+    <string name="edit_name_hint">e.g. Running</string>
+    <string name="edit_time">Start time</string>
+    <string name="edit_end_time">End time (optional)</string>
+    <string name="edit_end_time_none">No end time</string>
+    <string name="edit_message">Hindi voice message</string>
+    <string name="edit_message_hint">Hello Ronny! Aapka ye kaam karne ka samay ho gaya hai.</string>
+    <string name="edit_icon">Icon</string>
+    <string name="edit_repeat">Repeat on</string>
+    <string name="edit_sound">Reminder sound</string>
+    <string name="edit_enabled">Reminder enabled</string>
+    <string name="edit_voice">Speak this reminder</string>
+
+    <!-- Days -->
+    <string name="day_s">S</string>
+    <string name="day_m">M</string>
+    <string name="day_t">T</string>
+    <string name="day_w">W</string>
+    <string name="day_th">T</string>
+    <string name="day_f">F</string>
+    <string name="day_sa">S</string>
+    <string name="days_everyday">Every day</string>
+    <string name="days_weekdays">Mon – Fri</string>
+    <string name="days_weekend">Weekends</string>
+    <string name="days_custom">Custom</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_group_reminders">Reminders</string>
+    <string name="settings_master">Enable all reminders</string>
+    <string name="settings_master_off">Reminders are paused. Nothing will ring.</string>
+    <string name="settings_voice">Voice announcements (Hindi)</string>
+    <string name="settings_voice_sub">Speak every reminder aloud</string>
+    <string name="settings_sound">Reminder sound</string>
+    <string name="settings_sound_sub">Pleasant tone played at each reminder</string>
+    <string name="settings_snooze">Snooze duration</string>
+    <string name="settings_behaviour">Reminder behaviour</string>
+    <string name="settings_behaviour_sub">What happens when a reminder fires</string>
+    <string name="settings_volume">Reminder volume</string>
+    <string name="settings_volume_sub">Scales notification and voice playback</string>
+    <string name="settings_language">Voice language</string>
+    <string name="settings_speech_rate">Speech rate</string>
+    <string name="settings_speech_pitch">Speech pitch</string>
+    <string name="settings_group_ai">AI assistant</string>
+    <string name="settings_ai_enable">Use online AI (optional)</string>
+    <string name="settings_ai_sub">Needs internet. Works offline when disabled.</string>
+    <string name="settings_ai_endpoint">Assistant server URL</string>
+    <string name="settings_ai_endpoint_hint">https://your-server.example/assist</string>
+    <string name="settings_ai_note">Never put an API key inside the app. Host the small server in the backend/ folder and keep the key there.</string>
+    <string name="settings_group_reliability">Reliability</string>
+    <string name="settings_reliability_sub">Check these so reminders never arrive late</string>
+    <string name="settings_group_data">Data</string>
+    <string name="settings_reset_sub">Restore Ronny\'s default daily routine</string>
+
+    <!-- Behaviour options -->
+    <string name="behaviour_sound_voice">Sound + voice</string>
+    <string name="behaviour_sound_only">Sound only</string>
+    <string name="behaviour_voice_only">Voice only</string>
+    <string name="behaviour_silent">Silent notification only</string>
+
+    <!-- Reliability -->
+    <string name="rel_title">Make reminders reliable</string>
+    <string name="rel_intro">Android limits background work to save battery. Ronny Personal Assistant works fully offline, but the phone must allow a few things for alarms to ring on time.</string>
+    <string name="rel_notifications">Notifications</string>
+    <string name="rel_notifications_desc">Required to show the reminder card and its Done / Snooze buttons.</string>
+    <string name="rel_exact">Exact alarms</string>
+    <string name="rel_exact_desc">Lets the app fire at 04:30, 05:00, 09:00 exactly instead of "around then".</string>
+    <string name="rel_battery">Battery optimization</string>
+    <string name="rel_battery_desc">Turn this off for the app so Android does not delay alarms while the phone sleeps.</string>
+    <string name="rel_autostart">Auto-start / background activity</string>
+    <string name="rel_autostart_desc">On Xiaomi, Redmi, Oppo, Vivo, Realme, Samsung and Huawei phones, allow Auto-start and disable any battery saver for this app so reminders survive a reboot.</string>
+    <string name="rel_tts">Hindi speech data</string>
+    <string name="rel_tts_desc">Install Hindi (India) speech data in Android Text-to-Speech settings for natural Hindi voice reminders.</string>
+    <string name="rel_state_ok">Allowed</string>
+    <string name="rel_state_todo">Needs attention</string>
+    <string name="rel_state_unknown">Not required on this device</string>
+    <string name="rel_fix">Fix</string>
+    <string name="rel_open">Open</string>
+
+    <!-- Alarm screen -->
+    <string name="alarm_ringing">Reminder</string>
+    <string name="alarm_snoozed_for">Snoozed for %1$d minutes</string>
+    <string name="alarm_marked_done">Marked as done. Shabash, %1$s!</string>
+
+    <!-- Assistant -->
+    <string name="assistant_title">Motivational Assistant</string>
+    <string name="assistant_hint">Ask for motivation, discipline tips, or your next task…</string>
+    <string name="assistant_welcome">Namaste Ronny! Main aapka personal assistant hoon. Aap kisi bhi activity ke liye motivation maang sakte hain — bas likh kar bhej dijiye.</string>
+    <string name="assistant_offline_note">Offline mode: using built-in Hindi motivation. Turn on online AI in Settings for personalised replies.</string>
+    <string name="assistant_thinking">Soch raha hoon…</string>
+    <string name="assistant_error">Internet se jawab nahi mila. Main aapko phir bhi motivate kar sakta hoon!</string>
+    <string name="cmd_progress">How is my day going?</string>
+    <string name="cmd_motivate">Motivate me</string>
+    <string name="cmd_next">What is next?</string>
+    <string name="cmd_discipline">Discipline tips</string>
+
+    <!-- Notification -->
+    <string name="notif_channel_reminders">Routine reminders</string>
+    <string name="notif_channel_reminders_desc">Sound, voice and notification for every scheduled activity</string>
+    <string name="notif_channel_service">Reminder playback</string>
+    <string name="notif_channel_service_desc">Keeps the reminder sound and voice running</string>
+    <string name="notif_channel_general">General</string>
+    <string name="notif_playing">Playing reminder…</string>
+    <string name="notif_snooze">Snooze</string>
+    <string name="notif_done">Done</string>
+    <string name="notif_snoozed_title">Snoozed: %1$s</string>
+    <string name="notif_snoozed_text">Next alert at %1$s</string>
+
+    <!-- Misc -->
+    <string name="sound_chime">Morning Chime</string>
+    <string name="sound_bell">Soft Bell</string>
+    <string name="sound_sunrise">Sunrise Pad</string>
+    <string name="sound_system_alarm">Phone alarm sound</string>
+    <string name="sound_system_notification">Phone notification sound</string>
+    <string name="sound_silent">Silent</string>
+    <string name="time_12h">Use 24-hour time</string>
+    <string name="permission_rationale">Ronny Personal Assistant needs notification and alarm permissions to remind you on time. Nothing else is required and no data leaves your phone unless you enable the optional online assistant.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset_confirm_title">Reset routine?</string>
+    <string name="reset_confirm_body">This replaces your current schedule with Ronny\'s default daily routine.</string>
+    <string name="delete_confirm_title">Delete activity?</string>
+    <string name="delete_confirm_body">"%1$s" will be removed from your routine.</string>
+    <string name="tts_missing">Hindi speech data is not installed on this phone. Would you like to open Text-to-Speech settings?</string>
+    <string name="toast_tts_test">Testing Hindi voice…</string>
+</resources>
