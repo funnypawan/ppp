@@ -18,7 +18,8 @@ jobs:
         with:
           gradle-version: '8.9'
       - id: compile
-        run: gradle :teacherApp:assembleDebug :studentApp:assembleDebug --stacktrace 2>&1 | tee build.log
+        shell: bash
+        run: set -o pipefail; gradle :teacherApp:assembleDebug :studentApp:assembleDebug --stacktrace 2>&1 | tee build.log
       - if: failure()
         run: tail -100 build.log >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
@@ -26,5 +27,5 @@ jobs:
           name: dream-classes-apks
           if-no-files-found: error
           path: |
-            teacherApp/build/outputs/apk/debug/teacherApp-debug.apk
-            studentApp/build/outputs/apk/debug/studentApp-debug.apk
+            teacherApp/build/outputs/apk/debug/*.apk
+            studentApp/build/outputs/apk/debug/*.apk
