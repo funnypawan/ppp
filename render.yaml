@@ -1,0 +1,25 @@
+# Dream Classes server ko Render par free deploy karne ke liye (phone browser se ho jayega).
+# Render Dashboard -> New -> Blueprint -> ye GitHub repo chunein.
+# NOTE: Free plan par disk temporary hoti hai — server restart par data (students/uploads)
+# mit sakta hai. Asli use ke liye Render ka paid Disk (mountPath /var/data) jodein aur
+# data/uploads ko wahin rakhein, ya koi VPS lein. Testing/demo ke liye free theek hai.
+services:
+  - type: web
+    name: dream-classes
+    env: node
+    rootDir: dream-classes
+    buildCommand: npm install
+    startCommand: node seed.js && node server.js
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        value: admin@dreamclasses.in
+      - key: ADMIN_PASSWORD
+        sync: false      # Render aapse khud puchega — majboot password dein
+      - key: TRUST_PROXY
+        value: "1"
+      # OTP ke liye baad me Render env me add karein: OTP_MODE=production, MSG91_AUTH_KEY, MSG91_TEMPLATE_ID

@@ -1,19 +1,15 @@
 # 📱 Dream Classes — Android App (Capacitor)
 
-**Status:** Real Capacitor 8 Android project generated & configured in `android/`.
-**APK:** ❌ Not built in the AI sandbox — verified 2026-10-22 (Round 4): no `java`/`javac`/
-`gradle`/`sdkmanager`/`adb`, `JAVA_HOME`/`ANDROID_HOME` unset, and the sandbox network cannot
-reach `dl.google.com`, `services.gradle.org` or Maven Central, so the toolchain cannot be
-installed there either. `./gradlew assembleDebug` fails immediately with
-"ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH."
-No `.apk` file exists in this repository. Build on any PC with the steps below (≈15 min first time).
-
-### ✅ Verified before hand-off (Round 4)
-- `capacitor.config.json` valid: appId `in.dreamclasses.app`, name **Dream Classes**, HTTPS `server.url` placeholder (replace — see below), cleartext off
-- `npx cap sync android` re-run: web assets in `android/app/src/main/assets/public/` are byte-identical to `public/` (md5 verified), native bridge included, 4 plugins registered (App, Filesystem, SplashScreen, StatusBar)
-- Manifest: INTERNET / ACCESS_NETWORK_STATE / POST_NOTIFICATIONS / CAMERA, `usesCleartextTraffic=false`, `allowBackup=false`, network-security config present; all project XML parses cleanly; every referenced resource exists
-- Secrets scan of everything that would go into the APK: **no passwords, JWT/OTP keys, or private keys** (only the placeholder domain)
-- Back-button, status-bar, splash-hide logic ships in `assets/public/js/native-bridge.js`; FLAG_SECURE confirmed in `MainActivity.java`
+**Status:** ✅ **APK GitHub Actions (cloud) se banta hai** — PC ki zaroorat nahi.
+**APK:** ✅ Pehla safal build: GitHub Actions run **#39745570771** — artifact **Dream-Classes-APK**
+(andar file: `DreamClasses-v1.0-debug.apk`, lagbhag 8.6 MB zip). Har push par aur
+"Run workflow" dabane par naya APK ban jata hai (.github/workflows/build-android-apk.yml).
+Phone se download: GitHub repo → **Actions** → sabse upar wala safal (✓) run → neeche
+**Artifacts → Dream-Classes-APK** → zip download → APK install (step-by-step neeche).
+⚠️ Dhyan dein: APK tabhi andar classes dikhayega jab server internet par live ho aur
+uska URL build ke samay diya gaya ho (workflow ka `server_url` box). Abhi wala APK
+placeholder address par bana hai — install hoga, par app khulne par server nahi milega.
+Server free me live karne ke liye repo root me `render.yaml` ready hai (PRODUCTION.md dekhein).
 
 ## Already configured
 - App name **Dream Classes**, package ID **`in.dreamclasses.app`**
