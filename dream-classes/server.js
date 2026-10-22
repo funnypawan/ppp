@@ -18,10 +18,24 @@ const { db, getSetting, setSetting } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'CHANGE_ME_IN_PRODUCTION_' + crypto.createHash('sha256').update(__dirname).digest('hex').slice(0, 16);
+let JWT_SECRET = process.env.JWT_SECRET || getSetting('jwt_secret', '');
+if (!JWT_SECRET) { JWT_SECRET = crypto.randomBytes(32).toString('hex'); setSetting('jwt_secret', JWT_SECRET); }
+const CONFIG_WARNINGS = [];
+if (!process.env.JWT_SECRET) CONFIG_WARNINGS.push('JWT_SECRET env not set — using a generated secret stored in the local DB. Set JWT_SECRET in production.');
+if (process.env.OTP_MODE !== 'production') CONFIG_WARNINGS.push('OTP is in DEV MODE (code shown on screen). Set OTP_MODE=production + MSG91_AUTH_KEY for real SMS/WhatsApp OTP.');
+else if (!process.env.MSG91_AUTH_KEY) CONFIG_WARNINGS.push('OTP_MODE=production but MSG91_AUTH_KEY is missing — OTP requests will return a configuration error.');
 const DEV_OTP_MODE = process.env.OTP_MODE !== 'production'; // set OTP_MODE=production + SMS keys for real SMS
 
-app.use(cors());
+if (process.env.TRUST_PROXY === '1') app.set('trust proxy', 1);
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://localhost,capacitor://localhost,http://localhost').split(',').map(x => x.trim());
+app.use(cors({ origin: (origin, cb) => cb(null, !origin || ALLOWED_ORIGINS.includes(origin)) }));
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(self), microphone=()');
+  next();
+});
 app.use(express.json({ limit: '2mb' }));
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
 // Vendored browser libs (served locally — no CDN dependency): PDF.js reader + HLS adaptive playback
@@ -106,18 +120,25 @@ const upThumb = makeUpload('thumbs', /\.(jpg|jpeg|png|webp)$/, 5);
 
 // ---------- OTP AUTH (students) ----------
 const otpLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 8, message: { error: 'Too many OTP requests. Try after some time.' } });
-app.post('/api/auth/request-otp', otpLimiter, (req, res) => {
+const verifyLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 30, message: { error: 'Too many attempts. Try after some time.' } });
+const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 15, message: { error: 'Too many login attempts. Try after some time.' } });
+app.post('/api/auth/request-otp', otpLimiter, async (req, res) => {
   const mobile = String(req.body.mobile || '').replace(/\D/g, '');
   if (!/^[6-9]\d{9}$/.test(mobile)) return res.status(400).json({ error: 'Enter a valid 10-digit Indian mobile number' });
   const code = String(Math.floor(100000 + Math.random() * 900000));
   db.prepare('DELETE FROM otps WHERE mobile=?').run(mobile);
   db.prepare('INSERT INTO otps(mobile,code_hash,expires_at,created_at) VALUES(?,?,?,?)').run(mobile, bcrypt.hashSync(code, 8), Date.now() + 5 * 60 * 1000, Date.now());
   audit(null, 'OTP_REQUEST', maskMobile(mobile), req);
-  // PRODUCTION: send via MSG91/Twilio/WhatsApp Business API here (see README). Dev mode returns code for testing.
   if (DEV_OTP_MODE) return res.json({ ok: true, devOtp: code, note: 'DEV MODE: OTP shown here only for testing. Configure SMS/WhatsApp provider for production.' });
-  res.json({ ok: true, note: 'OTP sent to your mobile number.' });
+  // Production: MSG91 Flow/SendOTP (requires MSG91_AUTH_KEY + approved sender/template on your MSG91 account).
+  if (!process.env.MSG91_AUTH_KEY) return res.status(503).json({ error: 'OTP service is not configured on the server. Please contact Dream Classes office.' });
+  try {
+    const r = await fetch('https://control.msg91.com/api/v5/otp?template_id=' + encodeURIComponent(process.env.MSG91_TEMPLATE_ID || '') + '&mobile=91' + mobile + '&otp=' + code, { method: 'POST', headers: { authkey: process.env.MSG91_AUTH_KEY, 'Content-Type': 'application/json' } });
+    if (!r.ok) throw new Error('provider ' + r.status);
+    return res.json({ ok: true, note: 'OTP sent to your mobile number.' });
+  } catch (e) { console.error('OTP provider error:', e.message); return res.status(502).json({ error: 'Could not send OTP right now. Please try again.' }); }
 });
-app.post('/api/auth/verify-otp', (req, res) => {
+app.post('/api/auth/verify-otp', verifyLimiter, (req, res) => {
   const mobile = String(req.body.mobile || '').replace(/\D/g, ''), code = String(req.body.code || ''), name = String(req.body.name || '').trim(), classId = req.body.class_id || null, deviceId = String(req.body.device_id || 'web');
   const row = db.prepare('SELECT * FROM otps WHERE mobile=? ORDER BY id DESC').get(mobile);
   if (!row || row.expires_at < Date.now()) return res.status(400).json({ error: 'OTP expired. Request a new OTP.' });
@@ -140,7 +161,7 @@ app.post('/api/auth/verify-otp', (req, res) => {
   res.json({ token: sign(user), user: publicUser(user) });
 });
 // ---------- ADMIN AUTH ----------
-app.post('/api/auth/admin-login', otpLimiter, (req, res) => {
+app.post('/api/auth/admin-login', loginLimiter, (req, res) => {
   const { email, password } = req.body || {};
   const u = db.prepare('SELECT * FROM users WHERE email=? AND role IN (?,?)').get(String(email || '').toLowerCase(), 'SUPER_ADMIN', 'TEACHER');
   if (!u || !u.password_hash || !bcrypt.compareSync(String(password || ''), u.password_hash)) return res.status(401).json({ error: 'Invalid email or password' });
@@ -156,9 +177,26 @@ app.put('/api/auth/profile', auth, (req, res) => {
   res.json({ user: publicUser(db.prepare('SELECT * FROM users WHERE id=?').get(req.user.id)) });
 });
 app.post('/api/auth/photo', auth, upImg.single('photo'), (req, res) => { if (!req.file) return res.status(400).json({ error: 'No photo uploaded' }); const p = '/uploads/images/' + req.file.filename; db.prepare('UPDATE users SET photo=? WHERE id=?').run(p, req.user.id); res.json({ photo: p }); });
-app.delete('/api/auth/account', auth, (req, res) => { db.prepare('DELETE FROM users WHERE id=?').run(req.user.id); audit(req.user.id, 'ACCOUNT_DELETED', req.user.name, req); res.json({ ok: true }); });
-app.use('/uploads/images', express.static(path.join(__dirname, 'uploads', 'images')));
+app.delete('/api/auth/account', auth, (req, res) => { if (req.user.role === 'SUPER_ADMIN') return res.status(400).json({ error: 'Super Admin account cannot be deleted from the app.' }); db.prepare('DELETE FROM users WHERE id=?').run(req.user.id); audit(req.user.id, 'ACCOUNT_DELETED', req.user.name, req); res.json({ ok: true }); });
 app.use('/uploads/thumbs', express.static(path.join(__dirname, 'uploads', 'thumbs')));
+// Private uploads (profile photos, doubt question/solution images & PDFs): authenticated + ownership-checked.
+app.get('/api/files/images/:name', auth, (req, res) => {
+  const name = path.basename(req.params.name);
+  if (name !== req.params.name || !/^[\w.-]+$/.test(name)) return res.status(400).json({ error: 'Bad file name' });
+  const rel = '/uploads/images/' + name;
+  const u = req.user;
+  let allowed = u.role !== 'STUDENT';
+  if (!allowed && u.photo === rel) allowed = true;
+  if (!allowed) allowed = !!db.prepare('SELECT 1 FROM doubts WHERE image=? AND student_id=?').get(rel, u.id);
+  if (!allowed) allowed = !!db.prepare('SELECT 1 FROM doubt_replies r JOIN doubts d ON d.id=r.doubt_id WHERE (r.image=? OR r.pdf=?) AND d.student_id=?').get(rel, rel, u.id);
+  if (!allowed) return res.status(403).json({ error: 'Not your file' });
+  const file = path.join(__dirname, 'uploads', 'images', name);
+  if (!fs.existsSync(file)) return res.status(404).end();
+  const types = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.pdf': 'application/pdf' };
+  res.setHeader('Content-Type', types[path.extname(name).toLowerCase()] || 'application/octet-stream');
+  res.setHeader('Cache-Control', 'private, max-age=300');
+  fs.createReadStream(file).pipe(res);
+});
 
 // ---------- PUBLIC CATALOG (names only; content needs approval) ----------
 app.get('/api/catalog', (req, res) => {
@@ -184,7 +222,15 @@ function chapterContent(chapterId, user) {
   const practiceCount = db.prepare('SELECT COUNT(*) n FROM practice_questions WHERE chapter_id=? AND published=1').get(chapterId).n;
   return { videos, pdfs, tests, practiceCount };
 }
-app.get('/api/chapters/:id/content', auth, studentActive, (req, res) => res.json(chapterContent(+req.params.id, req.user)));
+function chapterVisible(chapterId, user) {
+  if (user.role !== 'STUDENT') return true;
+  return !!db.prepare(`SELECT 1 FROM chapters ch JOIN subjects s ON s.id=ch.subject_id JOIN classes c ON c.id=s.class_id
+    WHERE ch.id=? AND ch.published=1 AND s.published=1 AND c.published=1`).get(chapterId);
+}
+app.get('/api/chapters/:id/content', auth, studentActive, (req, res) => {
+  if (!chapterVisible(+req.params.id, req.user)) return res.status(404).json({ error: 'Chapter not available' });
+  res.json(chapterContent(+req.params.id, req.user));
+});
 
 // Signed, short-lived playback token (5 min)
 app.get('/api/videos/:id/play', auth, studentActive, (req, res) => {
@@ -214,6 +260,8 @@ app.get('/api/stream/:id', (req, res) => {
 });
 app.post('/api/progress', auth, studentActive, (req, res) => {
   const { video_id, position_sec, completed } = req.body || {};
+  const v = db.prepare('SELECT id FROM videos WHERE id=? AND published=1').get(+video_id);
+  if (!v || !canAccess('video_batches', v.id, req.user)) return res.status(403).json({ error: 'Not allowed' });
   db.prepare('INSERT INTO progress(student_id,video_id,position_sec,completed) VALUES(?,?,?,?) ON CONFLICT(student_id,video_id) DO UPDATE SET position_sec=excluded.position_sec, completed=MAX(completed,excluded.completed), updated_at=datetime(?)')
     .run(req.user.id, +video_id, Math.floor(position_sec || 0), completed ? 1 : 0, 'now');
   res.json({ ok: true });
@@ -247,7 +295,7 @@ app.get('/api/pdfs/:id/file', auth, studentActive, async (req, res) => {
   res.setHeader('Content-Disposition', 'inline; filename="dream-classes-notes.pdf"');
   fs.createReadStream(file).pipe(res);
 });
-app.post('/api/pdfs/:id/progress', auth, studentActive, (req, res) => { db.prepare('INSERT INTO pdf_progress(student_id,pdf_id,page) VALUES(?,?,?) ON CONFLICT(student_id,pdf_id) DO UPDATE SET page=excluded.page').run(req.user.id, +req.params.id, +req.body.page || 1); res.json({ ok: true }); });
+app.post('/api/pdfs/:id/progress', auth, studentActive, (req, res) => { const p = db.prepare('SELECT id FROM pdf_notes WHERE id=? AND published=1').get(+req.params.id); if (!p || !canAccess('pdf_batches', p.id, req.user)) return res.status(403).json({ error: 'Not allowed' }); db.prepare('INSERT INTO pdf_progress(student_id,pdf_id,page) VALUES(?,?,?) ON CONFLICT(student_id,pdf_id) DO UPDATE SET page=excluded.page').run(req.user.id, +req.params.id, +req.body.page || 1); res.json({ ok: true }); });
 app.get('/api/pdfs/:id/progress', auth, (req, res) => res.json(db.prepare('SELECT page FROM pdf_progress WHERE student_id=? AND pdf_id=?').get(req.user.id, +req.params.id) || { page: 1 }));
 
 // ---------- TESTS (server-side scoring; answers never sent before review) ----------
@@ -279,7 +327,11 @@ app.post('/api/tests/attempts/:id/submit', auth, studentActive, (req, res) => {
   const a = db.prepare("SELECT * FROM test_attempts WHERE id=? AND student_id=? AND status='IN_PROGRESS'").get(+req.params.id, req.user.id);
   if (!a) return res.status(400).json({ error: 'Already submitted or invalid attempt (duplicate submission blocked).' });
   const t = db.prepare('SELECT * FROM tests WHERE id=?').get(a.test_id);
-  const answers = req.body.answers || JSON.parse(a.answers || '{}');
+  const elapsedSec = Math.floor((Date.now() - a.started_at) / 1000);
+  const lateSec = elapsedSec - (t.duration_min * 60);
+  // Anti-cheat: after time + 2 min grace, ignore newly-sent answers; score only what was auto-saved during the test.
+  const answers = lateSec > 120 ? JSON.parse(a.answers || '{}') : (req.body.answers || JSON.parse(a.answers || '{}'));
+  if (lateSec > 120) audit(req.user.id, 'TEST_SUBMIT_LATE', t.title + ' lateBy=' + lateSec + 's (scored from auto-saved answers)', req);
   const qs = db.prepare('SELECT * FROM questions WHERE test_id=?').all(a.test_id);
   let score = 0, total = 0, c = 0, w = 0, s = 0;
   qs.forEach(q => { total += q.marks; const sel = answers[q.id]; if (sel === undefined || sel === null || sel === '') s++; else if (+sel === q.correct) { score += q.marks; c++; } else { score -= (t.negative_mark || 0); w++; } });
@@ -397,6 +449,7 @@ app.get('/api/dashboard', auth, (req, res) => {
 
 // ---------- PRACTICE QUESTIONS (untimed, instant server-checked feedback) ----------
 app.get('/api/chapters/:id/practice', auth, studentActive, (req, res) => {
+  if (!chapterVisible(+req.params.id, req.user)) return res.status(404).json({ error: 'Chapter not available' });
   const qs = db.prepare('SELECT id,text,options FROM practice_questions WHERE chapter_id=? AND published=1 ORDER BY sort').all(+req.params.id)
     .map(q => ({ ...q, options: JSON.parse(q.options), answered: req.user.role === 'STUDENT' ? (db.prepare('SELECT correct FROM practice_answers WHERE student_id=? AND question_id=?').get(req.user.id, q.id)?.correct ?? null) : null }));
   res.json({ questions: qs });
@@ -511,7 +564,7 @@ app.delete('/api/admin/announcements/:id', (req, res) => { db.prepare('DELETE FR
 app.get('/api/admin/settings', (req, res) => res.json({ approval_mode: getSetting('approval_mode', 'MANUAL') }));
 app.put('/api/admin/settings', superOnly, (req, res) => { setSetting('approval_mode', req.body.approval_mode === 'AUTO' ? 'AUTO' : 'MANUAL'); res.json({ ok: true }); });
 app.get('/api/admin/teachers', superOnly, (req, res) => res.json({ items: db.prepare("SELECT id,name,email,role,status,created_at FROM users WHERE role IN ('SUPER_ADMIN','TEACHER')").all() }));
-app.post('/api/admin/teachers', superOnly, (req, res) => { const { name, email, password } = req.body; const id = db.prepare("INSERT INTO users(role,name,email,password_hash,status) VALUES('TEACHER',?,?,?,'APPROVED')").run(name, String(email).toLowerCase(), bcrypt.hashSync(password, 10)).lastInsertRowid; res.json({ id }); });
+app.post('/api/admin/teachers', superOnly, (req, res) => { const { name, email, password } = req.body; if (!name || !email || !password || String(password).length < 8) return res.status(400).json({ error: 'Name, email and a password of 8+ characters are required' }); if (db.prepare('SELECT 1 FROM users WHERE email=?').get(String(email).toLowerCase())) return res.status(400).json({ error: 'Email already registered' }); const id = db.prepare("INSERT INTO users(role,name,email,password_hash,status) VALUES('TEACHER',?,?,?,'APPROVED')").run(name, String(email).toLowerCase(), bcrypt.hashSync(password, 10)).lastInsertRowid; res.json({ id }); });
 app.get('/api/admin/audit', superOnly, (req, res) => res.json({ items: db.prepare('SELECT * FROM audit_logs ORDER BY id DESC LIMIT 100').all() }));
 
 // Practice questions admin CRUD
@@ -551,8 +604,23 @@ app.get('/api/admin/backup.db', superOnly, (req, res) => {
   res.download(path.join(__dirname, 'data', 'dream.db'), 'dream-classes-backup.db');
 });
 
+app.get('/api/admin/config-status', (req, res) => {
+  const warnings = [...CONFIG_WARNINGS];
+  try { const sa = db.prepare("SELECT password_hash FROM users WHERE role='SUPER_ADMIN' ORDER BY id LIMIT 1").get(); if (sa && bcrypt.compareSync('Dream@12345', sa.password_hash)) warnings.push('Super Admin is still using the DEFAULT password — change it now (Settings → Change My Password).'); } catch {}
+  const proto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http');
+  if (proto !== 'https' && process.env.NODE_ENV === 'production') warnings.push('Requests are not arriving over HTTPS — put the app behind an HTTPS reverse proxy (Caddy/Nginx) before real students use it.');
+  res.json({
+    otpMode: DEV_OTP_MODE ? 'DEV (code shown on screen)' : 'PRODUCTION',
+    msg91Configured: !!process.env.MSG91_AUTH_KEY,
+    jwtSecretFromEnv: !!process.env.JWT_SECRET,
+    webPushReady: !!VAPID_PUBLIC,
+    https: proto === 'https',
+    approvalMode: getSetting('approval_mode', 'MANUAL'),
+    warnings
+  });
+});
 app.get('/api/health', (req, res) => res.json({ ok: true, app: 'Dream Classes', time: new Date().toISOString() }));
 app.use((err, req, res, next) => { console.error(err); res.status(400).json({ error: err.message || 'Something went wrong' }); });
 
-if (require.main === module) app.listen(PORT, '0.0.0.0', () => console.log(`\n🎓 DREAM CLASSES running → http://0.0.0.0:${PORT}\n   Student App: /  |  Teacher Panel: /admin\n`));
+if (require.main === module) app.listen(PORT, '0.0.0.0', () => { console.log(`\n🎓 DREAM CLASSES running → http://0.0.0.0:${PORT}\n   Student App: /  |  Teacher Panel: /admin\n`); CONFIG_WARNINGS.forEach(w => console.warn('⚠️  CONFIG:', w)); });
 module.exports = app;

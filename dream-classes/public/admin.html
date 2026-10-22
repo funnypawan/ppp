@@ -22,6 +22,7 @@ let TOKEN=localStorage.getItem('dc_admin')||'',USER=null,VIEW='dash',CACHE={};
 const theme=localStorage.getItem('dc_theme')||'system';
 document.documentElement.dataset.theme=(theme==='dark'||(theme==='system'&&matchMedia('(prefers-color-scheme: dark)').matches))?'dark':'light';
 function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),3400)}
+function imgUrl(p){if(!p)return '';if(p.startsWith('/uploads/images/'))return '/api/files/images/'+p.split('/').pop()+'?token='+encodeURIComponent(TOKEN);return p}
 function esc(s){return String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]))}
 async function api(p,opt={}){opt.headers={...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(TOKEN?{Authorization:'Bearer '+TOKEN}:{})};
  const r=await fetch(p,opt);const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.message||d.error||'Error');return d}
@@ -287,8 +288,8 @@ async function doubtsAdmin(filter=''){loading();const d=await api('/api/doubts')
  const list=d.doubts.filter(x=>!filter||x.status===filter);
  main(`<h1>💬 Student Doubts</h1><div class="row" style="margin:12px 0;flex-wrap:wrap">${['','PENDING','IN_PROGRESS','ANSWERED','RESOLVED'].map(f=>`<button class="btn small ${filter===f?'':'secondary'}" onclick="doubtsAdmin('${f}')">${f||'All'}</button>`).join(' ')}</div>
  ${list.map(x=>`<div class="card"><div class="row between"><b>${esc(x.student_name)}</b><span class="badge ${x.status==='RESOLVED'?'ok':x.status==='PENDING'?'warn':''}">${x.status.replace('_',' ')}</span></div>
- <p style="margin:8px 0">${esc(x.question)}</p>${x.image?`<img src="${esc(x.image)}" style="max-width:320px;border-radius:12px">`:''}<p class="muted">${esc(x.created_at)}</p>
- ${x.replies.map(r=>`<div style="border-left:3px solid ${r.author_role==='STUDENT'?'var(--line)':'var(--brand)'};padding:6px 10px;margin:8px 0"><b>${r.author_role==='STUDENT'?esc(x.student_name):'Dream Sir'}:</b> ${esc(r.text)}${r.image?`<br><img src="${esc(r.image)}" style="max-width:280px;border-radius:10px;margin-top:6px">`:''}${r.pdf?`<br><a href="${esc(r.pdf)}" target="_blank">📄 PDF Solution</a>`:''}</div>`).join('')}
+ <p style="margin:8px 0">${esc(x.question)}</p>${x.image?`<img src="${esc(imgUrl(x.image))}" style="max-width:320px;border-radius:12px">`:''}<p class="muted">${esc(x.created_at)}</p>
+ ${x.replies.map(r=>`<div style="border-left:3px solid ${r.author_role==='STUDENT'?'var(--line)':'var(--brand)'};padding:6px 10px;margin:8px 0"><b>${r.author_role==='STUDENT'?esc(x.student_name):'Dream Sir'}:</b> ${esc(r.text)}${r.image?`<br><img src="${esc(imgUrl(r.image))}" style="max-width:280px;border-radius:10px;margin-top:6px">`:''}${r.pdf?`<br><a href="${esc(imgUrl(r.pdf))}" target="_blank">📄 PDF Solution</a>`:''}</div>`).join('')}
  <label>Your Answer</label><textarea id="ar-${x.id}" rows="2" placeholder="Explain the solution…"></textarea>
  <label>Attach solution image (optional)</label><input type="file" id="ai-${x.id}" accept="image/*">
  <label>Attach PDF solution (optional)</label><input type="file" id="ap-${x.id}" accept="application/pdf">
@@ -326,10 +327,12 @@ async function postAnn(){await api('/api/admin/announcements',{method:'POST',bod
 
 /* SETTINGS */
 async function settingsView(){loading();const s=await api('/api/admin/settings');
+ const cfg=await api('/api/admin/config-status').catch(()=>({warnings:[]}));
+ const cfgCard=cfg.warnings?.length?`<div class="card" style="background:#fef3c7;border-color:#f59e0b;color:#231300"><h3>⚠️ Production Configuration Warnings</h3>${cfg.warnings.map(w=>`<p style="margin-top:6px">• ${esc(w)}</p>`).join('')}<p style="margin-top:8px"><small>OTP mode: ${esc(cfg.otpMode||'')} · Push ready: ${cfg.webPushReady?'Yes':'No'} · HTTPS: ${cfg.https?'Yes':'No'} · See PRODUCTION.md / .env.example in the project.</small></p></div>`:`<div class="card"><h3>✅ Production Configuration</h3><p class="muted">No configuration warnings. OTP: ${esc(cfg.otpMode||'')} · HTTPS: ${cfg.https?'Yes':'No'}</p></div>`;
  let teachers='';if(USER.role==='SUPER_ADMIN'){const t=await api('/api/admin/teachers');
   teachers=`<div class="card"><h3>👩‍🏫 Teachers</h3>${t.items.map(x=>`<p style="margin-top:6px">${esc(x.name)} — ${esc(x.email)} <span class="badge">${x.role}</span></p>`).join('')}
   <div class="row" style="flex-wrap:wrap;margin-top:12px"><input id="tn" placeholder="Teacher name" style="max-width:180px;margin:0"><input id="te" placeholder="Email" style="max-width:200px;margin:0"><input id="tp" type="password" placeholder="Password" style="max-width:160px;margin:0"><button class="btn small" onclick="addTeacher()">+ Add Teacher</button></div></div>`}
- main(`<h1>⚙️ Settings</h1><div class="card"><h3>Student Registration Approval</h3>
+ main(`<h1>⚙️ Settings</h1>${cfgCard}<div class="card"><h3>Student Registration Approval</h3>
  <p class="muted">MANUAL = Dream Sir approves each new student. AUTO = students get instant access after OTP.</p>
  <select id="appr"><option value="MANUAL" ${s.approval_mode==='MANUAL'?'selected':''}>Manual Approval (recommended)</option><option value="AUTO" ${s.approval_mode==='AUTO'?'selected':''}>Automatic Approval</option></select>
  <button class="btn" onclick="saveSettings()">Save Settings ✓</button></div>${teachers}
@@ -342,7 +345,6 @@ async function settingsView(){loading();const s=await api('/api/admin/settings')
  <p class="muted" style="margin-top:8px">Production checklist (SMS/WhatsApp OTP, Firebase push, domain, APK) — see README in project folder.</p></div>`)}
 async function changePw(){try{await api('/api/admin/change-password',{method:'POST',body:JSON.stringify({current:$('#cp1').value,next:$('#cp2').value})});toast('Password changed. Please login again');setTimeout(logout,1200)}catch(e){toast(e.message)}}
 async function saveSettings(){await api('/api/admin/settings',{method:'PUT',body:JSON.stringify({approval_mode:$('#appr').value})});toast('Settings saved ✓')}
-async function addTeacher(){try{await api('/api/admin/teachers',{method:'POST',body:JSON.stringify({name:$('#tn').value,email:$('#te').value,password:$('#tp').value})});toast('Teacher added ✓');settingsView()}catch(e){toast(e.message)}}
 
 async function boot(){if(!TOKEN)return loginView();try{const d=await api('/api/auth/me');USER=d.user;if(USER.role==='STUDENT')throw new Error('x');shell();go('dash')}catch{logout()}}
 boot();

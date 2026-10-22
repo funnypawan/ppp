@@ -5,6 +5,7 @@
 <title>Dream Classes — by Dream Sir</title>
 <meta name="theme-color" content="#4f46e5"><link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/icons/icon-512.png"><link rel="stylesheet" href="/css/style.css">
+<script src="/vendor/pdfjs/pdf.min.js"></script><script src="/vendor/hls/hls.min.js"></script><script src="/js/native-bridge.js"></script>
 <style>
 .wrap{max-width:560px;margin:0 auto;padding:0 14px 96px}
 .topbar{position:sticky;top:0;z-index:40;background:linear-gradient(135deg,#4f46e5,#3730a3);color:#fff;padding:14px}
@@ -46,6 +47,7 @@ applyTheme(theme);
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();DEFERRED=e});
 if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),3400)}
+function imgUrl(p){if(!p)return '';if(p.startsWith('/uploads/images/'))return '/api/files/images/'+p.split('/').pop()+'?token='+encodeURIComponent(TOKEN);return p}
 function esc(s){return String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]))}
 async function api(path,opt={}){opt.headers={...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(TOKEN?{Authorization:'Bearer '+TOKEN}:{})};
  const r=await fetch(path,opt); const d=await r.json().catch(()=>({}));
@@ -283,8 +285,8 @@ async function doubtsView(){loading();try{const d=await api('/api/doubts');
  <label>Photo of Question (optional)</label><input type="file" id="dimg" accept="image/*">
  <button class="btn" onclick="askDoubt()">Send to Dream Sir →</button></div>
  <h2 class="sec">My Doubts</h2>`+(d.doubts.length?d.doubts.map(x=>`<div class="card"><div class="row between"><b>${esc(x.question)}</b><span class="badge ${x.status==='RESOLVED'?'ok':x.status==='ANSWERED'?'':'warn'}">${x.status.replace('_',' ')}</span></div>
- ${x.image?`<img src="${esc(x.image)}" style="max-width:100%;border-radius:12px;margin:8px 0">`:''}<p class="muted">${esc(x.created_at)}</p>
- ${x.replies.map(r=>`<div style="border-left:3px solid ${r.author_role==='STUDENT'?'var(--line)':'var(--brand)'};padding:6px 10px;margin:8px 0"><b>${r.author_role==='STUDENT'?'You':'Dream Sir'}:</b> ${esc(r.text)}${r.image?`<br><img src="${esc(r.image)}" style="max-width:100%;border-radius:10px;margin-top:6px">`:''}${r.pdf?`<br><a href="${esc(r.pdf)}" target="_blank">📄 View PDF Solution</a>`:''}</div>`).join('')}
+ ${x.image?`<img src="${esc(imgUrl(x.image))}" style="max-width:100%;border-radius:12px;margin:8px 0">`:''}<p class="muted">${esc(x.created_at)}</p>
+ ${x.replies.map(r=>`<div style="border-left:3px solid ${r.author_role==='STUDENT'?'var(--line)':'var(--brand)'};padding:6px 10px;margin:8px 0"><b>${r.author_role==='STUDENT'?'You':'Dream Sir'}:</b> ${esc(r.text)}${r.image?`<br><img src="${esc(imgUrl(r.image))}" style="max-width:100%;border-radius:10px;margin-top:6px">`:''}${r.pdf?`<br><a href="${esc(imgUrl(r.pdf))}" target="_blank">📄 View PDF Solution</a>`:''}</div>`).join('')}
  <div class="row"><input id="fr-${x.id}" placeholder="Follow-up question…" style="margin:0"><button class="btn small" onclick="followUp(${x.id})">Send</button></div>
  ${x.status!=='RESOLVED'?`<button class="btn small secondary" style="margin-top:8px" onclick="doubtStatus(${x.id},'RESOLVED')">✅ Mark Resolved</button>`:`<button class="btn small secondary" style="margin-top:8px" onclick="doubtStatus(${x.id},'PENDING')">↩ Reopen</button>`}</div>`).join(''):'<div class="empty"><div class="big">💬</div><p>No doubts yet. Ask your first doubt above!</p></div>');
 }catch(e){$('#main').innerHTML=errBox(e,'doubtsView()')}}
@@ -301,7 +303,7 @@ async function notifView(){loading();try{const d=await api('/api/notifications')
 async function markRead(id){await api('/api/notifications/'+id+'/read',{method:'POST',body:'{}'});updateBell();notifView()}
 function profileView(){
  $('#main').innerHTML=`<h2 class="sec">👤 My Profile</h2><div class="card center">
- ${USER.photo?`<img src="${esc(USER.photo)}" style="width:84px;height:84px;border-radius:50%;object-fit:cover">`:'<div style="font-size:3rem">🎓</div>'}
+ ${USER.photo?`<img src="${esc(imgUrl(USER.photo))}" style="width:84px;height:84px;border-radius:50%;object-fit:cover">`:'<div style="font-size:3rem">🎓</div>'}
  <h3>${esc(USER.name)}</h3><p class="muted">Mobile: ${esc(USER.maskedMobile||'')} · Status: <span class="badge ${USER.status==='APPROVED'?'ok':'warn'}">${USER.status}</span><br>Member since ${esc((USER.created_at||'').slice(0,10))}</p>
  <label style="display:block;margin-top:10px">Change Photo</label><input type="file" accept="image/*" onchange="uploadPhoto(this)"></div>
  <div class="card"><b>🎨 Theme</b><div style="margin-top:8px">${['light','dark','system'].map(t=>`<span class="chip ${localStorage.getItem('dc_theme')===t?'on':''}" onclick="applyTheme('${t}');profileView()">${t==='light'?'☀️ Light':t==='dark'?'🌙 Dark':'⚙️ System'}</span>`).join('')}</div></div>

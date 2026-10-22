@@ -9,7 +9,7 @@ cd dream-classes
 npm install
 ADMIN_PASSWORD='YourStrongPassword' node seed.js   # creates Super Admin + Class 9–12 structure
 npm start                                            # http://localhost:3000
-npm test                                             # 56 end-to-end tests (2 suites)
+npm test                                             # 104 end-to-end tests (3 suites: smoke + features + workflows/security)
 ```
 - **Student App:** `/` — login with mobile OTP (in dev mode the OTP is shown on screen for testing)
 - **Teacher Panel:** `/admin` — default login `admin@dreamclasses.in` / password set at seed (default `Dream@12345` — **change it**)
@@ -21,15 +21,15 @@ npm test                                             # 56 end-to-end tests (2 su
 - **Security:** Backend-enforced roles & batch access on every content/test/file request, blocked-student enforcement, upload type/size validation, no secrets in frontend, files never stored in DB rows.
 - **PWA:** manifest + service worker — students install it like an app from Chrome ("Add to Home screen").
 
-## 📱 Android APK (Capacitor)
-No Android SDK exists in this sandbox, so no APK was built here. On a PC with Android Studio:
-```bash
-npm i -g @capacitor/cli && npm i @capacitor/core @capacitor/android
-cp android-capacitor/capacitor.config.json .   # set server.url to your deployed HTTPS domain
-npx cap add android && npx cap sync && npx cap open android
-# Android Studio → Build → Generate Signed App Bundle/APK (create keystore, keep it safe)
-```
-Package name: `in.dreamclasses.app`. For screenshot blocking in the APK add `FLAG_SECURE` in `MainActivity` (documented in `android-capacitor/NOTES.md`).
+## 📱 Android App (Capacitor) — project included
+A real Capacitor 8 Android project is generated & configured in `android/`
+(package `in.dreamclasses.app`, brand icon/splash/status bar, FLAG_SECURE
+screenshot blocking, HTTPS-only network policy, back-button handling).
+**No APK is bundled** — the build sandbox has no Java/Android SDK.
+On any PC with JDK 17 + Android Studio: set `server.url` in
+`capacitor.config.json` to your HTTPS domain, then run `./build-android.sh`
+→ `android/app/build/outputs/apk/debug/app-debug.apk`. Full guide: `ANDROID.md`.
+Production deployment guide: `PRODUCTION.md`.
 
 ## 🔌 Production integrations still needed (credentials only — code hooks ready)
 1. **SMS/WhatsApp OTP:** signup at MSG91/Twilio/WhatsApp Business API, set `OTP_MODE=production` + keys in `.env`, enable sender in `server.js` (`/api/auth/request-otp`).
