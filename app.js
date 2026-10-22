@@ -204,6 +204,15 @@ const writeStore = (key, value) => {
 
 const state = {
   role: readStore('dream-role', 'student'),
+  authReady: false,
+  sessionUser: null,
+  loginRole: 'student',
+  loginStep: 'phone',
+  loginPhone: '',
+  loginOtp: '',
+  demoOtp: '',
+  loginError: '',
+  loginBusy: false,
   view: readStore('dream-role', 'student') === 'admin' ? 'admin-overview' : 'overview',
   mobileOpen: false,
   popover: null,
@@ -247,6 +256,66 @@ const modalRoot = document.getElementById('modal-root');
 const toastRoot = document.getElementById('toast-root');
 let quizTimer = null;
 
+async function apiRequest(url, options = {}) {
+  const headers = { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(options.headers || {}) };
+  const response = await fetch(url, {
+    ...options,
+    headers,
+    credentials: 'same-origin',
+    body: options.body && typeof options.body !== 'string' ? JSON.stringify(options.body) : options.body,
+  });
+  let data = {};
+  try { data = await response.json(); } catch { /* Non-JSON error response. */ }
+  if (!response.ok) throw new Error(data.error || `Request failed (${response.status}).`);
+  return data;
+}
+
+async function hydrateWorkspace() {
+  if (!state.sessionUser) return;
+  if (state.sessionUser.role === 'admin') {
+    const [students, faculty, batches, classes, tests, content, doubts, notifications] = await Promise.all([
+      apiRequest('/api/admin/students'), apiRequest('/api/admin/faculty'), apiRequest('/api/admin/batches'),
+      apiRequest('/api/admin/classes'), apiRequest('/api/admin/tests'), apiRequest('/api/admin/content'),
+      apiRequest('/api/admin/doubts'), apiRequest('/api/admin/notifications'),
+    ]);
+    state.adminStudents = students.items;
+    state.adminFaculty = faculty.items;
+    state.adminBatches = batches.items;
+    state.adminScheduledClasses = classes.items;
+    state.adminTests = tests.items;
+    state.adminContent = content.items;
+    state.customDoubts = doubts.items;
+    state.adminNotifications = notifications.items;
+    state.assignedDoubts = new Set(doubts.items.filter((item) => item.status === 'Assigned').map((item) => item.id));
+    state.resolvedDoubts = new Set(doubts.items.filter((item) => item.status === 'Answered').map((item) => item.id));
+  } else {
+    const [doubts, posts] = await Promise.all([apiRequest('/api/student/doubts'), apiRequest('/api/student/community')]);
+    state.customDoubts = doubts.items;
+    state.customPosts = posts.items;
+  }
+}
+
+function renderSplash() {
+  return `<main class="auth-loading"><span class="brand-mark">${icon('spark')}</span><strong>Dream Classes</strong><span>Loading your learning space…</span></main>`;
+}
+
+function renderLogin() {
+  const otpStep = state.loginStep === 'otp';
+  return `<main class="auth-page">
+    <section class="auth-story">
+      <a class="brand-lockup auth-brand" href="#" data-action="noop"><span class="brand-mark">${icon('spark')}</span><span><span class="brand-name">Dream Classes</span><span class="brand-tagline">Learn with purpose</span></span></a>
+      <div class="auth-story-copy"><span class="eyebrow">A LITTLE PROGRESS, EVERY DAY</span><h1>Your next big idea is waiting.</h1><p>A welcoming place to learn, practise and keep moving toward the future you want.</p><div class="auth-benefit-list"><div>${icon('video')}<span><strong>Learn live with great teachers</strong><small>Ask questions and stay on track.</small></span></div><div>${icon('target')}<span><strong>Practise with purpose</strong><small>Short daily sets, useful feedback.</small></span></div><div>${icon('chart')}<span><strong>See how far you’ve come</strong><small>Progress that feels motivating.</small></span></div></div></div>
+      <div class="auth-story-foot"><span>Made for curious minds across India.</span><span>Dream Classes · 2026</span></div>
+    </section>
+    <section class="auth-side"><div class="auth-form-wrap"><div class="auth-card"><span class="tag">STUDENT & ADMIN ACCESS</span><h2>${otpStep ? 'Check your messages.' : 'Welcome to your classroom.'}</h2><p>${otpStep ? `Enter the one-time code for +91 ${escapeHTML(state.loginPhone)}.` : 'Sign in with your mobile number to continue learning.'}</p>
+      <div class="auth-role-switch" role="tablist" aria-label="Choose account type"><button class="${state.loginRole === 'student' ? 'selected' : ''}" data-action="login-role" data-role="student" role="tab" aria-selected="${state.loginRole === 'student'}">${icon('bookOpen')} Student</button><button class="${state.loginRole === 'admin' ? 'selected' : ''}" data-action="login-role" data-role="admin" role="tab" aria-selected="${state.loginRole === 'admin'}">${icon('settings')} Admin</button></div>
+      ${state.loginError ? `<div class="auth-error">${icon('help')}${escapeHTML(state.loginError)}</div>` : ''}
+      ${otpStep ? `<form data-form="login-otp" class="auth-form"><div class="form-field"><label for="login-otp">One-time password</label><input id="login-otp" name="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="Enter 6-digit code" value="${escapeHTML(state.loginOtp)}" required autofocus /></div>${state.demoOtp ? `<div class="auth-demo-code"><span>${icon('lock')} Development demo · no SMS is sent</span><strong>Demo OTP: ${escapeHTML(state.demoOtp)}</strong><button type="button" data-action="copy-demo-otp">Copy code</button></div>` : ''}<button class="btn btn-primary btn-full" type="submit" ${state.loginBusy ? 'disabled' : ''}>${state.loginBusy ? 'Verifying…' : 'Verify & continue'} ${icon('arrowRight')}</button><button type="button" class="auth-back" data-action="back-to-phone">${icon('arrowRight')} Change mobile number</button></form>` : `<form data-form="login-phone" class="auth-form"><div class="form-field"><label for="login-phone">Mobile number</label><div class="auth-phone-input"><span>+91</span><input id="login-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="10" placeholder="Enter your 10-digit number" value="${escapeHTML(state.loginPhone)}" required /></div></div><button class="btn btn-primary btn-full" type="submit" ${state.loginBusy ? 'disabled' : ''}>${state.loginBusy ? 'Sending code…' : 'Continue with mobile'} ${icon('arrowRight')}</button><div class="auth-divider"><span>or continue with</span></div><button type="button" class="auth-google" data-action="google-login-info"><b>G</b> Google sign-in</button></form>`}
+      <div class="auth-safety-note">${icon('lock')} Demo only · Use a test number; no SMS is sent. Admin selection is not production permission control.</div>
+    </div><p class="auth-footnote">By continuing, you agree to Dream Classes’ <button data-action="show-toast" data-message="Terms of use are being prepared.">Terms</button> and <button data-action="show-toast" data-message="Privacy details are being prepared.">Privacy Policy</button>.</p></div></section>
+  </main>`;
+}
+
 const navGroups = [
   { title: 'Learn', links: [
     ['overview', 'Overview', 'grid'], ['courses', 'My courses', 'book'], ['live', 'Live classes', 'video', '2'], ['practice', 'Practice & tests', 'target'], ['materials', 'Study material', 'file'],
@@ -265,7 +334,7 @@ const adminNavGroups = [
     ['admin-content', 'Content library', 'file'], ['admin-live', 'Live classes', 'video'], ['admin-tests', 'Test management', 'target'], ['admin-doubts', 'Doubt queue', 'message', '8'],
   ] },
   { title: 'Insights', links: [
-    ['admin-notifications', 'Notifications', 'bell'], ['admin-payments', 'Payments', 'coin'], ['admin-analytics', 'Analytics', 'chart'], ['admin-settings', 'Settings', 'settings'],
+    ['admin-notifications', 'Notifications', 'bell'], ['admin-analytics', 'Analytics', 'chart'], ['admin-settings', 'Settings', 'settings'],
   ] },
 ];
 
@@ -320,13 +389,16 @@ function renderProfilePopover() {
   return `<div class="popover profile-popover">
     <div class="popover-heading">${state.role === 'admin' ? 'Admin workspace' : 'Your account'}</div>
     <button class="popover-row" data-action="navigate" data-view="${settingsView}">${icon('settings')}<span><strong>${state.role === 'admin' ? 'Workspace settings' : 'Profile & settings'}</strong><small>${state.role === 'admin' ? 'Manage your platform' : 'Personalise your learning'}</small></span></button>
-    <button class="popover-row" data-action="switch-role" data-role="${targetRole}">${icon('layers')}<span><strong>Switch to ${targetRole === 'admin' ? 'admin' : 'student'} demo</strong><small>Explore the ${targetRole === 'admin' ? 'management' : 'learning'} workspace</small></span></button>
-    <button class="popover-row" data-action="show-help">${icon('help')}<span><strong>Help & support</strong><small>We’re here if you need us</small></span></button>
+    <button class="popover-row" data-action="switch-role" data-role="${targetRole}">${icon('layers')}<span><strong>Sign in as ${targetRole === 'admin' ? 'Admin' : 'Student'}</strong><small>Continue with a one-time mobile code</small></span></button>
+    <button class="popover-row" data-action="logout">${icon('logout')}<span><strong>Sign out</strong><small>End this session securely</small></span></button>
   </div>`;
 }
 
 function renderSidebar() {
   const admin = state.role === 'admin';
+  const profileName = state.sessionUser?.name || (admin ? 'Ronny Raj' : 'Aarav Sharma');
+  const profileInitials = state.sessionUser?.initials || (admin ? 'RR' : 'AS');
+  const profileCaption = state.sessionUser?.className || (admin ? 'Super Admin' : 'Class 11 · JEE aspirant');
   return `<div class="mobile-overlay ${state.mobileOpen ? 'open' : ''}" data-action="close-mobile" aria-hidden="true"></div>
     <aside class="sidebar ${state.mobileOpen ? 'open' : ''}" aria-label="Main navigation">
       <a href="#" class="brand-lockup" data-action="navigate" data-view="${admin ? 'admin-overview' : 'overview'}" aria-label="Dream Classes home">
@@ -347,7 +419,7 @@ function renderSidebar() {
         </div>`}
         <div class="profile-wrap">
           <button class="profile-switch" data-action="toggle-profile" aria-expanded="${state.popover === 'profile'}">
-            <span class="avatar ${admin ? 'avatar-violet' : ''}">${admin ? 'RR' : 'AS'}</span><span class="profile-meta"><strong>${admin ? 'Ronny Raj' : 'Aarav Sharma'}</strong><span>${admin ? 'Super Admin' : 'Class 11 · JEE aspirant'}</span></span>${icon('more')}
+            <span class="avatar ${admin ? 'avatar-violet' : ''}">${escapeHTML(profileInitials)}</span><span class="profile-meta"><strong>${escapeHTML(profileName)}</strong><span>${escapeHTML(profileCaption)}</span></span>${icon('more')}
           </button>
           ${renderProfilePopover()}
         </div>
@@ -368,7 +440,7 @@ function renderNotificationPopover() {
   if (state.role === 'admin') return `<div class="popover">
     <div class="popover-heading">Admin alerts</div>
     <button class="popover-row" data-action="navigate" data-view="admin-doubts">${icon('message')}<span><strong>8 doubts need a faculty</strong><small>Review the pending doubt queue</small></span></button>
-    <button class="popover-row" data-action="navigate" data-view="admin-payments">${icon('coin')}<span><strong>Refund request to review</strong><small>Class 10 Board Sprint · ₹1,999</small></span></button>
+    <button class="popover-row" data-action="navigate" data-view="admin-live">${icon('calendar')}<span><strong>Classes scheduled this week</strong><small>Review faculty and batch assignments</small></span></button>
     <div class="popover-divider"></div>
     <button class="text-link" style="padding:7px 9px" data-action="mark-read">${state.notificationsRead ? 'All caught up' : 'Mark all as read'} ${icon('check')}</button>
   </div>`;
@@ -388,7 +460,7 @@ function renderSearchItems() {
     ...state.adminStudents.map((item) => ({ label: item.name, detail: `${item.grade} · ${item.batch}`, view: 'admin-students', action: 'navigate', icon: 'users' })),
     ...state.adminBatches.map((item) => ({ label: item.name, detail: `${item.grade} · ${item.students} students`, view: 'admin-batches', action: 'navigate', icon: 'book' })),
     { label: 'Pending doubts', detail: 'Review student questions', view: 'admin-doubts', action: 'navigate', icon: 'message' },
-    { label: 'Recent transactions', detail: 'Payments and refunds', view: 'admin-payments', action: 'navigate', icon: 'coin' },
+    { label: 'Content library', detail: 'Manage lessons and study files', view: 'admin-content', action: 'navigate', icon: 'file' },
   ] : [
     ...courseData.map((item) => ({ label: item.title, detail: `${item.subject} · ${item.exam}`, view: 'courses', action: 'open-course', id: item.id, icon: 'book' })),
     ...materialData.map((item) => ({ label: item.title, detail: `${item.subject} · ${item.type}`, view: 'materials', action: 'search-material', id: item.id, icon: 'file' })),
@@ -577,7 +649,7 @@ function renderDoubtItem(item) {
 }
 
 function renderDoubts() {
-  const allDoubts = [...state.customDoubts, ...initialDoubts];
+  const allDoubts = [...new Map([...initialDoubts, ...state.customDoubts].map((item) => [item.id, item])).values()];
   return `${renderIntro()}
     <div class="doubt-layout"><section class="form-panel"><h2>Ask your faculty</h2><p>Share what you’re stuck on. Add a photo if a diagram or question is easier to show.</p>
       <form data-form="doubt" id="doubt-form">
@@ -598,7 +670,7 @@ function renderCommunityPost(post) {
 }
 
 function renderCommunity() {
-  const posts = [...state.customPosts, ...starterPosts];
+  const posts = [...new Map([...state.customPosts, ...starterPosts].map((post) => [post.id, post])).values()];
   return `${renderIntro()}
     <div class="community-layout"><section><form class="community-compose" data-form="community"><span class="avatar">AS</span><input name="post" maxlength="180" placeholder="Share a question or a small win with your community..." aria-label="Write a community post" required /><button type="submit" class="btn btn-primary btn-compact">Post ${icon('arrowRight')}</button></form>${posts.map(renderCommunityPost).join('')}</section>
       <aside class="community-side"><article class="community-side-card"><h3>Popular topics</h3><div class="topic-list"><div class="topic-row"><span>#NewtonLaws</span><span>126 posts</span></div><div class="topic-row"><span>#JEE2027</span><span>98 posts</span></div><div class="topic-row"><span>#StudyRoutine</span><span>74 posts</span></div><div class="topic-row"><span>#ChemistryShortcuts</span><span>53 posts</span></div></div></article><article class="community-side-card"><h3>This week’s helpers</h3><div class="topic-list"><div class="topic-row"><span>🥇 Sana Verma</span><span>42 helpful</span></div><div class="topic-row"><span>🥈 Kabir Mehta</span><span>36 helpful</span></div><div class="topic-row"><span>🥉 Aarav Sharma</span><span>28 helpful</span></div></div></article></aside>
@@ -651,7 +723,7 @@ function renderAdminOverview() {
   ];
   return `${renderIntro()}
     <section class="admin-welcome"><div><span class="eyebrow">${icon('spark')} YOUR DAILY ADMIN BRIEFING · ${currentDateLabel().toUpperCase()}</span><h2>Good morning, Ronny.</h2><p>Your learning community is growing. Here’s what needs your attention today.</p></div><div class="admin-welcome-actions"><button class="btn btn-white" data-action="open-admin-modal" data-type="live">${icon('calendar')} Schedule a class</button><button class="btn btn-glass" data-action="open-admin-modal" data-type="batch">${icon('plus')} Create a batch</button></div></section>
-    <section class="admin-metric-grid"><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon violet">${icon('users')}</span><span class="stat-trend">${icon('trending')} 12.4%</span></div><span class="admin-metric-label">Total students</span><strong>18,426</strong><small>${activeStudents.toLocaleString('en-IN')} active this month</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon mint">${icon('trending')}</span><span class="stat-trend">${icon('trending')} 8.2%</span></div><span class="admin-metric-label">Revenue this month</span><strong>₹12.8L</strong><small>Across 3 active batches</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon amber">${icon('video')}</span><span class="tag orange">TODAY</span></div><span class="admin-metric-label">Live classes</span><strong>06</strong><small>${scheduledClasses} sessions on this week</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon violet">${icon('target')}</span><span class="stat-trend">${icon('trending')} 4.6%</span></div><span class="admin-metric-label">Weekly engagement</span><strong>76.4%</strong><small>Average student activity</small></article></section>
+    <section class="admin-metric-grid"><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon violet">${icon('users')}</span><span class="stat-trend">${icon('trending')} 12.4%</span></div><span class="admin-metric-label">Total students</span><strong>18,426</strong><small>${activeStudents.toLocaleString('en-IN')} active this month</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon mint">${icon('book')}</span><span class="tag green">ACTIVE</span></div><span class="admin-metric-label">Live learning batches</span><strong>${state.adminBatches.filter((batch) => batch.status === 'Live').length}</strong><small>${state.adminBatches.length} batches in your catalog</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon amber">${icon('video')}</span><span class="tag orange">TODAY</span></div><span class="admin-metric-label">Live classes</span><strong>06</strong><small>${scheduledClasses} sessions on this week</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon violet">${icon('target')}</span><span class="stat-trend">${icon('trending')} 4.6%</span></div><span class="admin-metric-label">Weekly engagement</span><strong>76.4%</strong><small>Average student activity</small></article></section>
     <section class="admin-overview-grid"><article class="chart-card"><div class="panel-header"><div class="panel-title-wrap"><h2>Platform growth</h2><p>Student sign-ups over the last 7 days</p></div><button class="filter-chip selected">This week ${icon('chevronDown')}</button></div><div class="admin-growth-chart">${[42,56,48,68,57,83,74].map((height, index) => `<div class="admin-growth-column"><span>${[128,164,141,193,177,238,216][index]}</span><i style="height:${height}%"></i><small>${['M','T','W','T','F','S','S'][index]}</small></div>`).join('')}</div><div class="chart-legend"><span><i class="legend-dot dark"></i> New student sign-ups</span><span style="margin-left:auto">1,157 this week</span></div></article>
       <article class="chart-card"><div class="panel-header"><div class="panel-title-wrap"><h2>Today’s live classes</h2><p>Faculty sessions scheduled</p></div><button class="text-link" data-action="navigate" data-view="admin-live">Manage schedule ${icon('arrowRight')}</button></div><div class="admin-live-list">${liveClasses.slice(0,3).map((item) => `<div class="admin-live-row"><div class="admin-time">${escapeHTML(item.time.split(' ')[0])}<small>${escapeHTML(item.time.split(' ')[1])}</small></div><span class="subject-tile">${icon(item.subject === 'Physics' ? 'atom' : item.subject === 'Chemistry' ? 'flask' : 'calculator')}</span><div class="admin-live-copy"><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.subject)} · ${escapeHTML(item.teacher)}</small></div><span class="status-pill ${item.id === 'rotational' ? '' : 'answered'}">${item.id === 'rotational' ? 'Soon' : 'Scheduled'}</span></div>`).join('')}</div><button class="btn btn-outline btn-compact btn-full" style="margin-top:12px" data-action="navigate" data-view="admin-live">View all live classes ${icon('arrowRight')}</button></article></section>
     <section class="admin-overview-grid admin-overview-grid-lower"><article class="panel panel-pad"><div class="panel-header"><div class="panel-title-wrap"><h2>Recent activity</h2><p>What’s happening across your platform.</p></div><button class="text-link" data-action="navigate" data-view="admin-analytics">View analytics ${icon('arrowRight')}</button></div><div class="admin-activity-list">${activities.map(([name, text, time, initials]) => `<div class="admin-activity-row"><span class="avatar avatar-small">${initials}</span><p><strong>${name}</strong> ${text}</p><time>${time}</time></div>`).join('')}</div></article><article class="panel panel-pad"><div class="panel-header"><div class="panel-title-wrap"><h2>Quick actions</h2><p>Keep your learning space moving.</p></div></div><div class="admin-quick-actions"><button class="admin-action-card" data-action="navigate" data-view="admin-students"><span class="quick-icon violet">${icon('users')}</span><span><strong>Manage students</strong><small>View, support and invite learners</small></span>${icon('arrowRight')}</button><button class="admin-action-card" data-action="open-admin-modal" data-type="batch"><span class="quick-icon teal">${icon('book')}</span><span><strong>Create a batch</strong><small>Set up a new course offering</small></span>${icon('arrowRight')}</button><button class="admin-action-card" data-action="navigate" data-view="admin-doubts"><span class="quick-icon orange">${icon('message')}</span><span><strong>Review doubt queue</strong><small>8 questions awaiting assignment</small></span>${icon('arrowRight')}</button></div></article></section>`;
@@ -695,7 +767,7 @@ function renderAdminTests() {
 }
 
 function renderAdminDoubts() {
-  const all = [...state.customDoubts, ...initialDoubts];
+  const all = [...new Map([...initialDoubts, ...state.customDoubts].map((item) => [item.id, item])).values()];
   const open = all.filter((item) => item.status !== 'Answered' && !state.resolvedDoubts.has(item.id));
   return `${renderIntro()}<section class="admin-toolbar"><div class="admin-toolbar-copy"><strong>${open.length} questions need attention</strong><span>Prioritise unanswered learner questions.</span></div><div class="admin-toolbar-actions"><button class="filter-chip selected">Pending first ${icon('chevronDown')}</button></div></section><section class="doubt-list admin-doubt-list">${all.map((item) => { const resolved = item.status === 'Answered' || state.resolvedDoubts.has(item.id); const assigned = state.assignedDoubts.has(item.id); return `<article class="doubt-item"><div class="doubt-item-top"><span class="tag ${item.subject === 'Chemistry' ? 'orange' : ''}">${escapeHTML(item.subject)}</span><span class="status-pill ${resolved ? 'answered' : ''}">${resolved ? 'Resolved' : assigned ? 'Assigned' : 'Needs assignment'}</span></div><h3>${escapeHTML(item.title)}</h3><p>${escapeHTML(item.body)}</p><div class="admin-doubt-meta"><span class="avatar avatar-small">${item.id.startsWith('d-') ? 'AS' : 'ST'}</span><span>Student · ${escapeHTML(item.time)}</span><span class="admin-doubt-spacer"></span><button class="btn btn-outline btn-compact" data-action="assign-doubt" data-id="${item.id}" ${resolved ? 'disabled' : ''}>${assigned ? 'Assigned to faculty' : 'Assign faculty'}</button><button class="btn ${resolved ? 'btn-soft' : 'btn-primary'} btn-compact" data-action="resolve-doubt" data-id="${item.id}" ${resolved ? 'disabled' : ''}>${resolved ? 'Resolved' : 'Mark resolved'}</button></div></article>`; }).join('')}</section>`;
 }
@@ -752,6 +824,15 @@ function renderView() {
 
 function renderApp() {
   document.body.classList.toggle('theme-dark', state.theme === 'dark');
+  if (!state.authReady) {
+    app.innerHTML = renderSplash();
+    return;
+  }
+  if (!state.sessionUser) {
+    app.innerHTML = renderLogin();
+    return;
+  }
+  state.role = state.sessionUser.role;
   app.innerHTML = `${renderSidebar()}<div class="main-shell">${renderTopbar()}<main class="page-wrap">${renderView()}</main></div>`;
   updateSearchResults();
 }
@@ -889,6 +970,60 @@ function awardQuizXP() {
   writeStore('dream-xp', state.xp);
 }
 
+async function signOutAndOpenLogin(role = 'student') {
+  try { await apiRequest('/api/auth/logout', { method: 'POST' }); } catch { /* The local session is cleared even if the API is unavailable. */ }
+  state.sessionUser = null;
+  state.authReady = true;
+  state.loginRole = role === 'admin' ? 'admin' : 'student';
+  state.loginStep = 'phone';
+  state.loginPhone = '';
+  state.loginOtp = '';
+  state.demoOtp = '';
+  state.loginError = '';
+  state.popover = null;
+  state.modal = null;
+  modalRoot.innerHTML = '';
+  renderApp();
+}
+
+async function updateStudentStatus(id) {
+  const student = state.adminStudents.find((item) => item.id === id);
+  if (!student) return;
+  const status = student.status === 'Active' ? 'Blocked' : 'Active';
+  try {
+    const result = await apiRequest(`/api/admin/students/${encodeURIComponent(id)}`, { method: 'PATCH', body: { status } });
+    Object.assign(student, result.item);
+    writeStore('dream-admin-students', state.adminStudents);
+    closeModal(); renderApp(); showToast(`${student.name} is now ${student.status.toLowerCase()}.`);
+  } catch (error) { showToast(error.message, 'error'); }
+}
+
+async function updateAdminDoubt(id, operation) {
+  try {
+    const result = await apiRequest(`/api/admin/doubts/${encodeURIComponent(id)}/${operation}`, { method: 'POST', body: {} });
+    const index = state.customDoubts.findIndex((item) => item.id === id);
+    if (index >= 0) state.customDoubts[index] = result.item;
+    else state.customDoubts.unshift(result.item);
+    if (operation === 'assign') state.assignedDoubts.add(id);
+    if (operation === 'resolve') state.resolvedDoubts.add(id);
+    writeStore('dream-doubts', state.customDoubts);
+    writeStore('dream-assigned-doubts', [...state.assignedDoubts]);
+    writeStore('dream-resolved-doubts', [...state.resolvedDoubts]);
+    renderApp(); showToast(operation === 'assign' ? 'Doubt assigned to the subject faculty.' : 'Doubt marked as resolved.');
+  } catch (error) { showToast(error.message, 'error'); }
+}
+
+async function publishAdminTest(id) {
+  const test = state.adminTests.find((item) => item.id === id);
+  if (!test) return;
+  try {
+    const result = await apiRequest(`/api/admin/tests/${encodeURIComponent(id)}`, { method: 'PATCH', body: { status: 'Published' } });
+    Object.assign(test, result.item);
+    writeStore('dream-admin-tests', state.adminTests);
+    renderApp(); showToast('Assessment published to its batch.');
+  } catch (error) { showToast(error.message, 'error'); }
+}
+
 function startQuiz(title = 'Daily Practice Problems') {
   state.quiz = { index: 0, selected: null, answers: [], submitted: false, title, remaining: 900 };
   openModal('quiz');
@@ -942,14 +1077,40 @@ function handleAction(button, event) {
       renderApp();
       break;
     case 'switch-role':
-      state.role = button.dataset.role === 'admin' ? 'admin' : 'student';
-      state.view = state.role === 'admin' ? 'admin-overview' : 'overview';
-      state.popover = null;
-      state.query = '';
-      writeStore('dream-role', state.role);
+      signOutAndOpenLogin(button.dataset.role);
+      break;
+    case 'logout':
+      signOutAndOpenLogin('student');
+      break;
+    case 'login-role': {
+      const nextRole = button.dataset.role === 'admin' ? 'admin' : 'student';
+      if (nextRole !== state.loginRole) {
+        state.loginStep = 'phone';
+        state.loginOtp = '';
+        state.demoOtp = '';
+      }
+      state.loginRole = nextRole;
+      state.loginError = '';
       renderApp();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      showToast(`Opened ${state.role === 'admin' ? 'admin' : 'student'} demo workspace.`);
+      break;
+    }
+    case 'back-to-phone':
+      state.loginStep = 'phone';
+      state.loginOtp = '';
+      state.demoOtp = '';
+      state.loginError = '';
+      renderApp();
+      break;
+    case 'copy-demo-otp':
+      if (state.demoOtp && navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(state.demoOtp).then(() => showToast('Demo code copied.')).catch(() => showToast(`Demo OTP: ${state.demoOtp}`));
+      } else showToast(`Demo OTP: ${state.demoOtp}`);
+      break;
+    case 'google-login-info':
+      showToast('Google sign-in needs its OAuth provider configuration before launch.');
+      break;
+    case 'noop':
+      event.preventDefault();
       break;
     case 'set-language':
       state.language = button.dataset.language;
@@ -1009,38 +1170,21 @@ function handleAction(button, event) {
     case 'student-detail':
       openModal('student-detail', { id });
       break;
-    case 'toggle-student-status': {
-      const student = state.adminStudents.find((item) => item.id === id);
-      if (!student) break;
-      student.status = student.status === 'Active' ? 'Blocked' : 'Active';
-      writeStore('dream-admin-students', state.adminStudents);
-      closeModal();
-      renderApp();
-      showToast(`${student.name} is now ${student.status.toLowerCase()}.`);
+    case 'toggle-student-status':
+      updateStudentStatus(id);
       break;
-    }
     case 'export-students':
       showToast('Student report exported for this demo.');
       break;
     case 'assign-doubt':
-      toggleInSet(state.assignedDoubts, id, 'dream-assigned-doubts');
-      renderApp();
-      showToast(state.assignedDoubts.has(id) ? 'Doubt assigned to the subject faculty.' : 'Doubt assignment removed.');
+      updateAdminDoubt(id, 'assign');
       break;
     case 'resolve-doubt':
-      toggleInSet(state.resolvedDoubts, id, 'dream-resolved-doubts');
-      renderApp();
-      showToast(state.resolvedDoubts.has(id) ? 'Doubt marked as resolved.' : 'Doubt reopened.');
+      updateAdminDoubt(id, 'resolve');
       break;
-    case 'publish-test': {
-      const test = state.adminTests.find((item) => item.id === id);
-      if (!test) break;
-      test.status = test.status === 'Draft' ? 'Published' : 'Draft';
-      writeStore('dream-admin-tests', state.adminTests);
-      renderApp();
-      showToast(`Assessment ${test.status.toLowerCase()}.`);
+    case 'publish-test':
+      publishAdminTest(id);
       break;
-    }
     case 'approve-refund': {
       const txn = state.adminTransactions.find((item) => item.id === id);
       if (!txn) break;
@@ -1159,6 +1303,8 @@ document.addEventListener('click', (event) => {
 });
 
 document.addEventListener('input', (event) => {
+  if (event.target.id === 'login-phone') state.loginPhone = event.target.value.replace(/\D/g, '').slice(0, 10);
+  if (event.target.id === 'login-otp') state.loginOtp = event.target.value.replace(/\D/g, '').slice(0, 6);
   if (event.target.id === 'global-search') {
     state.query = event.target.value;
     state.searchOpen = true;
@@ -1187,90 +1333,167 @@ document.addEventListener('focusin', (event) => {
   }
 });
 
-document.addEventListener('submit', (event) => {
+document.addEventListener('submit', async (event) => {
   const form = event.target.closest('form[data-form]');
   if (!form) return;
   event.preventDefault();
   const formData = new FormData(form);
+  if (form.dataset.form === 'login-phone') {
+    const phone = String(formData.get('phone') || '').replace(/\D/g, '').slice(-10);
+    if (phone.length !== 10) {
+      state.loginError = 'Enter a valid 10-digit Indian mobile number.';
+      renderApp();
+      return;
+    }
+    state.loginPhone = phone;
+    state.loginError = '';
+    state.loginBusy = true;
+    renderApp();
+    try {
+      const result = await apiRequest('/api/auth/request-otp', { method: 'POST', body: { phone, role: state.loginRole } });
+      state.demoOtp = result.demoOtp || '';
+      state.loginStep = 'otp';
+      state.loginOtp = '';
+    } catch (error) {
+      state.loginError = error.message;
+    } finally {
+      state.loginBusy = false;
+      renderApp();
+    }
+    return;
+  }
+  if (form.dataset.form === 'login-otp') {
+    const otp = String(formData.get('otp') || '').replace(/\D/g, '').slice(0, 6);
+    if (otp.length !== 6) {
+      state.loginError = 'Enter the 6-digit one-time code.';
+      renderApp();
+      return;
+    }
+    state.loginOtp = otp;
+    state.loginError = '';
+    state.loginBusy = true;
+    renderApp();
+    try {
+      const result = await apiRequest('/api/auth/verify-otp', { method: 'POST', body: { phone: state.loginPhone, otp, role: state.loginRole } });
+      state.sessionUser = result.user;
+      state.role = result.user.role;
+      state.view = state.role === 'admin' ? 'admin-overview' : 'overview';
+      writeStore('dream-role', state.role);
+      await hydrateWorkspace();
+      state.authReady = true;
+      state.demoOtp = '';
+      state.loginError = '';
+      renderApp();
+      showToast(`Welcome to your ${state.role === 'admin' ? 'admin' : 'student'} workspace.`);
+    } catch (error) {
+      state.loginError = error.message;
+      state.sessionUser = null;
+      state.authReady = true;
+    } finally {
+      state.loginBusy = false;
+      renderApp();
+    }
+    return;
+  }
   if (form.dataset.form === 'doubt') {
     const title = String(formData.get('title') || '').trim();
     const body = String(formData.get('body') || '').trim();
     if (!title || !body) return;
-    const entry = {
-      id: `d-${Date.now()}`,
-      subject: String(formData.get('subject') || 'Physics'),
-      title,
-      body: state.attachedFilename ? `${body} [Image attached: ${state.attachedFilename}]` : body,
-      status: 'In review',
-      time: 'Just now',
-    };
-    state.customDoubts.unshift(entry);
-    writeStore('dream-doubts', state.customDoubts);
-    state.attachedFilename = '';
-    renderApp();
-    showToast('Your doubt is in. A teacher will take a look soon.');
+    const questionBody = state.attachedFilename ? `${body} [Image attached: ${state.attachedFilename}]` : body;
+    try {
+      const result = await apiRequest('/api/student/doubts', { method: 'POST', body: { subject: String(formData.get('subject') || 'Physics'), title, body: questionBody } });
+      state.customDoubts.unshift(result.item);
+      writeStore('dream-doubts', state.customDoubts);
+      state.attachedFilename = '';
+      renderApp();
+      showToast('Your doubt is in. A teacher will take a look soon.');
+    } catch (error) {
+      showToast(error.message, 'error');
+    }
   }
   if (form.dataset.form === 'community') {
     const text = String(formData.get('post') || '').trim();
     if (!text) return;
-    state.customPosts.unshift({
-      id: `p-${Date.now()}`, name: 'Aarav Sharma', initials: 'AS', color: '', time: 'Just now', subject: 'JEE 2027',
-      title: text.length > 86 ? `${text.slice(0, 83)}…` : text, text, votes: 0, replies: 0, verified: false,
-    });
-    writeStore('dream-posts', state.customPosts);
-    renderApp();
-    showToast('Your post is live in the community.');
+    try {
+      const result = await apiRequest('/api/student/community', { method: 'POST', body: { text, subject: 'JEE 2027' } });
+      state.customPosts.unshift(result.item);
+      writeStore('dream-posts', state.customPosts);
+      renderApp();
+      showToast('Your post is live in the community.');
+    } catch (error) {
+      showToast(error.message, 'error');
+    }
   }
   if (form.dataset.form === 'admin-student') {
     const name = String(formData.get('name') || '').trim();
     if (!name) return;
     const initials = name.split(/\s+/).slice(0,2).map((part) => part[0]).join('').toUpperCase();
-    const student = { id: `stu-${Date.now()}`, name, initials, grade: `${formData.get('grade')} · JEE`, batch: String(formData.get('batch') || 'New batch'), joined: 'Today', activity: 'Just joined', status: 'Active' };
-    state.adminStudents.unshift(student);
-    writeStore('dream-admin-students', state.adminStudents);
-    closeModal(); renderApp(); showToast(`${name} was added to the student list.`);
+    try {
+      const result = await apiRequest('/api/admin/students', { method: 'POST', body: { name, initials, grade: `${formData.get('grade')} · JEE`, batch: String(formData.get('batch') || 'New batch'), joined: 'Today', activity: 'Just joined', status: 'Active' } });
+      state.adminStudents.unshift(result.item);
+      writeStore('dream-admin-students', state.adminStudents);
+      closeModal(); renderApp(); showToast(`${name} was added to the student list.`);
+    } catch (error) { showToast(error.message, 'error'); }
   }
   if (form.dataset.form === 'admin-faculty') {
     const name = String(formData.get('name') || '').trim();
     if (!name) return;
     const initials = name.split(/\s+/).slice(0,2).map((part) => part[0]).join('').toUpperCase();
-    state.adminFaculty.unshift({ id: `fac-${Date.now()}`, name, initials, subject: String(formData.get('subject')), batches: '1 batch', sessions: 'New faculty', status: 'Invited' });
-    writeStore('dream-admin-faculty', state.adminFaculty);
-    closeModal(); renderApp(); showToast(`${name} was added to faculty as an invite.`);
+    try {
+      const result = await apiRequest('/api/admin/faculty', { method: 'POST', body: { name, initials, subject: String(formData.get('subject')), batches: '1 batch', sessions: 'New faculty', status: 'Invited' } });
+      state.adminFaculty.unshift(result.item);
+      writeStore('dream-admin-faculty', state.adminFaculty);
+      closeModal(); renderApp(); showToast(`${name} was added to faculty as an invite.`);
+    } catch (error) { showToast(error.message, 'error'); }
   }
   if (form.dataset.form === 'admin-batch') {
     const name = String(formData.get('name') || '').trim();
     if (!name) return;
-    state.adminBatches.unshift({ id: `batch-${Date.now()}`, name, grade: `${formData.get('grade')} · ${formData.get('exam')}`, students: 0, price: Number(formData.get('price') || 0), status: 'Draft', start: String(formData.get('start')), subjects: String(formData.get('subjects')) });
-    writeStore('dream-admin-batches', state.adminBatches);
-    closeModal(); renderApp(); showToast(`${name} was created as a draft batch.`);
+    try {
+      const result = await apiRequest('/api/admin/batches', { method: 'POST', body: { name, grade: `${formData.get('grade')} · ${formData.get('exam')}`, students: 0, price: Number(formData.get('price') || 0), status: 'Draft', start: String(formData.get('start')), subjects: String(formData.get('subjects')) } });
+      state.adminBatches.unshift(result.item);
+      writeStore('dream-admin-batches', state.adminBatches);
+      closeModal(); renderApp(); showToast(`${name} was created as a draft batch.`);
+    } catch (error) { showToast(error.message, 'error'); }
   }
   if (form.dataset.form === 'admin-live') {
-    const entry = { id: `live-${Date.now()}`, title: String(formData.get('title')).trim(), subject: String(formData.get('subject')), teacher: String(formData.get('teacher')), batch: String(formData.get('batch')), date: String(formData.get('date')), time: String(formData.get('time')), month: 'Scheduled', day: String(formData.get('date')).slice(-2), custom: true };
-    state.adminScheduledClasses.unshift(entry);
-    writeStore('dream-admin-live', state.adminScheduledClasses);
-    closeModal(); renderApp(); showToast('Live class added to the schedule.');
+    const payload = { title: String(formData.get('title')).trim(), subject: String(formData.get('subject')), teacher: String(formData.get('teacher')), batch: String(formData.get('batch')), date: String(formData.get('date')), time: String(formData.get('time')), month: 'Scheduled', day: String(formData.get('date')).slice(-2), custom: true };
+    try {
+      const result = await apiRequest('/api/admin/classes', { method: 'POST', body: payload });
+      state.adminScheduledClasses.unshift(result.item);
+      writeStore('dream-admin-live', state.adminScheduledClasses);
+      closeModal(); renderApp(); showToast('Live class added to the schedule.');
+    } catch (error) { showToast(error.message, 'error'); }
   }
   if (form.dataset.form === 'admin-test') {
-    const entry = { id: `test-${Date.now()}`, title: String(formData.get('title')).trim(), batch: String(formData.get('batch')), questions: Number(formData.get('questions') || 20), date: String(formData.get('date')), status: 'Draft', negative: String(formData.get('negative')) };
-    state.adminTests.unshift(entry);
-    writeStore('dream-admin-tests', state.adminTests);
-    closeModal(); renderApp(); showToast('Test saved as a draft.');
+    const payload = { title: String(formData.get('title')).trim(), batch: String(formData.get('batch')), questions: Number(formData.get('questions') || 20), date: String(formData.get('date')), status: 'Draft', negative: String(formData.get('negative')) };
+    try {
+      const result = await apiRequest('/api/admin/tests', { method: 'POST', body: payload });
+      state.adminTests.unshift(result.item);
+      writeStore('dream-admin-tests', state.adminTests);
+      closeModal(); renderApp(); showToast('Test saved as a draft.');
+    } catch (error) { showToast(error.message, 'error'); }
   }
   if (form.dataset.form === 'admin-content') {
-    const entry = { id: `cnt-${Date.now()}`, title: String(formData.get('title')).trim(), type: String(formData.get('type')), subject: String(formData.get('subject')), batch: String(formData.get('batch')), date: `Added today${state.adminUploadName ? ` · ${state.adminUploadName}` : ''}`, status: 'Draft' };
-    state.adminContent.unshift(entry);
-    writeStore('dream-admin-content', state.adminContent);
-    state.adminUploadName = '';
-    renderApp(); showToast('Content added to the library as a draft.');
+    const payload = { title: String(formData.get('title')).trim(), type: String(formData.get('type')), subject: String(formData.get('subject')), batch: String(formData.get('batch')), fileName: state.adminUploadName, date: `Added today${state.adminUploadName ? ` · ${state.adminUploadName}` : ''}`, status: 'Draft' };
+    try {
+      const result = await apiRequest('/api/admin/content', { method: 'POST', body: payload });
+      state.adminContent.unshift(result.item);
+      writeStore('dream-admin-content', state.adminContent);
+      state.adminUploadName = '';
+      renderApp(); showToast('Content metadata saved as a draft. Actual file storage is not connected.');
+    } catch (error) { showToast(error.message, 'error'); }
   }
   if (form.dataset.form === 'admin-notification') {
     const timing = String(formData.get('timing'));
-    const entry = { title: String(formData.get('title')).trim(), message: String(formData.get('message')).trim(), audience: String(formData.get('audience')), channel: String(formData.get('channel')), timing, status: timing === 'Send now' ? 'Sent' : 'Scheduled', date: new Date().toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) };
-    if (!entry.title || !entry.message) return;
-    state.adminNotifications.unshift(entry);
-    writeStore('dream-admin-notifications', state.adminNotifications);
-    renderApp(); showToast(entry.timing === 'Send now' ? 'Notification added to the local sent history.' : 'Notification saved to the local schedule.');
+    const payload = { title: String(formData.get('title')).trim(), message: String(formData.get('message')).trim(), audience: String(formData.get('audience')), channel: String(formData.get('channel')), timing, status: timing === 'Send now' ? 'Sent' : 'Scheduled', date: new Date().toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) };
+    if (!payload.title || !payload.message) return;
+    try {
+      const result = await apiRequest('/api/admin/notifications', { method: 'POST', body: payload });
+      state.adminNotifications.unshift(result.item);
+      writeStore('dream-admin-notifications', state.adminNotifications);
+      renderApp(); showToast(payload.timing === 'Send now' ? 'Notification saved to the local sent history.' : 'Notification saved to the local schedule.');
+    } catch (error) { showToast(error.message, 'error'); }
   }
 });
 
@@ -1308,4 +1531,20 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-renderApp();
+async function initializeApp() {
+  renderApp();
+  try {
+    const result = await apiRequest('/api/me');
+    state.sessionUser = result.user;
+    state.role = result.user.role;
+    state.view = state.role === 'admin' ? 'admin-overview' : 'overview';
+    await hydrateWorkspace();
+  } catch {
+    state.sessionUser = null;
+  } finally {
+    state.authReady = true;
+    renderApp();
+  }
+}
+
+initializeApp();

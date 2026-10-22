@@ -1,3 +1,7 @@
+# Local demo data
+/data/*.json
+/data/*.tmp
+
 # Gradle files
 .gradle/
 build/
