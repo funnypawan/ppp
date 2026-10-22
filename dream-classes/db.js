@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT);
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   role TEXT NOT NULL CHECK(role IN ('SUPER_ADMIN','TEACHER','STUDENT')),
-  name TEXT NOT NULL, mobile TEXT UNIQUE, email TEXT UNIQUE,
+  name TEXT NOT NULL, login_name_key TEXT, mobile TEXT UNIQUE, email TEXT UNIQUE,
   password_hash TEXT, photo TEXT,
   status TEXT NOT NULL DEFAULT 'PENDING' CHECK(status IN ('PENDING','APPROVED','BLOCKED','SUSPENDED','REJECTED')),
   class_id INTEGER, batch_id INTEGER,
@@ -139,10 +139,12 @@ ensureColumn('otps', 'request_ip', 'TEXT');
 ensureColumn('otps', 'provider', 'TEXT');
 ensureColumn('otps', 'provider_request_id', 'TEXT');
 ensureColumn('otps', 'last_sent_at', 'INTEGER');
+ensureColumn('users', 'login_name_key', 'TEXT');
 db.exec(`
 CREATE INDEX IF NOT EXISTS idx_otps_mobile_created ON otps(mobile, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_otps_ip_created ON otps(request_ip, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_users_email_lower ON users(lower(email));
+CREATE INDEX IF NOT EXISTS idx_users_student_name_key ON users(role, login_name_key);
 `);
 // Normalize stored admin/teacher emails when it cannot create a duplicate.
 try {
@@ -152,6 +154,15 @@ try {
     if (!collision) db.prepare('UPDATE users SET email=? WHERE id=?').run(normalized, u.id);
   });
 } catch (e) { console.warn('Email normalization skipped:', e.message); }
+// Name-only student login needs a stable, case/extra-space-insensitive lookup
+// key. Backfill it for accounts created by the older mobile-OTP flow.
+try {
+  const normalizeNameKey = value => String(value || '').replace(/[\u0000-\u001f\u007f]/g, ' ').trim().replace(/\s+/g, ' ').toLowerCase();
+  db.prepare("SELECT id,name FROM users WHERE login_name_key IS NULL OR trim(login_name_key)=''").all().forEach(u => {
+    const key = normalizeNameKey(u.name);
+    if (key) db.prepare('UPDATE users SET login_name_key=? WHERE id=?').run(key, u.id);
+  });
+} catch (e) { console.warn('Student name-key migration skipped:', e.message); }
 
 const getSetting = (k, d) => { const r = db.prepare('SELECT value FROM settings WHERE key=?').get(k); return r ? r.value : d; };
 const setSetting = (k, v) => db.prepare('INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run(k, String(v));

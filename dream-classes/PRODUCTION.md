@@ -1,8 +1,9 @@
 # 🚀 Dream Classes — Production Runbook
 
-यह guide real students के लिए app चलाने की है। **Demo OTP production में बंद है।**
-SMS credentials न हों तो server झूठा “OTP sent” नहीं कहेगा; student को honest
-“OTP SMS service is not configured yet” message मिलेगा।
+यह guide real students के लिए app चलाने की है। **Student app अब owner के निर्देश पर
+name-only login इस्तेमाल करता है**: student से mobile number, SMS या OTP नहीं
+माँगा जाता (`STUDENT_AUTH_MODE=name`, यही default है)। Demo OTP production में
+बंद है; नीचे दिया SMS OTP section सिर्फ optional legacy mode के लिए है।
 
 ## 1. Server setup
 
@@ -77,10 +78,26 @@ Token सिर्फ server owner को पता होना चाहिए
 
 Reset से पुराने teacher sessions भी revoke हो जाते हैं।
 
-## 4. Real SMS OTP चालू करना
+## 4. Student login: नाम-only (default) और optional legacy SMS OTP
 
-Code दो India OTP providers support करता है। Credentials **केवल backend/Render
-Environment** में रहेंगे—APK या frontend में कभी नहीं।
+Current student app के लिए कोई SMS setup नहीं करना है:
+
+```text
+STUDENT_AUTH_MODE=name
+```
+
+Student अपना पूरा नाम डालता है; पहली बार account बनता है और Manual approval
+mode में वह PENDING रहता है। Teacher Panel से approve/batch assign करने के बाद
+ही lectures, notes और tests खुलते हैं। हर student को हर बार बिल्कुल वही पूरा
+नाम डालना है। समान नाम वाले छात्रों के लिए teacher को नाम में अलग पहचान रखनी
+चाहिए (जैसे पूरा नाम के साथ पिता का नाम/गाँव), क्योंकि नाम ही login पहचान है।
+
+### Legacy SMS OTP फिर से चालू करना हो तभी
+
+Code दो India OTP providers support करता है। यह mode सिर्फ तब चलेगा जब आप
+खुद `STUDENT_AUTH_MODE=otp` set करेंगे; student app की current screen OTP नहीं
+माँगती। Credentials **केवल backend/Render Environment** में रहेंगे—APK या
+frontend में कभी नहीं।
 
 ### Option 1 — MSG91 (existing setup के लिए recommended)
 
@@ -141,8 +158,8 @@ SMS fail होने पर OTP challenge `SEND_FAILED` हो जाता ह
 - [ ] `ADMIN_PASSWORD_RESET` हटाया गया है
 - [ ] Persistent disk + `STORAGE_DIR` set है
 - [ ] एक redeploy के बाद student/teacher/content data बना रहता है
-- [ ] `OTP_MODE=production` और एक SMS provider configured है
-- [ ] अपने असली mobile पर एक OTP test सफल हुआ है
+- [ ] `STUDENT_AUTH_MODE=name` है और student सिर्फ नाम डालकर login/register कर पाता है
+- [ ] (सिर्फ legacy OTP mode चुनें तभी) एक SMS provider configured है और असली mobile पर OTP test सफल है
 - [ ] Teacher Panel → Settings में serious warnings नहीं हैं
 - [ ] Student registration → pending → teacher approval → content flow test हुआ है
 - [ ] PDF/video upload करके approved student से open test हुआ है

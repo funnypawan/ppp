@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "seed": "node seed.js",
-    "test": "node tests/smoke.test.js && node tests/features.test.js && node tests/workflows.test.js && node tests/production-auth.test.js"
+    "test": "node tests/smoke.test.js && node tests/features.test.js && node tests/workflows.test.js && node tests/production-auth.test.js && node tests/name-login.test.js"
   },
   "engines": {
     "node": ">=22"

@@ -1,4 +1,5 @@
-// Production authentication regression tests:
+// Production authentication regression tests for the optional legacy OTP
+// backend (explicit STUDENT_AUTH_MODE=otp in test-env) and teacher auth:
 // - OTP is not consumed before a new student's name is supplied
 // - cooldown / expiry / max attempts / one-time use
 // - production fails closed without SMS credentials (no demo OTP)
