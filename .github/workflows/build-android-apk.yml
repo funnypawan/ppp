@@ -82,7 +82,22 @@ jobs:
         working-directory: dream-classes/android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          set +e
+          ./gradlew assembleDebug --no-daemon 2>&1 | tee /tmp/gradle.log
+          code=${PIPESTATUS[0]}
+          if [ "$code" -ne 0 ]; then
+            echo "::error::Gradle build failed — key lines:"
+            grep -aiE "error:|e: file|FAILURE:|What went wrong|Execution failed|AAPT|not found|requires|failed to" /tmp/gradle.log | head -25 | while IFS= read -r l; do echo "::error::${l:0:280}"; done
+          fi
+          exit $code
+
+      - name: Upload Gradle log on failure (debugging ke liye)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-log
+          path: /tmp/gradle.log
+          retention-days: 7
 
       - name: Prepare friendly APK file
         run: |
