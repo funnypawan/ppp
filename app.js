@@ -1,4 +1,4 @@
-/* Dream Classes · student dashboard prototype */
+/* Dream Classes · student and admin learning workspace prototype */
 
 const iconPaths = {
   spark: '<path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-2-5.8L4 11l6-2.2L12 3Z"/><path d="m19 14 .9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9L19 14Z"/>',
@@ -27,6 +27,7 @@ const iconPaths = {
   checkCircle: '<circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16.5 9"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   download: '<path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 17v3h14v-3"/>',
+  upload: '<path d="M12 16V4m0 0L8 8m4-4 4 4"/><path d="M4 16v4h16v-4"/>',
   bookmark: '<path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-4-6 4V4.5Z"/>',
   filter: '<path d="M4 6h16M7 12h10m-7 6h4"/>',
   sparkle: '<path d="m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/><path d="m19 16 .7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16Z"/>',
@@ -159,6 +160,36 @@ const questions = [
   },
 ];
 
+const defaultAdminStudents = [
+  { id: 'stu-01', name: 'Aarav Sharma', initials: 'AS', grade: 'Class 11 · JEE', batch: 'JEE Rank Booster 2027', joined: '12 Aug 2026', activity: 'Today', status: 'Active' },
+  { id: 'stu-02', name: 'Sana Verma', initials: 'SV', grade: 'Class 11 · JEE', batch: 'JEE Rank Booster 2027', joined: '16 Aug 2026', activity: 'Today', status: 'Active' },
+  { id: 'stu-03', name: 'Kabir Mehta', initials: 'KM', grade: 'Class 12 · NEET', batch: 'NEET Achiever Batch', joined: '22 Aug 2026', activity: 'Yesterday', status: 'Active' },
+  { id: 'stu-04', name: 'Isha Singh', initials: 'IS', grade: 'Class 10 · Boards', batch: 'Class 10 Board Sprint', joined: '02 Sep 2026', activity: '3 days ago', status: 'Active' },
+  { id: 'stu-05', name: 'Dev Patel', initials: 'DP', grade: 'Class 11 · JEE', batch: 'JEE Rank Booster 2027', joined: '04 Sep 2026', activity: '12 Oct', status: 'Blocked' },
+];
+const defaultAdminFaculty = [
+  { id: 'fac-01', name: 'Dr. Rohan Sen', initials: 'RS', subject: 'Physics', batches: '4 batches', sessions: '28 this month', status: 'Active' },
+  { id: 'fac-02', name: 'Meera Iyer', initials: 'MI', subject: 'Mathematics', batches: '3 batches', sessions: '24 this month', status: 'Active' },
+  { id: 'fac-03', name: 'Aditi Kapoor', initials: 'AK', subject: 'Chemistry', batches: '3 batches', sessions: '21 this month', status: 'Active' },
+  { id: 'fac-04', name: 'Nikhil Das', initials: 'ND', subject: 'Biology', batches: '2 batches', sessions: '16 this month', status: 'Invited' },
+];
+const defaultAdminBatches = [
+  { id: 'batch-01', name: 'JEE Rank Booster 2027', grade: 'Class 11 · JEE', students: 2840, price: 4999, status: 'Live', start: '02 Nov 2026', subjects: 'Physics, Chemistry, Mathematics' },
+  { id: 'batch-02', name: 'NEET Achiever Batch', grade: 'Class 11 · NEET', students: 1960, price: 5499, status: 'Live', start: '09 Nov 2026', subjects: 'Physics, Chemistry, Biology' },
+  { id: 'batch-03', name: 'Class 10 Board Sprint', grade: 'Class 10 · Boards', students: 1320, price: 1999, status: 'Draft', start: '04 Nov 2026', subjects: 'Mathematics, Science' },
+];
+const defaultAdminTests = [
+  { id: 'test-01', title: 'Laws of Motion · Chapter Test', batch: 'JEE Rank Booster 2027', questions: 20, date: 'Today · 7:00 PM', status: 'Scheduled' },
+  { id: 'test-02', title: 'Chemical Bonding · Unit Test', batch: 'JEE Rank Booster 2027', questions: 25, date: '24 Oct · 10:00 AM', status: 'Draft' },
+  { id: 'test-03', title: 'NEET Mini Mock 03', batch: 'NEET Achiever Batch', questions: 90, date: '25 Oct · 9:00 AM', status: 'Published' },
+];
+const defaultAdminTransactions = [
+  { id: 'txn-2401', name: 'Sana Verma', item: 'JEE Rank Booster 2027', amount: 4999, date: '22 Oct 2026 · 09:42', status: 'Paid' },
+  { id: 'txn-2399', name: 'Kabir Mehta', item: 'NEET Achiever Batch', amount: 5499, date: '22 Oct 2026 · 08:17', status: 'Paid' },
+  { id: 'txn-2394', name: 'Isha Singh', item: 'Class 10 Board Sprint', amount: 1999, date: '21 Oct 2026 · 19:33', status: 'Refund requested' },
+  { id: 'txn-2390', name: 'Aarav Sharma', item: 'JEE Rank Booster 2027', amount: 4999, date: '21 Oct 2026 · 16:05', status: 'Paid' },
+];
+
 const readStore = (key, fallback) => {
   try {
     const value = localStorage.getItem(key);
@@ -172,7 +203,8 @@ const writeStore = (key, value) => {
 };
 
 const state = {
-  view: 'overview',
+  role: readStore('dream-role', 'student'),
+  view: readStore('dream-role', 'student') === 'admin' ? 'admin-overview' : 'overview',
   mobileOpen: false,
   popover: null,
   modal: null,
@@ -185,6 +217,19 @@ const state = {
   language: readStore('dream-language', 'EN'),
   theme: readStore('dream-theme', 'light'),
   xp: readStore('dream-xp', 320),
+  adminStudents: readStore('dream-admin-students', defaultAdminStudents),
+  adminFaculty: readStore('dream-admin-faculty', defaultAdminFaculty),
+  adminBatches: readStore('dream-admin-batches', defaultAdminBatches),
+  adminTests: readStore('dream-admin-tests', defaultAdminTests),
+  adminScheduledClasses: readStore('dream-admin-live', []),
+  assignedDoubts: new Set(readStore('dream-assigned-doubts', [])),
+  adminTransactions: readStore('dream-admin-transactions', defaultAdminTransactions),
+  adminNotifications: readStore('dream-admin-notifications', []),
+  adminContent: readStore('dream-admin-content', []),
+  adminUploadName: '',
+  resolvedDoubts: new Set(readStore('dream-resolved-doubts', [])),
+  adminStudentFilter: 'All students',
+  adminStudentQuery: '',
   savedMaterials: new Set(readStore('dream-saved-materials', [])),
   downloadedMaterials: new Set(readStore('dream-downloaded-materials', [])),
   reminders: new Set(readStore('dream-reminders', [])),
@@ -212,7 +257,31 @@ const navGroups = [
   { title: 'Account', links: [['settings', 'Settings', 'settings']] },
 ];
 
+const adminNavGroups = [
+  { title: 'Manage', links: [
+    ['admin-overview', 'Overview', 'grid'], ['admin-students', 'Students', 'users'], ['admin-faculty', 'Faculty', 'usersRound'], ['admin-batches', 'Batches & courses', 'book'],
+  ] },
+  { title: 'Operate', links: [
+    ['admin-content', 'Content library', 'file'], ['admin-live', 'Live classes', 'video'], ['admin-tests', 'Test management', 'target'], ['admin-doubts', 'Doubt queue', 'message', '8'],
+  ] },
+  { title: 'Insights', links: [
+    ['admin-notifications', 'Notifications', 'bell'], ['admin-payments', 'Payments', 'coin'], ['admin-analytics', 'Analytics', 'chart'], ['admin-settings', 'Settings', 'settings'],
+  ] },
+];
+
 const pageMeta = {
+  'admin-overview': ['Admin overview', 'A clear view of your learning community and today’s operations.'],
+  'admin-students': ['Student management', 'Support every learner with a clear view of their courses and activity.'],
+  'admin-faculty': ['Faculty management', 'Manage your teachers, subjects and teaching assignments.'],
+  'admin-batches': ['Batches & courses', 'Create learning journeys and keep every batch organised.'],
+  'admin-content': ['Content library', 'Publish lessons, notes and practice material to the right learners.'],
+  'admin-live': ['Live class management', 'Schedule teaching sessions and keep your learners in the loop.'],
+  'admin-tests': ['Test management', 'Build assessments, set a schedule and publish results.'],
+  'admin-doubts': ['Doubt queue', 'Route learner questions to the right faculty and follow them through.'],
+  'admin-notifications': ['Notifications', 'Send a helpful update to the right students at the right time.'],
+  'admin-payments': ['Payments & revenue', 'Review purchases, refunds and the health of your business.'],
+  'admin-analytics': ['Learning analytics', 'Understand engagement, retention and academic progress.'],
+  'admin-settings': ['Platform settings', 'Manage key details for your Dream Classes workspace.'],
   overview: ['Good morning, Aarav 👋', 'You’re showing up for your goals — keep that momentum going.'],
   courses: ['Your learning library', 'Everything you need for your Class 11 JEE journey, in one place.'],
   live: ['Live classes', 'Join your classroom, catch a replay or get ready for what’s next.'],
@@ -233,7 +302,8 @@ function currentDateLabel() {
 }
 
 function renderNav() {
-  return navGroups.map((group) => `
+  const groups = state.role === 'admin' ? adminNavGroups : navGroups;
+  return groups.map((group) => `
     <div class="nav-group">
       <p class="nav-heading">${group.title}</p>
       ${group.links.map(([view, label, glyph, badge]) => `
@@ -245,35 +315,39 @@ function renderNav() {
 
 function renderProfilePopover() {
   if (state.popover !== 'profile') return '';
+  const settingsView = state.role === 'admin' ? 'admin-settings' : 'settings';
+  const targetRole = state.role === 'admin' ? 'student' : 'admin';
   return `<div class="popover profile-popover">
-    <div class="popover-heading">Your account</div>
-    <button class="popover-row" data-action="navigate" data-view="settings">${icon('settings')}<span><strong>Profile & settings</strong><small>Personalise your learning</small></span></button>
+    <div class="popover-heading">${state.role === 'admin' ? 'Admin workspace' : 'Your account'}</div>
+    <button class="popover-row" data-action="navigate" data-view="${settingsView}">${icon('settings')}<span><strong>${state.role === 'admin' ? 'Workspace settings' : 'Profile & settings'}</strong><small>${state.role === 'admin' ? 'Manage your platform' : 'Personalise your learning'}</small></span></button>
+    <button class="popover-row" data-action="switch-role" data-role="${targetRole}">${icon('layers')}<span><strong>Switch to ${targetRole === 'admin' ? 'admin' : 'student'} demo</strong><small>Explore the ${targetRole === 'admin' ? 'management' : 'learning'} workspace</small></span></button>
     <button class="popover-row" data-action="show-help">${icon('help')}<span><strong>Help & support</strong><small>We’re here if you need us</small></span></button>
   </div>`;
 }
 
 function renderSidebar() {
+  const admin = state.role === 'admin';
   return `<div class="mobile-overlay ${state.mobileOpen ? 'open' : ''}" data-action="close-mobile" aria-hidden="true"></div>
     <aside class="sidebar ${state.mobileOpen ? 'open' : ''}" aria-label="Main navigation">
-      <a href="#" class="brand-lockup" data-action="navigate" data-view="overview" aria-label="Dream Classes home">
+      <a href="#" class="brand-lockup" data-action="navigate" data-view="${admin ? 'admin-overview' : 'overview'}" aria-label="Dream Classes home">
         <span class="brand-mark">${icon('spark')}</span>
         <span><span class="brand-name">Dream Classes</span><span class="brand-tagline">Learn with purpose</span></span>
       </a>
       <div class="sidebar-context">
-        <span class="context-icon">${icon('bookOpen')}</span>
-        <span class="context-copy"><strong>Student space</strong><span>Class 11 · JEE</span></span>
+        <span class="context-icon">${icon(admin ? 'settings' : 'bookOpen')}</span>
+        <span class="context-copy"><strong>${admin ? 'Admin workspace' : 'Student space'}</strong><span>${admin ? 'Super Admin · Dream Classes' : 'Class 11 · JEE'}</span></span>
         ${icon('chevronDown', 'context-chevron')}
       </div>
       <nav class="sidebar-nav">${renderNav()}</nav>
       <div class="sidebar-bottom">
-        <div class="streak-card">
+        ${admin ? `<div class="admin-side-note"><span class="quick-icon violet">${icon('lock')}</span><span><strong>Admin access</strong><small>Super Admin workspace</small></span></div>` : `<div class="streak-card">
           <div class="streak-top"><span class="streak-flame">${icon('flame')}</span><strong>Your study streak</strong><span>5 days</span></div>
           <div class="streak-caption">One small step, every day.</div>
           <div class="streak-days">${['M','T','W','T','F','S','S'].map((d, i) => `<span class="streak-day ${i < 5 ? 'done' : ''} ${i === 4 ? 'today' : ''}"><i>${i < 4 ? icon('check') : i === 4 ? '•' : ''}</i>${d}</span>`).join('')}</div>
-        </div>
+        </div>`}
         <div class="profile-wrap">
           <button class="profile-switch" data-action="toggle-profile" aria-expanded="${state.popover === 'profile'}">
-            <span class="avatar">AS</span><span class="profile-meta"><strong>Aarav Sharma</strong><span>Class 11 · JEE aspirant</span></span>${icon('more')}
+            <span class="avatar ${admin ? 'avatar-violet' : ''}">${admin ? 'RR' : 'AS'}</span><span class="profile-meta"><strong>${admin ? 'Ronny Raj' : 'Aarav Sharma'}</strong><span>${admin ? 'Super Admin' : 'Class 11 · JEE aspirant'}</span></span>${icon('more')}
           </button>
           ${renderProfilePopover()}
         </div>
@@ -291,6 +365,13 @@ function renderLanguagePopover() {
 
 function renderNotificationPopover() {
   if (state.popover !== 'notifications') return '';
+  if (state.role === 'admin') return `<div class="popover">
+    <div class="popover-heading">Admin alerts</div>
+    <button class="popover-row" data-action="navigate" data-view="admin-doubts">${icon('message')}<span><strong>8 doubts need a faculty</strong><small>Review the pending doubt queue</small></span></button>
+    <button class="popover-row" data-action="navigate" data-view="admin-payments">${icon('coin')}<span><strong>Refund request to review</strong><small>Class 10 Board Sprint · ₹1,999</small></span></button>
+    <div class="popover-divider"></div>
+    <button class="text-link" style="padding:7px 9px" data-action="mark-read">${state.notificationsRead ? 'All caught up' : 'Mark all as read'} ${icon('check')}</button>
+  </div>`;
   return `<div class="popover">
     <div class="popover-heading">Notifications</div>
     <button class="popover-row" data-action="navigate" data-view="live">${icon('video')}<span><strong>Physics class today</strong><small>Rotational Motion · 11:30 AM</small></span></button>
@@ -303,12 +384,18 @@ function renderNotificationPopover() {
 function renderSearchItems() {
   const text = state.query.trim().toLowerCase();
   if (!text) return '';
-  const items = [
+  const sourceItems = state.role === 'admin' ? [
+    ...state.adminStudents.map((item) => ({ label: item.name, detail: `${item.grade} · ${item.batch}`, view: 'admin-students', action: 'navigate', icon: 'users' })),
+    ...state.adminBatches.map((item) => ({ label: item.name, detail: `${item.grade} · ${item.students} students`, view: 'admin-batches', action: 'navigate', icon: 'book' })),
+    { label: 'Pending doubts', detail: 'Review student questions', view: 'admin-doubts', action: 'navigate', icon: 'message' },
+    { label: 'Recent transactions', detail: 'Payments and refunds', view: 'admin-payments', action: 'navigate', icon: 'coin' },
+  ] : [
     ...courseData.map((item) => ({ label: item.title, detail: `${item.subject} · ${item.exam}`, view: 'courses', action: 'open-course', id: item.id, icon: 'book' })),
     ...materialData.map((item) => ({ label: item.title, detail: `${item.subject} · ${item.type}`, view: 'materials', action: 'search-material', id: item.id, icon: 'file' })),
     { label: 'Upcoming live classes', detail: 'See your class schedule', view: 'live', action: 'navigate', icon: 'video' },
     { label: 'Daily practice problems', detail: 'Try today’s DPP', view: 'practice', action: 'navigate', icon: 'target' },
-  ].filter((item) => `${item.label} ${item.detail}`.toLowerCase().includes(text)).slice(0, 5);
+  ];
+  const items = sourceItems.filter((item) => `${item.label} ${item.detail}`.toLowerCase().includes(text)).slice(0, 5);
   if (!items.length) return `<div class="search-empty">No lessons or materials found for “${escapeHTML(state.query)}”</div>`;
   return `<div class="search-results-label">Quick results</div>${items.map((item) => `<button class="search-result" data-action="${item.action}" ${item.view ? `data-view="${item.view}"` : ''} ${item.id ? `data-id="${item.id}"` : ''}>${icon(item.icon)}<span>${escapeHTML(item.label)}<small style="display:block;margin-top:3px;color:#9ba3b1;font-size:8px">${escapeHTML(item.detail)}</small></span></button>`).join('')}`;
 }
@@ -339,7 +426,7 @@ function renderTopbar() {
 
 function renderIntro() {
   const [title, subtitle] = pageMeta[state.view] || pageMeta.overview;
-  const dateChip = state.view === 'overview' || state.view === 'live' || state.view === 'progress'
+  const dateChip = ['overview','live','progress','admin-overview','admin-live','admin-analytics'].includes(state.view)
     ? `<div class="page-intro-side"><span class="date-chip">${icon('calendar')}${currentDateLabel()}</span></div>` : '';
   return `<div class="page-intro"><div><h1>${title}</h1><p>${subtitle}</p></div>${dateChip}</div>`;
 }
@@ -553,7 +640,103 @@ function renderSettings() {
   return `${renderIntro()}<section class="settings-layout"><nav class="settings-nav" aria-label="Settings sections">${tabs.map(([label, glyph]) => `<button class="${state.settingsTab === label ? 'selected' : ''}" data-action="settings-tab" data-tab="${label}">${icon(glyph)}${label}</button>`).join('')}</nav><article class="settings-panel"><h2>${state.settingsTab}</h2><p>Manage your ${state.settingsTab.toLowerCase()} preferences.</p>${body}</article></section>`;
 }
 
+function renderAdminOverview() {
+  const activeStudents = state.adminStudents.filter((student) => student.status === 'Active').length;
+  const scheduledClasses = liveClasses.length + state.adminScheduledClasses.length;
+  const activities = [
+    ['Aarav Sharma', 'enrolled in JEE Rank Booster 2027', '9:42 AM', 'AS'],
+    ['Dr. Rohan Sen', 'published “Rotational Motion · Lecture 09”', '9:18 AM', 'RS'],
+    ['Sana Verma', 'completed Physics Chapter Test · 88%', '8:56 AM', 'SV'],
+    ['Aditi Kapoor', 'uploaded new Chemistry revision notes', 'Yesterday', 'AK'],
+  ];
+  return `${renderIntro()}
+    <section class="admin-welcome"><div><span class="eyebrow">${icon('spark')} YOUR DAILY ADMIN BRIEFING · ${currentDateLabel().toUpperCase()}</span><h2>Good morning, Ronny.</h2><p>Your learning community is growing. Here’s what needs your attention today.</p></div><div class="admin-welcome-actions"><button class="btn btn-white" data-action="open-admin-modal" data-type="live">${icon('calendar')} Schedule a class</button><button class="btn btn-glass" data-action="open-admin-modal" data-type="batch">${icon('plus')} Create a batch</button></div></section>
+    <section class="admin-metric-grid"><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon violet">${icon('users')}</span><span class="stat-trend">${icon('trending')} 12.4%</span></div><span class="admin-metric-label">Total students</span><strong>18,426</strong><small>${activeStudents.toLocaleString('en-IN')} active this month</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon mint">${icon('trending')}</span><span class="stat-trend">${icon('trending')} 8.2%</span></div><span class="admin-metric-label">Revenue this month</span><strong>₹12.8L</strong><small>Across 3 active batches</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon amber">${icon('video')}</span><span class="tag orange">TODAY</span></div><span class="admin-metric-label">Live classes</span><strong>06</strong><small>${scheduledClasses} sessions on this week</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon violet">${icon('target')}</span><span class="stat-trend">${icon('trending')} 4.6%</span></div><span class="admin-metric-label">Weekly engagement</span><strong>76.4%</strong><small>Average student activity</small></article></section>
+    <section class="admin-overview-grid"><article class="chart-card"><div class="panel-header"><div class="panel-title-wrap"><h2>Platform growth</h2><p>Student sign-ups over the last 7 days</p></div><button class="filter-chip selected">This week ${icon('chevronDown')}</button></div><div class="admin-growth-chart">${[42,56,48,68,57,83,74].map((height, index) => `<div class="admin-growth-column"><span>${[128,164,141,193,177,238,216][index]}</span><i style="height:${height}%"></i><small>${['M','T','W','T','F','S','S'][index]}</small></div>`).join('')}</div><div class="chart-legend"><span><i class="legend-dot dark"></i> New student sign-ups</span><span style="margin-left:auto">1,157 this week</span></div></article>
+      <article class="chart-card"><div class="panel-header"><div class="panel-title-wrap"><h2>Today’s live classes</h2><p>Faculty sessions scheduled</p></div><button class="text-link" data-action="navigate" data-view="admin-live">Manage schedule ${icon('arrowRight')}</button></div><div class="admin-live-list">${liveClasses.slice(0,3).map((item) => `<div class="admin-live-row"><div class="admin-time">${escapeHTML(item.time.split(' ')[0])}<small>${escapeHTML(item.time.split(' ')[1])}</small></div><span class="subject-tile">${icon(item.subject === 'Physics' ? 'atom' : item.subject === 'Chemistry' ? 'flask' : 'calculator')}</span><div class="admin-live-copy"><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.subject)} · ${escapeHTML(item.teacher)}</small></div><span class="status-pill ${item.id === 'rotational' ? '' : 'answered'}">${item.id === 'rotational' ? 'Soon' : 'Scheduled'}</span></div>`).join('')}</div><button class="btn btn-outline btn-compact btn-full" style="margin-top:12px" data-action="navigate" data-view="admin-live">View all live classes ${icon('arrowRight')}</button></article></section>
+    <section class="admin-overview-grid admin-overview-grid-lower"><article class="panel panel-pad"><div class="panel-header"><div class="panel-title-wrap"><h2>Recent activity</h2><p>What’s happening across your platform.</p></div><button class="text-link" data-action="navigate" data-view="admin-analytics">View analytics ${icon('arrowRight')}</button></div><div class="admin-activity-list">${activities.map(([name, text, time, initials]) => `<div class="admin-activity-row"><span class="avatar avatar-small">${initials}</span><p><strong>${name}</strong> ${text}</p><time>${time}</time></div>`).join('')}</div></article><article class="panel panel-pad"><div class="panel-header"><div class="panel-title-wrap"><h2>Quick actions</h2><p>Keep your learning space moving.</p></div></div><div class="admin-quick-actions"><button class="admin-action-card" data-action="navigate" data-view="admin-students"><span class="quick-icon violet">${icon('users')}</span><span><strong>Manage students</strong><small>View, support and invite learners</small></span>${icon('arrowRight')}</button><button class="admin-action-card" data-action="open-admin-modal" data-type="batch"><span class="quick-icon teal">${icon('book')}</span><span><strong>Create a batch</strong><small>Set up a new course offering</small></span>${icon('arrowRight')}</button><button class="admin-action-card" data-action="navigate" data-view="admin-doubts"><span class="quick-icon orange">${icon('message')}</span><span><strong>Review doubt queue</strong><small>8 questions awaiting assignment</small></span>${icon('arrowRight')}</button></div></article></section>`;
+}
+
+function renderAdminStudents() {
+  const term = state.adminStudentQuery.trim().toLowerCase();
+  const list = state.adminStudents.filter((student) => {
+    const filterMatch = state.adminStudentFilter === 'All students' || student.status === state.adminStudentFilter;
+    return filterMatch && (!term || `${student.name} ${student.grade} ${student.batch}`.toLowerCase().includes(term));
+  });
+  return `${renderIntro()}<section class="admin-toolbar"><div class="admin-filter-group">${['All students','Active','Blocked'].map((filter) => `<button class="filter-chip ${state.adminStudentFilter === filter ? 'selected' : ''}" data-action="student-filter" data-filter="${filter}">${filter}</button>`).join('')}</div><div class="admin-toolbar-actions"><label class="admin-search">${icon('search')}<input id="admin-student-search" type="search" value="${escapeHTML(state.adminStudentQuery)}" placeholder="Search by name or batch..." aria-label="Search students" /></label><button class="btn btn-outline btn-compact" data-action="export-students">${icon('download')} Export</button><button class="btn btn-primary btn-compact" data-action="open-admin-modal" data-type="student">${icon('plus')} Add student</button></div></section>
+    <section class="admin-table-card"><div class="admin-table-heading"><div><h2>All students <span class="count-bubble">${list.length}</span></h2><p>Review enrollment, recent activity and account status.</p></div><span class="tag green">${state.adminStudents.filter((student) => student.status === 'Active').length} ACTIVE</span></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>STUDENT</th><th>LEARNING PLAN</th><th>LAST ACTIVE</th><th>JOINED</th><th>STATUS</th><th></th></tr></thead><tbody>${list.length ? list.map((student) => `<tr><td><div class="admin-person"><span class="avatar avatar-small">${escapeHTML(student.initials)}</span><span><strong>${escapeHTML(student.name)}</strong><small>${escapeHTML(student.id)}</small></span></div></td><td><strong class="table-primary">${escapeHTML(student.grade)}</strong><small class="table-subline">${escapeHTML(student.batch)}</small></td><td>${escapeHTML(student.activity)}</td><td>${escapeHTML(student.joined)}</td><td><span class="status-pill ${student.status === 'Active' ? 'answered' : 'blocked'}">${escapeHTML(student.status)}</span></td><td><div class="table-actions"><button class="icon-button" data-action="student-detail" data-id="${student.id}" aria-label="View ${escapeHTML(student.name)}">${icon('eye')}</button><button class="icon-button" data-action="toggle-student-status" data-id="${student.id}" aria-label="${student.status === 'Active' ? 'Block' : 'Unblock'} ${escapeHTML(student.name)}">${icon(student.status === 'Active' ? 'lock' : 'check')}</button></div></td></tr>`).join('') : '<tr><td colspan="6"><div class="empty-state">No students match your search.</div></td></tr>'}</tbody></table></div><div class="admin-table-foot"><span>Showing ${list.length} of ${state.adminStudents.length} students</span><span>Student records are sample data in this prototype.</span></div></section>`;
+}
+
+function renderAdminFaculty() {
+  return `${renderIntro()}<section class="admin-toolbar"><div class="admin-toolbar-copy"><strong>${state.adminFaculty.length} faculty members</strong><span>Teachers and subject specialists</span></div><div class="admin-toolbar-actions"><button class="btn btn-outline btn-compact" data-action="show-toast" data-message="Faculty directory exported for this demo.">${icon('download')} Export</button><button class="btn btn-primary btn-compact" data-action="open-admin-modal" data-type="faculty">${icon('plus')} Add faculty</button></div></section><section class="admin-table-card"><div class="admin-table-heading"><div><h2>Faculty directory</h2><p>Manage teaching assignments and faculty access.</p></div><button class="filter-chip selected">All subjects ${icon('chevronDown')}</button></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>FACULTY</th><th>SUBJECT</th><th>ASSIGNED BATCHES</th><th>SESSIONS</th><th>STATUS</th><th></th></tr></thead><tbody>${state.adminFaculty.map((teacher) => `<tr><td><div class="admin-person"><span class="avatar avatar-small avatar-violet">${escapeHTML(teacher.initials)}</span><span><strong>${escapeHTML(teacher.name)}</strong><small>${escapeHTML(teacher.id)}</small></span></div></td><td><span class="tag">${escapeHTML(teacher.subject)}</span></td><td>${escapeHTML(teacher.batches)}</td><td>${escapeHTML(teacher.sessions)}</td><td><span class="status-pill ${teacher.status === 'Active' ? 'answered' : ''}">${escapeHTML(teacher.status)}</span></td><td><button class="icon-button" data-action="show-toast" data-message="Faculty profile details opened.">${icon('more')}</button></td></tr>`).join('')}</tbody></table></div><div class="admin-table-foot"><span>Faculty permissions are managed by Super Admin.</span><span>Teacher sign-in is invitation-only.</span></div></section><div class="admin-info-banner">${icon('help')}<span>Need to change a teacher’s batch assignment? Open their profile from the faculty directory.</span></div>`;
+}
+
+function renderAdminBatches() {
+  return `${renderIntro()}<section class="admin-toolbar"><div class="admin-toolbar-copy"><strong>${state.adminBatches.length} batches</strong><span>Manage courses, pricing and enrollment</span></div><div class="admin-toolbar-actions"><button class="btn btn-outline btn-compact" data-action="show-toast" data-message="Batch report exported.">${icon('download')} Export</button><button class="btn btn-primary btn-compact" data-action="open-admin-modal" data-type="batch">${icon('plus')} Create batch</button></div></section><section class="admin-batch-grid">${state.adminBatches.map((batch, index) => `<article class="admin-batch-card"><div class="admin-batch-art ${['art-physics','art-maths','art-chemistry'][index % 3]}"><span class="art-label">${escapeHTML(batch.grade.toUpperCase())}</span><span class="course-pill">${batch.status === 'Live' ? 'ENROLLMENT OPEN' : 'DRAFT'}</span><span class="art-formula">${index === 0 ? 'JEE' : index === 1 ? 'NEET' : 'X'}</span></div><div class="admin-batch-body"><div class="catalog-tags"><span class="tag">${escapeHTML(batch.grade.split('·')[1]?.trim() || 'Course')}</span><span class="tag ${batch.status === 'Live' ? 'green' : 'orange'}">${escapeHTML(batch.status)}</span></div><h3>${escapeHTML(batch.name)}</h3><p>${escapeHTML(batch.subjects)}</p><div class="admin-batch-stats"><span>${icon('users')} ${Number(batch.students).toLocaleString('en-IN')} students</span><span>${icon('calendar')} Starts ${escapeHTML(batch.start)}</span></div><div class="admin-batch-footer"><strong>₹${Number(batch.price).toLocaleString('en-IN')} <small>one-time fee</small></strong><button class="btn btn-outline btn-compact" data-action="show-toast" data-message="Batch details are ready to edit.">Manage ${icon('arrowRight')}</button></div></div></article>`).join('')}</section>`;
+}
+
+function renderAdminContent() {
+  const content = [
+    ...state.adminContent,
+    { id: 'cnt-01', title: 'Rotational Motion · Lecture 09', type: 'Video', subject: 'Physics', batch: 'JEE Rank Booster 2027', date: 'Published today', status: 'Published' },
+    { id: 'cnt-02', title: 'Newton’s Laws · Formula Sheet', type: 'PDF', subject: 'Physics', batch: 'JEE Rank Booster 2027', date: 'Updated 18 Oct', status: 'Published' },
+    { id: 'cnt-03', title: 'Chemical Bonding · Quick Revision', type: 'PDF', subject: 'Chemistry', batch: 'NEET Achiever Batch', date: 'Draft · 20 Oct', status: 'Draft' },
+  ];
+  return `${renderIntro()}<div class="admin-content-layout"><section class="form-panel"><div class="admin-form-heading"><span class="quick-icon violet">${icon('upload')}</span><div><h2>Upload learning content</h2><p>Add a lecture, notes PDF or practice resource to a course.</p></div></div><form data-form="admin-content"><div class="form-field"><label for="content-title">Content title</label><input id="content-title" name="title" placeholder="e.g. Newton’s Laws — Lecture 04" required /></div><div class="admin-form-row"><div class="form-field"><label for="content-type">Type</label><select id="content-type" name="type"><option>Video</option><option>PDF notes</option><option>DPP</option><option>Formula sheet</option></select></div><div class="form-field"><label for="content-subject">Subject</label><select id="content-subject" name="subject"><option>Physics</option><option>Mathematics</option><option>Chemistry</option><option>Biology</option></select></div></div><div class="form-field"><label for="content-batch">Assign to batch</label><select id="content-batch" name="batch">${state.adminBatches.map((batch) => `<option>${escapeHTML(batch.name)}</option>`).join('')}</select></div><label class="admin-upload-zone" for="admin-content-file">${icon('upload')}<strong>Choose a file to upload</strong><span>Video, PDF or image · Max file size depends on your storage plan</span><input id="admin-content-file" name="file" type="file" accept="video/*,.pdf,image/*" /></label><div id="admin-upload-name" class="admin-upload-name">${state.adminUploadName ? `${icon('file')}${escapeHTML(state.adminUploadName)}` : ''}</div><div class="form-actions" style="margin-top:13px"><span class="footer-note">Content is saved as a local demo entry.</span><button class="btn btn-primary btn-compact" type="submit">Add to library ${icon('arrowRight')}</button></div></form></section><section class="admin-table-card"><div class="admin-table-heading"><div><h2>Recent content</h2><p>${content.length} items across your courses</p></div><button class="filter-chip selected">All content ${icon('chevronDown')}</button></div><div class="admin-content-list">${content.map((item) => `<div class="admin-content-row"><span class="file-icon ${item.type.includes('PDF') || item.type.includes('sheet') ? 'note' : 'sheet'}">${icon(item.type === 'Video' ? 'video' : 'file')}</span><div class="material-copy"><h3>${escapeHTML(item.title)}</h3><p>${escapeHTML(item.subject)} <span>·</span> ${escapeHTML(item.batch)} <span>·</span> ${escapeHTML(item.date)}</p></div><span class="status-pill ${item.status === 'Published' ? 'answered' : ''}">${escapeHTML(item.status)}</span><button class="icon-button" data-action="show-toast" data-message="Content details are ready to edit." aria-label="Content options">${icon('more')}</button></div>`).join('')}</div></section></div>`;
+}
+
+function renderAdminLive() {
+  const classes = [...state.adminScheduledClasses.map((item) => ({ ...item, custom: true })), ...liveClasses.map((item) => ({ ...item, custom: false }))];
+  return `${renderIntro()}<section class="admin-toolbar"><div class="admin-toolbar-copy"><strong>${classes.length} sessions scheduled</strong><span>All session times are in IST</span></div><div class="admin-toolbar-actions"><button class="btn btn-outline btn-compact" data-action="show-toast" data-message="Your live class schedule is up to date.">${icon('calendar')} Calendar view</button><button class="btn btn-primary btn-compact" data-action="open-admin-modal" data-type="live">${icon('plus')} Schedule class</button></div></section><section class="admin-table-card"><div class="admin-table-heading"><div><h2>Upcoming sessions</h2><p>Review faculty, batch and publication status.</p></div><span class="tag green">THIS WEEK</span></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>CLASS</th><th>DATE & TIME</th><th>FACULTY</th><th>BATCH</th><th>STATUS</th><th></th></tr></thead><tbody>${classes.map((item) => `<tr><td><strong class="table-primary">${escapeHTML(item.title)}</strong><small class="table-subline">${escapeHTML(item.subject)}</small></td><td>${escapeHTML(item.custom ? `${item.date} · ${item.time}` : `${item.month} · ${item.time}`)}</td><td>${escapeHTML(item.teacher || 'Faculty to assign')}</td><td>${escapeHTML(item.batch || 'JEE Rank Booster 2027')}</td><td><span class="status-pill ${item.custom || item.id !== 'rotational' ? 'answered' : ''}">${item.custom ? 'Scheduled' : item.id === 'rotational' ? 'Starting soon' : 'Scheduled'}</span></td><td><button class="icon-button" data-action="show-toast" data-message="Class options opened.">${icon('more')}</button></td></tr>`).join('')}</tbody></table></div><div class="admin-table-foot"><span>Recordings can be attached after the session.</span><span>Automated live video integrations are not connected in this demo.</span></div></section>`;
+}
+
+function renderAdminTests() {
+  return `${renderIntro()}<section class="admin-toolbar"><div class="admin-toolbar-copy"><strong>${state.adminTests.length} assessments</strong><span>Question bank · chapter tests · full mocks</span></div><div class="admin-toolbar-actions"><button class="btn btn-outline btn-compact" data-action="show-toast" data-message="Question bank import is available in the full platform.">${icon('upload')} Import questions</button><button class="btn btn-primary btn-compact" data-action="open-admin-modal" data-type="test">${icon('plus')} Create test</button></div></section><section class="admin-table-card"><div class="admin-table-heading"><div><h2>Assessment library</h2><p>Publish tests to your course batches.</p></div><button class="filter-chip selected">All tests ${icon('chevronDown')}</button></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>ASSESSMENT</th><th>BATCH</th><th>QUESTIONS</th><th>SCHEDULE</th><th>STATUS</th><th></th></tr></thead><tbody>${state.adminTests.map((test) => `<tr><td><strong class="table-primary">${escapeHTML(test.title)}</strong><small class="table-subline">JEE pattern · Auto-scored</small></td><td>${escapeHTML(test.batch)}</td><td>${test.questions} questions</td><td>${escapeHTML(test.date)}</td><td><span class="status-pill ${test.status === 'Published' ? 'answered' : test.status === 'Draft' ? '' : 'scheduled'}">${escapeHTML(test.status)}</span></td><td>${test.status === 'Draft' ? `<button class="btn btn-soft btn-compact" data-action="publish-test" data-id="${test.id}">Publish</button>` : `<button class="icon-button" data-action="show-toast" data-message="Assessment options opened." aria-label="Assessment options">${icon('more')}</button>`}</td></tr>`).join('')}</tbody></table></div></section>`;
+}
+
+function renderAdminDoubts() {
+  const all = [...state.customDoubts, ...initialDoubts];
+  const open = all.filter((item) => item.status !== 'Answered' && !state.resolvedDoubts.has(item.id));
+  return `${renderIntro()}<section class="admin-toolbar"><div class="admin-toolbar-copy"><strong>${open.length} questions need attention</strong><span>Prioritise unanswered learner questions.</span></div><div class="admin-toolbar-actions"><button class="filter-chip selected">Pending first ${icon('chevronDown')}</button></div></section><section class="doubt-list admin-doubt-list">${all.map((item) => { const resolved = item.status === 'Answered' || state.resolvedDoubts.has(item.id); const assigned = state.assignedDoubts.has(item.id); return `<article class="doubt-item"><div class="doubt-item-top"><span class="tag ${item.subject === 'Chemistry' ? 'orange' : ''}">${escapeHTML(item.subject)}</span><span class="status-pill ${resolved ? 'answered' : ''}">${resolved ? 'Resolved' : assigned ? 'Assigned' : 'Needs assignment'}</span></div><h3>${escapeHTML(item.title)}</h3><p>${escapeHTML(item.body)}</p><div class="admin-doubt-meta"><span class="avatar avatar-small">${item.id.startsWith('d-') ? 'AS' : 'ST'}</span><span>Student · ${escapeHTML(item.time)}</span><span class="admin-doubt-spacer"></span><button class="btn btn-outline btn-compact" data-action="assign-doubt" data-id="${item.id}" ${resolved ? 'disabled' : ''}>${assigned ? 'Assigned to faculty' : 'Assign faculty'}</button><button class="btn ${resolved ? 'btn-soft' : 'btn-primary'} btn-compact" data-action="resolve-doubt" data-id="${item.id}" ${resolved ? 'disabled' : ''}>${resolved ? 'Resolved' : 'Mark resolved'}</button></div></article>`; }).join('')}</section>`;
+}
+
+function renderAdminNotifications() {
+  const sent = state.adminNotifications;
+  return `${renderIntro()}<div class="admin-notification-layout"><section class="form-panel"><div class="admin-form-heading"><span class="quick-icon orange">${icon('bell')}</span><div><h2>Compose a notification</h2><p>Share an update with students in the right course or batch.</p></div></div><form data-form="admin-notification"><div class="form-field"><label for="notice-audience">Send to</label><select id="notice-audience" name="audience"><option>All students</option>${state.adminBatches.map((batch) => `<option>${escapeHTML(batch.name)}</option>`).join('')}<option>Specific student</option></select></div><div class="form-field"><label for="notice-title">Notification title</label><input id="notice-title" name="title" maxlength="72" placeholder="e.g. Physics class starts in 30 minutes" required /></div><div class="form-field"><label for="notice-message">Message</label><textarea id="notice-message" name="message" maxlength="240" placeholder="Write a short, helpful update..." required style="min-height:90px"></textarea></div><div class="admin-form-row"><div class="form-field"><label for="notice-channel">Channel</label><select id="notice-channel" name="channel"><option>In-app</option><option>Push notification</option><option>Email</option></select></div><div class="form-field"><label for="notice-timing">Delivery</label><select id="notice-timing" name="timing"><option>Send now</option><option>Schedule for later</option></select></div></div><button class="btn btn-primary btn-compact" type="submit">Send notification ${icon('send')}</button></form></section><section class="panel panel-pad"><div class="panel-header"><div class="panel-title-wrap"><h2>Recent notifications</h2><p>${sent.length} sent from this browser.</p></div><span class="tag">ACTIVITY</span></div><div class="admin-notice-list">${sent.length ? sent.map((item) => `<article class="admin-notice-item"><span class="quick-icon violet">${icon('bell')}</span><div><strong>${escapeHTML(item.title)}</strong><p>${escapeHTML(item.message)}</p><small>${escapeHTML(item.audience)} · ${escapeHTML(item.channel)} · ${escapeHTML(item.date)}</small></div><span class="status-pill ${item.status === 'Sent' ? 'answered' : ''}">${escapeHTML(item.status)}</span></article>`).join('') : '<div class="empty-state">No notifications sent yet. Your recent activity will show here.</div>'}</div></section></div>`;
+}
+
+function renderAdminPayments() {
+  const paid = state.adminTransactions.filter((txn) => txn.status === 'Paid').reduce((sum, txn) => sum + Number(txn.amount), 0);
+  return `${renderIntro()}<section class="admin-metric-grid admin-payment-metrics"><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon mint">${icon('coin')}</span><span class="stat-trend">+8.2%</span></div><span class="admin-metric-label">Revenue this month</span><strong>₹12,84,600</strong><small>Net of refunds · October 2026</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon violet">${icon('checkCircle')}</span><span class="tag green">HEALTHY</span></div><span class="admin-metric-label">Successful payments</span><strong>${state.adminTransactions.filter((txn) => txn.status === 'Paid').length + 812}</strong><small>98.4% payment success rate</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon amber">${icon('refresh')}</span><span class="status-pill">REVIEW</span></div><span class="admin-metric-label">Refunds to review</span><strong>${state.adminTransactions.filter((txn) => txn.status === 'Refund requested').length}</strong><small>Needs finance team attention</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon violet">${icon('layers')}</span></div><span class="admin-metric-label">Sample transactions</span><strong>₹${paid.toLocaleString('en-IN')}</strong><small>From visible transaction records</small></article></section><section class="admin-table-card"><div class="admin-table-heading"><div><h2>Recent transactions</h2><p>Review payments and follow up on refund requests.</p></div><button class="btn btn-outline btn-compact" data-action="show-toast" data-message="Transaction report exported.">${icon('download')} Export report</button></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>TRANSACTION</th><th>STUDENT</th><th>COURSE</th><th>AMOUNT</th><th>DATE</th><th>STATUS</th><th></th></tr></thead><tbody>${state.adminTransactions.map((txn) => `<tr><td><strong class="table-primary">${escapeHTML(txn.id)}</strong></td><td>${escapeHTML(txn.name)}</td><td>${escapeHTML(txn.item)}</td><td><strong class="table-primary">₹${Number(txn.amount).toLocaleString('en-IN')}</strong></td><td>${escapeHTML(txn.date)}</td><td><span class="status-pill ${txn.status === 'Paid' ? 'answered' : txn.status === 'Refunded' ? 'blocked' : ''}">${escapeHTML(txn.status)}</span></td><td>${txn.status === 'Refund requested' ? `<button class="btn btn-outline btn-compact" data-action="approve-refund" data-id="${txn.id}">Review</button>` : '<button class="icon-button" data-action="show-toast" data-message="Invoice details opened.">' + icon('document') + '</button>'}</td></tr>`).join('')}</tbody></table></div></section>`;
+}
+
+function renderAdminAnalytics() {
+  return `${renderIntro()}<section class="admin-metric-grid"><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon violet">${icon('eye')}</span></div><span class="admin-metric-label">Lecture watch time</span><strong>24,860 hrs</strong><small>↑ 9.4% this month</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon mint">${icon('users')}</span></div><span class="admin-metric-label">Monthly active learners</span><strong>8,392</strong><small>45.6% of enrolled students</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon amber">${icon('target')}</span></div><span class="admin-metric-label">Average test accuracy</span><strong>72.8%</strong><small>Across 1,284 test attempts</small></article><article class="admin-metric-card"><div class="admin-metric-top"><span class="stat-icon violet">${icon('refresh')}</span></div><span class="admin-metric-label">30-day retention</span><strong>68.2%</strong><small>↑ 3.1 points from September</small></article></section><section class="admin-overview-grid"><article class="chart-card"><div class="panel-header"><div class="panel-title-wrap"><h2>Student engagement</h2><p>Weekly active learners · last 8 weeks</p></div><button class="filter-chip selected">Last 8 weeks ${icon('chevronDown')}</button></div><div class="admin-growth-chart">${[45,54,48,63,68,60,82,76].map((height, i) => `<div class="admin-growth-column"><span>${[4.1,4.8,4.5,5.3,5.8,5.6,6.6,6.2][i]}k</span><i style="height:${height}%"></i><small>${['S1','S2','S3','S4','S5','S6','S7','S8'][i]}</small></div>`).join('')}</div><div class="chart-legend"><span><i class="legend-dot dark"></i> Weekly active learners</span><span style="margin-left:auto">Engagement is trending up</span></div></article><article class="chart-card"><div class="panel-header"><div class="panel-title-wrap"><h2>Most-watched subjects</h2><p>Hours watched this month</p></div></div><div class="chapter-progress-list">${[['Physics',82],['Mathematics',69],['Chemistry',57],['Biology',41]].map(([name,pct],i)=>`<div class="chapter-progress-row"><div><strong>${name}</strong><div class="progress-track"><div class="progress-fill" style="width:${pct}%;background:${i===1?'linear-gradient(90deg,#4eafa0,#72cabb)':i===2?'linear-gradient(90deg,#e6a46a,#f2c080)':''}"></div></div></div><span>${pct}%</span></div>`).join('')}</div><div class="admin-info-banner">${icon('spark')}<span>Review lecture drop-off points to spot topics that may need a clearer explanation.</span></div></article></section>`;
+}
+
+function renderAdminSettings() {
+  return `${renderIntro()}<section class="settings-layout"><nav class="settings-nav"><button class="selected">${icon('settings')}General</button><button data-action="show-toast" data-message="Roles & permissions settings are ready for integration.">${icon('lock')}Roles & permissions</button><button data-action="show-toast" data-message="Payment settings are ready for integration.">${icon('coin')}Payments</button><button data-action="show-toast" data-message="Notification settings are ready for integration.">${icon('bell')}Notifications</button></nav><article class="settings-panel"><h2>Workspace configuration</h2><p>These details appear across your Dream Classes platform.</p><div class="setting-row"><div><strong>Platform name</strong><span>Dream Classes</span></div><button class="text-link" data-action="show-toast" data-message="Platform branding is ready to edit.">Edit ${icon('arrowRight')}</button></div><div class="setting-row"><div><strong>Primary contact</strong><span>support@dreamclasses.in</span></div><button class="text-link" data-action="show-toast" data-message="Contact details are ready to edit.">Edit ${icon('arrowRight')}</button></div><div class="setting-row"><div><strong>Default learning language</strong><span>English · Hindi preference available</span></div><span class="tag green">ACTIVE</span></div><div class="setting-row"><div><strong>Student roles</strong><span>Student and Admin login · Faculty access by invitation</span></div><button class="text-link" data-action="show-toast" data-message="Role permissions are managed by Super Admin.">Manage ${icon('arrowRight')}</button></div><div class="admin-info-banner">${icon('lock')}<span>Authentication, SMS/OTP, payments, storage and notification providers need production credentials before launch.</span></div></article></section>`;
+}
+
+function renderAdminView() {
+  switch (state.view) {
+    case 'admin-students': return renderAdminStudents();
+    case 'admin-faculty': return renderAdminFaculty();
+    case 'admin-batches': return renderAdminBatches();
+    case 'admin-content': return renderAdminContent();
+    case 'admin-live': return renderAdminLive();
+    case 'admin-tests': return renderAdminTests();
+    case 'admin-doubts': return renderAdminDoubts();
+    case 'admin-notifications': return renderAdminNotifications();
+    case 'admin-payments': return renderAdminPayments();
+    case 'admin-analytics': return renderAdminAnalytics();
+    case 'admin-settings': return renderAdminSettings();
+    default: return renderAdminOverview();
+  }
+}
+
 function renderView() {
+  if (state.role === 'admin') return renderAdminView();
   switch (state.view) {
     case 'courses': return renderCourses();
     case 'live': return renderLiveClasses();
@@ -628,6 +811,7 @@ function renderModal() {
   if (state.modal.type === 'material') content = renderMaterialModal();
   if (state.modal.type === 'quiz') content = renderQuizModal();
   if (state.modal.type === 'help') content = renderHelpModal();
+  if (state.modal.type.startsWith('admin-') || state.modal.type === 'student-detail') content = renderAdminModal();
   modalRoot.innerHTML = `<div class="modal-backdrop" data-action="backdrop-close"><section class="modal-card ${state.modal.type === 'quiz' ? '' : ''}" role="dialog" aria-modal="true" aria-label="${escapeHTML(state.modal.ariaLabel || 'Dream Classes dialog')}">${content}</section></div>`;
   const firstButton = modalRoot.querySelector('button:not([disabled])');
   if (firstButton) window.setTimeout(() => firstButton.focus({ preventScroll: true }), 20);
@@ -669,8 +853,28 @@ function renderQuizModal() {
   return `<div class="modal-top"><div><span class="tag">PHYSICS · LAWS OF MOTION</span><h2 style="margin-top:8px">${escapeHTML(quiz.title)}</h2><p>A little practice goes a long way.</p></div><button class="modal-close" data-action="close-modal" aria-label="Close">${icon('x')}</button></div><div class="modal-body"><div class="quiz-progress-head"><span>Question <strong>${quiz.index + 1}</strong> of ${questions.length}</span><span class="timer">${icon('clock')} <span id="quiz-clock">${minutes}:${seconds}</span></span></div><div class="progress-track" style="margin-bottom:17px"><div class="progress-fill" style="width:${((quiz.index + 1) / questions.length) * 100}%"></div></div><h3 class="quiz-question">${escapeHTML(question.question)}</h3><div class="answer-list">${question.options.map((option, index) => `<button class="answer-option ${quiz.selected === index ? 'selected' : ''}" data-action="select-answer" data-answer="${index}"><span class="answer-letter">${String.fromCharCode(65 + index)}</span>${escapeHTML(option)}</button>`).join('')}</div></div><div class="modal-footer"><span class="footer-note">No negative marking · Take your time</span><button class="btn btn-primary btn-compact" data-action="quiz-next" ${quiz.selected === null ? 'disabled' : ''}>${quiz.index === questions.length - 1 ? 'Submit DPP' : 'Next question'} ${icon('arrowRight')}</button></div>`;
 }
 
+function renderAdminModal() {
+  const type = state.modal.type;
+  if (type === 'student-detail') {
+    const student = state.adminStudents.find((item) => item.id === state.modal.id) || state.adminStudents[0];
+    if (!student) return '';
+    return `<div class="modal-top"><div><span class="tag green">${escapeHTML(student.status.toUpperCase())} STUDENT</span><h2 style="margin-top:8px">${escapeHTML(student.name)}</h2><p>${escapeHTML(student.grade)} · Joined ${escapeHTML(student.joined)}</p></div><button class="modal-close" data-action="close-modal" aria-label="Close">${icon('x')}</button></div><div class="modal-body"><div class="admin-detail-profile"><span class="avatar avatar-blue">${escapeHTML(student.initials)}</span><div><strong>${escapeHTML(student.name)}</strong><small>Student ID · ${escapeHTML(student.id)}</small></div><span class="status-pill ${student.status === 'Active' ? 'answered' : 'blocked'}">${escapeHTML(student.status)}</span></div><div class="modal-info-grid"><div class="modal-info"><span>Learning plan</span><strong>${escapeHTML(student.grade)}</strong></div><div class="modal-info"><span>Enrolled batch</span><strong>${escapeHTML(student.batch)}</strong></div><div class="modal-info"><span>Last active</span><strong>${escapeHTML(student.activity)}</strong></div><div class="modal-info"><span>Learning progress</span><strong>68% · On track</strong></div></div><div class="course-modal-progress"><div class="progress-meta"><span>Course completion</span><strong>68%</strong></div><div class="progress-track"><div class="progress-fill" style="width:68%"></div></div></div><p style="margin:13px 0 0;color:#949cad;font-size:9px;line-height:1.65">Student profile, purchases and progress data shown here are sample content for this admin demo.</p></div><div class="modal-footer"><button class="btn btn-outline btn-compact" data-action="show-toast" data-message="A student notification is ready to compose.">${icon('bell')} Send update</button><button class="btn ${student.status === 'Active' ? 'btn-danger-soft' : 'btn-primary'} btn-compact" data-action="toggle-student-status" data-id="${student.id}">${icon(student.status === 'Active' ? 'lock' : 'check')}${student.status === 'Active' ? 'Block account' : 'Unblock account'}</button></div>`;
+  }
+
+  const definitions = {
+    'admin-student': { title: 'Add a student', description: 'Invite a learner to their Dream Classes workspace.', form: 'admin-student', submit: 'Add student', fields: `<div class="form-field"><label>Full name</label><input name="name" placeholder="Student name" required maxlength="70" /></div><div class="admin-form-row"><div class="form-field"><label>Mobile number</label><input name="phone" type="tel" placeholder="+91 98••• ••000" required /></div><div class="form-field"><label>Class</label><select name="grade"><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option selected>Class 11</option><option>Class 12</option></select></div></div><div class="form-field"><label>Learning batch</label><select name="batch">${state.adminBatches.map((batch) => `<option>${escapeHTML(batch.name)}</option>`).join('')}</select></div>` },
+    'admin-faculty': { title: 'Add faculty', description: 'Create a faculty profile. Teacher access is invitation-only.', form: 'admin-faculty', submit: 'Add faculty', fields: `<div class="form-field"><label>Teacher name</label><input name="name" placeholder="Full name" required maxlength="70" /></div><div class="form-field"><label>Email address</label><input name="email" type="email" placeholder="teacher@dreamclasses.in" required /></div><div class="admin-form-row"><div class="form-field"><label>Subject</label><select name="subject"><option>Physics</option><option>Mathematics</option><option>Chemistry</option><option>Biology</option></select></div><div class="form-field"><label>Assigned batch</label><select name="batch">${state.adminBatches.map((batch) => `<option>${escapeHTML(batch.name)}</option>`).join('')}</select></div></div>` },
+    'admin-batch': { title: 'Create a batch', description: 'Set up a course with a clear plan and start date.', form: 'admin-batch', submit: 'Create batch', fields: `<div class="form-field"><label>Batch name</label><input name="name" placeholder="e.g. JEE Foundation 2027" required maxlength="80" /></div><div class="admin-form-row"><div class="form-field"><label>Class</label><select name="grade"><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option selected>Class 11</option><option>Class 12</option></select></div><div class="form-field"><label>Target exam</label><select name="exam"><option>JEE</option><option>NEET</option><option>Boards</option><option>Olympiad</option><option>State Board</option></select></div></div><div class="admin-form-row"><div class="form-field"><label>Course price (₹)</label><input name="price" type="number" min="0" value="0" required /></div><div class="form-field"><label>Start date</label><input name="start" type="date" required /></div></div><div class="form-field"><label>Subjects</label><input name="subjects" placeholder="Physics, Chemistry, Mathematics" required /></div>` },
+    'admin-live': { title: 'Schedule a live class', description: 'Add a class to the batch schedule and notify learners.', form: 'admin-live', submit: 'Schedule class', fields: `<div class="form-field"><label>Class title</label><input name="title" placeholder="e.g. Work, Energy & Power" required maxlength="90" /></div><div class="admin-form-row"><div class="form-field"><label>Subject</label><select name="subject"><option>Physics</option><option>Mathematics</option><option>Chemistry</option><option>Biology</option></select></div><div class="form-field"><label>Faculty</label><select name="teacher">${state.adminFaculty.map((teacher) => `<option>${escapeHTML(teacher.name)}</option>`).join('')}</select></div></div><div class="form-field"><label>Batch</label><select name="batch">${state.adminBatches.map((batch) => `<option>${escapeHTML(batch.name)}</option>`).join('')}</select></div><div class="admin-form-row"><div class="form-field"><label>Date</label><input name="date" type="date" required /></div><div class="form-field"><label>Time</label><input name="time" type="time" required /></div></div>` },
+    'admin-test': { title: 'Create a test', description: 'Prepare an assessment for one of your learning batches.', form: 'admin-test', submit: 'Create test', fields: `<div class="form-field"><label>Test title</label><input name="title" placeholder="e.g. Laws of Motion · Chapter Test" required maxlength="90" /></div><div class="admin-form-row"><div class="form-field"><label>Batch</label><select name="batch">${state.adminBatches.map((batch) => `<option>${escapeHTML(batch.name)}</option>`).join('')}</select></div><div class="form-field"><label>Number of questions</label><input name="questions" type="number" min="1" max="300" value="20" required /></div></div><div class="admin-form-row"><div class="form-field"><label>Publish date</label><input name="date" type="date" required /></div><div class="form-field"><label>Negative marking</label><select name="negative"><option>No negative marking</option><option>-1 for each incorrect</option><option>-0.25 for each incorrect</option></select></div></div>` },
+  };
+  const config = definitions[type];
+  if (!config) return '';
+  return `<div class="modal-top"><div><h2>${config.title}</h2><p>${config.description}</p></div><button class="modal-close" data-action="close-modal" aria-label="Close">${icon('x')}</button></div><form data-form="${config.form}"><div class="modal-body">${config.fields}</div><div class="modal-footer"><span class="footer-note">Changes are saved in this browser demo.</span><button class="btn btn-primary btn-compact" type="submit">${config.submit} ${icon('arrowRight')}</button></div></form>`;
+}
+
 function renderHelpModal() {
-  return `<div class="modal-top"><div><h2>We’re here to help</h2><p>Reach out to the Dream Classes support team.</p></div><button class="modal-close" data-action="close-modal" aria-label="Close">${icon('x')}</button></div><div class="modal-body"><div class="modal-info-grid"><div class="modal-info"><span>Student support</span><strong>support@dreamclasses.in</strong></div><div class="modal-info"><span>Hours</span><strong>Mon–Sat · 9 AM–6 PM IST</strong></div></div><p style="margin:13px 0 0;color:#929bac;font-size:9px;line-height:1.6">For a subject question, use the Doubt solving section so your teacher can see the full context.</p></div><div class="modal-footer"><span class="footer-note">We usually reply within one working day.</span><button class="btn btn-primary btn-compact" data-action="navigate" data-view="doubts">Ask a doubt ${icon('arrowRight')}</button></div>`;
+  return `<div class="modal-top"><div><h2>We’re here to help</h2><p>Reach out to the Dream Classes support team.</p></div><button class="modal-close" data-action="close-modal" aria-label="Close">${icon('x')}</button></div><div class="modal-body"><div class="modal-info-grid"><div class="modal-info"><span>Student support</span><strong>support@dreamclasses.in</strong></div><div class="modal-info"><span>Hours</span><strong>Mon–Sat · 9 AM–6 PM IST</strong></div></div><p style="margin:13px 0 0;color:#929bac;font-size:9px;line-height:1.6">For a subject question, use the Doubt solving section so your teacher can see the full context.</p></div><div class="modal-footer"><span class="footer-note">We usually reply within one working day.</span><button class="btn btn-primary btn-compact" data-action="navigate" data-view="${state.role === 'admin' ? 'admin-doubts' : 'doubts'}">${state.role === 'admin' ? 'Open doubt queue' : 'Ask a doubt'} ${icon('arrowRight')}</button></div>`;
 }
 
 function toggleInSet(set, id, key) {
@@ -737,6 +941,16 @@ function handleAction(button, event) {
       state.popover = state.popover === 'profile' ? null : 'profile';
       renderApp();
       break;
+    case 'switch-role':
+      state.role = button.dataset.role === 'admin' ? 'admin' : 'student';
+      state.view = state.role === 'admin' ? 'admin-overview' : 'overview';
+      state.popover = null;
+      state.query = '';
+      writeStore('dream-role', state.role);
+      renderApp();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast(`Opened ${state.role === 'admin' ? 'admin' : 'student'} demo workspace.`);
+      break;
     case 'set-language':
       state.language = button.dataset.language;
       writeStore('dream-language', state.language);
@@ -785,6 +999,57 @@ function handleAction(button, event) {
       state.materialFilter = button.dataset.filter;
       renderApp();
       break;
+    case 'open-admin-modal':
+      openModal(`admin-${button.dataset.type}`);
+      break;
+    case 'student-filter':
+      state.adminStudentFilter = button.dataset.filter;
+      renderApp();
+      break;
+    case 'student-detail':
+      openModal('student-detail', { id });
+      break;
+    case 'toggle-student-status': {
+      const student = state.adminStudents.find((item) => item.id === id);
+      if (!student) break;
+      student.status = student.status === 'Active' ? 'Blocked' : 'Active';
+      writeStore('dream-admin-students', state.adminStudents);
+      closeModal();
+      renderApp();
+      showToast(`${student.name} is now ${student.status.toLowerCase()}.`);
+      break;
+    }
+    case 'export-students':
+      showToast('Student report exported for this demo.');
+      break;
+    case 'assign-doubt':
+      toggleInSet(state.assignedDoubts, id, 'dream-assigned-doubts');
+      renderApp();
+      showToast(state.assignedDoubts.has(id) ? 'Doubt assigned to the subject faculty.' : 'Doubt assignment removed.');
+      break;
+    case 'resolve-doubt':
+      toggleInSet(state.resolvedDoubts, id, 'dream-resolved-doubts');
+      renderApp();
+      showToast(state.resolvedDoubts.has(id) ? 'Doubt marked as resolved.' : 'Doubt reopened.');
+      break;
+    case 'publish-test': {
+      const test = state.adminTests.find((item) => item.id === id);
+      if (!test) break;
+      test.status = test.status === 'Draft' ? 'Published' : 'Draft';
+      writeStore('dream-admin-tests', state.adminTests);
+      renderApp();
+      showToast(`Assessment ${test.status.toLowerCase()}.`);
+      break;
+    }
+    case 'approve-refund': {
+      const txn = state.adminTransactions.find((item) => item.id === id);
+      if (!txn) break;
+      txn.status = 'Refunded';
+      writeStore('dream-admin-transactions', state.adminTransactions);
+      renderApp();
+      showToast(`Refund marked complete for ${txn.id}.`);
+      break;
+    }
     case 'view-material':
       openModal('material', { id });
       break;
@@ -906,6 +1171,13 @@ document.addEventListener('input', (event) => {
     const next = document.getElementById('material-search');
     if (next) { next.focus(); next.setSelectionRange(selectionStart, selectionStart); }
   }
+  if (event.target.id === 'admin-student-search') {
+    state.adminStudentQuery = event.target.value;
+    const selectionStart = event.target.selectionStart;
+    renderApp();
+    const next = document.getElementById('admin-student-search');
+    if (next) { next.focus(); next.setSelectionRange(selectionStart, selectionStart); }
+  }
 });
 
 document.addEventListener('focusin', (event) => {
@@ -949,12 +1221,68 @@ document.addEventListener('submit', (event) => {
     renderApp();
     showToast('Your post is live in the community.');
   }
+  if (form.dataset.form === 'admin-student') {
+    const name = String(formData.get('name') || '').trim();
+    if (!name) return;
+    const initials = name.split(/\s+/).slice(0,2).map((part) => part[0]).join('').toUpperCase();
+    const student = { id: `stu-${Date.now()}`, name, initials, grade: `${formData.get('grade')} · JEE`, batch: String(formData.get('batch') || 'New batch'), joined: 'Today', activity: 'Just joined', status: 'Active' };
+    state.adminStudents.unshift(student);
+    writeStore('dream-admin-students', state.adminStudents);
+    closeModal(); renderApp(); showToast(`${name} was added to the student list.`);
+  }
+  if (form.dataset.form === 'admin-faculty') {
+    const name = String(formData.get('name') || '').trim();
+    if (!name) return;
+    const initials = name.split(/\s+/).slice(0,2).map((part) => part[0]).join('').toUpperCase();
+    state.adminFaculty.unshift({ id: `fac-${Date.now()}`, name, initials, subject: String(formData.get('subject')), batches: '1 batch', sessions: 'New faculty', status: 'Invited' });
+    writeStore('dream-admin-faculty', state.adminFaculty);
+    closeModal(); renderApp(); showToast(`${name} was added to faculty as an invite.`);
+  }
+  if (form.dataset.form === 'admin-batch') {
+    const name = String(formData.get('name') || '').trim();
+    if (!name) return;
+    state.adminBatches.unshift({ id: `batch-${Date.now()}`, name, grade: `${formData.get('grade')} · ${formData.get('exam')}`, students: 0, price: Number(formData.get('price') || 0), status: 'Draft', start: String(formData.get('start')), subjects: String(formData.get('subjects')) });
+    writeStore('dream-admin-batches', state.adminBatches);
+    closeModal(); renderApp(); showToast(`${name} was created as a draft batch.`);
+  }
+  if (form.dataset.form === 'admin-live') {
+    const entry = { id: `live-${Date.now()}`, title: String(formData.get('title')).trim(), subject: String(formData.get('subject')), teacher: String(formData.get('teacher')), batch: String(formData.get('batch')), date: String(formData.get('date')), time: String(formData.get('time')), month: 'Scheduled', day: String(formData.get('date')).slice(-2), custom: true };
+    state.adminScheduledClasses.unshift(entry);
+    writeStore('dream-admin-live', state.adminScheduledClasses);
+    closeModal(); renderApp(); showToast('Live class added to the schedule.');
+  }
+  if (form.dataset.form === 'admin-test') {
+    const entry = { id: `test-${Date.now()}`, title: String(formData.get('title')).trim(), batch: String(formData.get('batch')), questions: Number(formData.get('questions') || 20), date: String(formData.get('date')), status: 'Draft', negative: String(formData.get('negative')) };
+    state.adminTests.unshift(entry);
+    writeStore('dream-admin-tests', state.adminTests);
+    closeModal(); renderApp(); showToast('Test saved as a draft.');
+  }
+  if (form.dataset.form === 'admin-content') {
+    const entry = { id: `cnt-${Date.now()}`, title: String(formData.get('title')).trim(), type: String(formData.get('type')), subject: String(formData.get('subject')), batch: String(formData.get('batch')), date: `Added today${state.adminUploadName ? ` · ${state.adminUploadName}` : ''}`, status: 'Draft' };
+    state.adminContent.unshift(entry);
+    writeStore('dream-admin-content', state.adminContent);
+    state.adminUploadName = '';
+    renderApp(); showToast('Content added to the library as a draft.');
+  }
+  if (form.dataset.form === 'admin-notification') {
+    const timing = String(formData.get('timing'));
+    const entry = { title: String(formData.get('title')).trim(), message: String(formData.get('message')).trim(), audience: String(formData.get('audience')), channel: String(formData.get('channel')), timing, status: timing === 'Send now' ? 'Sent' : 'Scheduled', date: new Date().toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) };
+    if (!entry.title || !entry.message) return;
+    state.adminNotifications.unshift(entry);
+    writeStore('dream-admin-notifications', state.adminNotifications);
+    renderApp(); showToast(entry.timing === 'Send now' ? 'Notification added to the local sent history.' : 'Notification saved to the local schedule.');
+  }
 });
 
 document.addEventListener('change', (event) => {
   if (event.target.id === 'doubt-image' && event.target.files?.[0]) {
     state.attachedFilename = event.target.files[0].name;
     renderApp();
+  }
+  if (event.target.id === 'admin-content-file' && event.target.files?.[0]) {
+    state.adminUploadName = event.target.files[0].name;
+    const name = document.getElementById('admin-upload-name');
+    if (name) name.innerHTML = `${icon('file')}${escapeHTML(state.adminUploadName)}`;
   }
 });
 
