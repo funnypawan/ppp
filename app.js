@@ -256,7 +256,85 @@ const modalRoot = document.getElementById('modal-root');
 const toastRoot = document.getElementById('toast-root');
 let quizTimer = null;
 
+function offlineApiRequest(url, options = {}) {
+  const pathname = String(url).split('?')[0];
+  const method = options.method || 'GET';
+  const body = typeof options.body === 'string' ? JSON.parse(options.body || '{}') : (options.body || {});
+  const readUser = () => readStore('dream-offline-user', null);
+  const adminCollections = {
+    students: ['adminStudents', 'dream-admin-students', 'student'],
+    faculty: ['adminFaculty', 'dream-admin-faculty', 'faculty'],
+    batches: ['adminBatches', 'dream-admin-batches', 'batch'],
+    classes: ['adminScheduledClasses', 'dream-admin-live', 'class'],
+    tests: ['adminTests', 'dream-admin-tests', 'test'],
+    content: ['adminContent', 'dream-admin-content', 'cnt'],
+    notifications: ['adminNotifications', 'dream-admin-notifications', 'notice'],
+    doubts: ['customDoubts', 'dream-doubts', 'd'],
+  };
+  if (pathname === '/api/health') return { ok: true, mode: 'offline-demo' };
+  if (pathname === '/api/auth/request-otp' && method === 'POST') {
+    if (!['student','admin'].includes(body.role) || String(body.phone || '').replace(/\D/g, '').length < 10) throw new Error('Choose a role and enter a valid 10-digit test number.');
+    writeStore('dream-offline-pending', { role: body.role, phone: String(body.phone).replace(/\D/g, '').slice(-10) });
+    return { ok: true, demoOtp: '123456', expiresIn: 300, message: 'Offline demo code; no SMS is sent.' };
+  }
+  if (pathname === '/api/auth/verify-otp' && method === 'POST') {
+    const pending = readStore('dream-offline-pending', null);
+    if (!pending || pending.role !== body.role || pending.phone !== String(body.phone || '').replace(/\D/g, '').slice(-10) || String(body.otp) !== '123456') throw new Error('Use the displayed demo OTP 123456.');
+    const user = { role: pending.role, phone: pending.phone, name: pending.role === 'admin' ? 'Ronny Raj' : 'Aarav Sharma', initials: pending.role === 'admin' ? 'RR' : 'AS', className: pending.role === 'admin' ? 'Super Admin' : 'Class 11 · JEE aspirant' };
+    writeStore('dream-offline-user', user);
+    return { ok: true, user };
+  }
+  if (pathname === '/api/auth/logout' && method === 'POST') {
+    try { localStorage.removeItem('dream-offline-user'); localStorage.removeItem('dream-offline-pending'); } catch { /* Offline storage may be unavailable. */ }
+    return { ok: true };
+  }
+  if (pathname === '/api/me' && method === 'GET') {
+    const user = readUser();
+    if (!user) throw new Error('Please sign in to continue.');
+    return { user };
+  }
+  if (pathname.startsWith('/api/admin/')) {
+    const user = readUser();
+    if (!user) throw new Error('Please sign in to continue.');
+    if (user.role !== 'admin') throw new Error('This workspace is not available for your account.');
+    const match = pathname.match(/^\/api\/admin\/(students|faculty|batches|classes|tests|content|notifications|doubts)(?:\/([^/]+))?(?:\/(assign|resolve))?$/);
+    if (!match) return { items: [] };
+    const [, name, id, operation] = match;
+    const [stateKey, storageKey, prefix] = adminCollections[name];
+    const list = state[stateKey] || [];
+    if (!id && method === 'GET') return { items: list };
+    if (!id && method === 'POST') {
+      const initials = String(body.name || '').split(/\s+/).slice(0,2).map((part) => part[0]).join('').toUpperCase();
+      return { item: { ...body, ...(initials && !body.initials ? { initials } : {}), id: `${prefix}-${Date.now()}`, createdAt: new Date().toISOString() } };
+    }
+    const current = [...list, ...initialDoubts].find((item) => item.id === id);
+    if (!current) throw new Error('Record not found.');
+    if (operation && method === 'POST') return { item: { ...current, status: operation === 'resolve' ? 'Answered' : 'Assigned', ...(operation === 'assign' ? { assignedTo: 'Subject faculty' } : {}) } };
+    if (method === 'PATCH') return { item: { ...current, ...body, id } };
+    throw new Error('Method not supported in offline demo.');
+  }
+  if (pathname.startsWith('/api/student/')) {
+    const user = readUser();
+    if (!user) throw new Error('Please sign in to continue.');
+    if (user.role !== 'student') throw new Error('This workspace is not available for your account.');
+    if (pathname === '/api/student/doubts' && method === 'GET') return { items: state.customDoubts || [] };
+    if (pathname === '/api/student/doubts' && method === 'POST') {
+      const item = { ...body, id: `d-${Date.now()}`, studentPhone: user.phone, studentName: user.name, status: 'In review', time: 'Just now', createdAt: new Date().toISOString() };
+      return { item };
+    }
+    if (pathname === '/api/student/community' && method === 'GET') return { items: state.customPosts || [] };
+    if (pathname === '/api/student/community' && method === 'POST') {
+      const text = String(body.text || '').trim();
+      const item = { id: `post-${Date.now()}`, name: user.name, initials: user.initials, time: 'Just now', subject: body.subject || 'JEE 2027', title: text.length > 86 ? `${text.slice(0,83)}…` : text, text, votes: 0, replies: 0, verified: false };
+      return { item };
+    }
+  }
+  throw new Error('This feature needs the online Dream Classes server.');
+}
+
 async function apiRequest(url, options = {}) {
+  const isOfflineDemo = Boolean(window.DREAM_CLASSES_OFFLINE_DEMO) || (typeof location !== 'undefined' && location.protocol === 'file:');
+  if (isOfflineDemo) return offlineApiRequest(url, options);
   const headers = { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(options.headers || {}) };
   const response = await fetch(url, {
     ...options,

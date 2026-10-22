@@ -16,6 +16,10 @@ Open `http://localhost:4173`. The first run creates `data/store.json`; local dat
 
 Choose **Student** or **Admin**, enter a 10-digit test number, then use the one-time code displayed in the app after the request. No SMS is sent; use a demo number rather than a personal number. The app uses a signed, HTTP-only session cookie; the development OTP flow and role selection are for local demo use only, not production authentication.
 
+## Android demo APK
+
+The Android build wraps the web app in a WebView and bundles it for offline demonstration. Download the APK from the [Dream Classes GitHub Release](https://github.com/funnypawan/ppp/releases/tag/dream-classes-demo-v1.0.0). Choose Student or Admin, enter any 10-digit test number, and use demo OTP `123456`. Data is stored only on the device; no SMS is sent and no online service is required. This is a debug-signed demo build, not a Play Store or production release.
+
 ## What’s included
 
 - **Student workspace:** dashboard, courses, live-class schedule, timed DPP/test flow, study resources, doubt solving, community, progress and preferences.

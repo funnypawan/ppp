@@ -1,0 +1,92 @@
+name: Build and publish Dream Classes Android demo
+
+on:
+  push:
+    branches:
+      - arena/e7cf69a4-ppp
+    paths:
+      - 'android/**'
+      - 'app.js'
+      - 'index.html'
+      - 'styles.css'
+      - '.github/workflows/android-apk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dream-classes-android-apk
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          accept-android-sdk-licenses: true
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Check web app JavaScript
+        run: node --check app.js
+
+      - name: Build debug APK
+        run: gradle -p android --no-daemon --stacktrace assembleDebug
+
+      - name: Prepare APK and checksum
+        shell: bash
+        run: |
+          mkdir -p dist
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist/Dream-Classes-demo.apk
+          sha256sum dist/Dream-Classes-demo.apk | tee dist/SHA256SUMS.txt
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dream-classes-android-apk
+          path: |
+            dist/Dream-Classes-demo.apk
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish APK to GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: dream-classes-demo-v1.0.0
+        shell: bash
+        run: |
+          NOTES_FILE="$(mktemp)"
+          cat > "$NOTES_FILE" <<'NOTES'
+          Dream Classes offline Android demo APK.
+
+          Sign-in: choose Student or Admin, enter any 10-digit test number, then enter demo OTP 123456. The APK uses browser-local demo data and does not send SMS or connect to a production service. Payments, live video, media storage, push notifications and production authentication are not included.
+          NOTES
+
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/Dream-Classes-demo.apk dist/SHA256SUMS.txt \
+              --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" dist/Dream-Classes-demo.apk dist/SHA256SUMS.txt \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title 'Dream Classes Android Demo v1.0.0' \
+              --notes-file "$NOTES_FILE" \
+              --prerelease
+          fi

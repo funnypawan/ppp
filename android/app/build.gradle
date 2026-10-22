@@ -1,0 +1,36 @@
+plugins {
+    id 'com.android.application'
+}
+
+def webRoot = rootProject.projectDir.parentFile
+def generatedWebAssets = layout.buildDirectory.dir('generated/dreamClassesWebAssets')
+
+android {
+    namespace 'in.dreamclasses.app'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'in.dreamclasses.app'
+        minSdk 23
+        targetSdk 34
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    sourceSets {
+        main {
+            assets.srcDir generatedWebAssets
+        }
+    }
+}
+
+tasks.register('copyDreamClassesWebAssets', Copy) {
+    from(new File(webRoot, 'index.html')) { into 'web' }
+    from(new File(webRoot, 'app.js')) { into 'web' }
+    from(new File(webRoot, 'styles.css')) { into 'web' }
+    into generatedWebAssets
+}
+
+tasks.named('preBuild').configure {
+    dependsOn tasks.named('copyDreamClassesWebAssets')
+}
