@@ -1,0 +1,27 @@
+{
+  "appId": "in.dreamclasses.app",
+  "appName": "Dream Classes",
+  "webDir": "public",
+  "backgroundColor": "#0b1020",
+  "server": {
+    "cleartext": false,
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "backgroundColor": "#4f46e5",
+      "androidSplashResourceName": "splash",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "LIGHT",
+      "backgroundColor": "#4f46e5"
+    }
+  }
+}

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dream Classes — Teacher Panel</title><link rel="icon" href="/icons/icon-512.png"><link rel="stylesheet" href="/css/style.css">
+<style>
+.layout{display:flex;min-height:100vh}
+.side{width:236px;flex:none;background:#131a2c;color:#dbe2f5;padding:18px 12px;position:sticky;top:0;height:100vh;overflow:auto}
+.side button{display:block;width:100%;text-align:left;background:none;border:0;color:#dbe2f5;padding:11px 12px;border-radius:11px;font-weight:600;margin:2px 0}
+.side button.on,.side button:hover{background:#4f46e5;color:#fff}
+.main{flex:1;padding:20px;max-width:1150px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+.stat h2{font-size:1.6rem}.drop{border:2px dashed var(--line);border-radius:14px;padding:22px;text-align:center;color:var(--muted)}
+.drop.over{border-color:var(--brand);color:var(--brand)}
+.menuBtn{display:none}
+@media(max-width:820px){.side{position:fixed;left:-250px;z-index:60;transition:.25s}.side.open{left:0}.menuBtn{display:inline-block}}
+.chk{display:inline-flex;gap:6px;align-items:center;margin:4px 10px 4px 0;font-size:.88rem}.chk input{width:auto;margin:0}
+</style></head><body><div id="app"></div>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+let TOKEN=localStorage.getItem('dc_admin')||'',USER=null,VIEW='dash',CACHE={};
+const theme=localStorage.getItem('dc_theme')||'system';
+document.documentElement.dataset.theme=(theme==='dark'||(theme==='system'&&matchMedia('(prefers-color-scheme: dark)').matches))?'dark':'light';
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),3400)}
+function imgUrl(p){if(!p)return '';if(p.startsWith('/uploads/images/'))return '/api/files/images/'+p.split('/').pop()+'?token='+encodeURIComponent(TOKEN);return p}
+function esc(s){return String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]))}
+async function api(p,opt={}){opt.headers={...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(TOKEN?{Authorization:'Bearer '+TOKEN}:{})};
+ const r=await fetch((window.DC_API_BASE&&p.startsWith('/')?window.DC_API_BASE.replace(/\/+$/,''):'')+p,opt);const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.message||d.error||'Error');return d}
+function main(html){$('#content').innerHTML=html}
+function loading(){main('<div class="spinner"></div>')}
+async function loadBase(){const [c,s,ch,b]=await Promise.all([api('/api/admin/classes'),api('/api/admin/subjects'),api('/api/admin/chapters'),api('/api/admin/batches')]);
+ CACHE={classes:c.items,subjects:s.items,chapters:ch.items,batches:b.items}}
+function batchChecks(sel=[]){return (CACHE.batches||[]).map(b=>`<label class="chk"><input type="checkbox" class="bchk" value="${b.id}" ${sel.includes(b.id)?'checked':''}>${esc(b.name)}</label>`).join('')||'<span class="muted">No batches (leave empty = all students)</span>'}
+function getBatches(){return [...document.querySelectorAll('.bchk:checked')].map(x=>+x.value)}
+function chapterOpts(sel){return `<option value="">-- Chapter --</option>`+(CACHE.chapters||[]).map(c=>{const s=(CACHE.subjects||[]).find(x=>x.id===c.subject_id);const cl=s?(CACHE.classes||[]).find(x=>x.id===s.class_id):null;return `<option value="${c.id}" ${+sel===c.id?'selected':''}>${esc(cl?cl.name+' › ':'')}${esc(s?s.name+' › ':'')}${esc(c.name)}</option>`}).join('')}
+function modal(html){const m=document.createElement('div');m.className='modal';m.id='modal';m.innerHTML=`<div class="sheet">${html}</div>`;m.onclick=e=>{if(e.target===m)m.remove()};document.body.appendChild(m)}
+function closeModal(){$('#modal')?.remove()}
+
+/* AUTH */
+function loginView(){app.innerHTML=`<div style="max-width:400px;margin:8vh auto;padding:0 16px"><div class="center"><img src="/icons/icon-512.png" style="width:84px;height:84px;border-radius:20px"><h1 style="margin:10px 0 2px">DREAM CLASSES</h1><p class="muted">Teacher / Admin Panel<br>Dream Sir · Kothwara, Dobhi, Gaya</p></div>
+<div class="card"><label>Email</label><input id="em" type="email" placeholder="admin@dreamclasses.in"><label>Password</label><input id="pw" type="password" placeholder="••••••••">
+<button class="btn" onclick="doLogin()">Login to Panel →</button><p class="muted center" style="margin-top:10px">Student? <a href="/">Open Student App</a></p></div></div>`}
+async function doLogin(){try{const d=await api('/api/auth/admin-login',{method:'POST',body:JSON.stringify({email:$('#em').value,password:$('#pw').value})});
+ TOKEN=d.token;localStorage.setItem('dc_admin',TOKEN);USER=d.user;boot()}catch(e){toast(e.message)}}
+function logout(){TOKEN='';localStorage.removeItem('dc_admin');loginView()}
+
+/* SHELL */
+const NAV=[['dash','📊 Dashboard'],['students','👨‍🎓 Students'],['structure','🗂 Classes & Chapters'],['batches','👥 Batches'],['videos','🎬 Videos'],['pdfs','📄 PDF Notes'],['tests','📝 Tests'],['practice','✏️ Practice'],['doubts','💬 Doubts'],['notify','🔔 Notifications'],['settings','⚙️ Settings']];
+function shell(){app.innerHTML=`<div class="layout"><aside class="side" id="side"><div class="row" style="margin-bottom:14px"><img src="/icons/icon-512.png" style="width:40px;height:40px;border-radius:10px"><div><b>DREAM CLASSES</b><br><small>${esc(USER.name)} · ${USER.role}</small></div></div>
+${NAV.map(([v,l])=>`<button data-v="${v}" onclick="go('${v}')">${l}</button>`).join('')}
+<button onclick="toggleTheme()">🌓 Theme</button><button onclick="logout()">🚪 Logout</button></aside>
+<div class="main"><button class="btn small secondary menuBtn" onclick="document.querySelector('#side').classList.toggle('open')">☰ Menu</button><div id="content"></div></div></div>`}
+function toggleTheme(){const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;localStorage.setItem('dc_theme',t)}
+function go(v){VIEW=v;document.querySelectorAll('.side button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));$('#side').classList.remove('open');
+ ({dash:dashView,students:studentsView,structure:structureView,batches:batchesView,videos:videosView,pdfs:pdfsView,tests:testsView,practice:practiceView,doubts:doubtsAdmin,notify:notifyView,settings:settingsView}[v])()}
+
+/* DASHBOARD */
+async function dashView(){loading();try{const [d,w]=await Promise.all([api('/api/admin/stats'),api('/api/admin/weekly').catch(()=>({days:[]}))]);
+ const maxW=Math.max(1,...w.days.map(x=>x.registrations+x.submissions+x.doubts));
+ const weeklyHtml=`<div class="card" style="margin-top:16px"><h3>📈 Last 7 Days Activity</h3><div style="display:flex;gap:10px;align-items:flex-end;height:130px;margin-top:14px">${w.days.map(x=>{const tot=x.registrations+x.submissions+x.doubts;return `<div style="flex:1;text-align:center"><div title="Reg ${x.registrations} · Tests ${x.submissions} · Doubts ${x.doubts}" style="margin:0 auto;width:70%;max-width:38px;height:${Math.max(4,tot/maxW*95)}px;background:linear-gradient(180deg,#7c6cf8,#4f46e5);border-radius:8px 8px 0 0"></div><small class="muted">${x.date.slice(5)}<br><b>${tot}</b></small></div>`}).join('')}</div><p class="muted" style="margin-top:8px">Bar = registrations + test submissions + doubts that day. Hover/tap for breakup.</p></div>`;
+ const S=(l,v,i)=>`<div class="stat"><p class="muted">${i} ${l}</p><h2>${v}</h2></div>`;
+ main(`<h1 style="margin-bottom:14px">📊 Master Dashboard</h1><div class="stats">
+ ${S('Total Students',d.totalStudents,'👨‍🎓')}${S('Active',d.active,'✅')}${S('Pending Approvals',d.pending,'⏳')}${S('Blocked',d.blocked,'🚫')}
+ ${S('Classes',d.classes,'🏫')}${S('Subjects',d.subjects,'📚')}${S('Chapters',d.chapters,'📖')}${S('Batches',d.batches,'👥')}
+ ${S('Videos',d.videos,'🎬')}${S('PDF Notes',d.pdfs,'📄')}${S('Tests',d.tests,'📝')}${S('Test Attempts',d.attempts,'🏆')}
+ ${S('Pending Doubts',d.pendingDoubts,'💬')}${S('Doubts Answered',d.answeredDoubts,'✔️')}</div>
+ <div class="grid2" style="margin-top:16px">
+ <div class="card"><h3>🆕 Recent Registrations</h3>${d.recentStudents.map(s=>`<p style="margin-top:7px">${esc(s.name)} <span class="badge ${s.status==='APPROVED'?'ok':'warn'}">${s.status}</span><br><small class="muted">${esc(s.mobile||'')} · ${esc((s.created_at||'').slice(0,10))}</small></p>`).join('')||'<p class="muted">No students yet</p>'}</div>
+ <div class="card"><h3>🏆 Recent Submissions</h3>${d.recentSubmissions.map(s=>`<p style="margin-top:7px">${esc(s.name)} — ${esc(s.title)}: <b>${s.score}/${s.total}</b></p>`).join('')||'<p class="muted">None yet</p>'}
+ <h3 style="margin-top:14px">💬 Recent Doubts</h3>${d.recentDoubts.map(s=>`<p style="margin-top:7px">${esc(s.name)}: ${esc(s.question.slice(0,60))} <span class="badge">${s.status}</span></p>`).join('')||'<p class="muted">None yet</p>'}</div></div>`+weeklyHtml)}catch(e){main('<div class="empty">⚠️ '+esc(e.message)+'</div>')}}
+
+/* STUDENTS */
+async function studentsView(q=''){loading();await loadBase().catch(()=>{});try{const d=await api('/api/admin/students'+(q?'?'+q:''));
+ main(`<h1>👨‍🎓 Students</h1><div class="row" style="flex-wrap:wrap;margin:12px 0"><input id="sq" placeholder="Search name / mobile…" style="max-width:240px;margin:0">
+ <select id="sst" style="max-width:180px;margin:0"><option value="">All Status</option>${['PENDING','APPROVED','BLOCKED','SUSPENDED','REJECTED'].map(s=>`<option>${s}</option>`).join('')}</select>
+ <select id="scl" style="max-width:170px;margin:0"><option value="">All Classes</option>${(CACHE.classes||[]).map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select>
+ <select id="sb" style="max-width:180px;margin:0"><option value="">All Batches</option>${(CACHE.batches||[]).map(b=>`<option value="${b.id}">${esc(b.name)}</option>`).join('')}</select>
+ <button class="btn small" onclick="studentsView('search='+encodeURIComponent($('#sq').value)+'&status='+$('#sst').value+'&class_id='+$('#scl').value+'&batch_id='+$('#sb').value)">Search / Filter</button></div>
+ <div class="card" style="overflow:auto"><table><tr><th>Student</th><th>Mobile</th><th>Status</th><th>Batch</th><th>Actions</th></tr>
+ ${d.students.map(s=>`<tr><td><b>${esc(s.name)}</b><br><small class="muted">${esc((s.created_at||'').slice(0,10))}</small></td><td>${esc(s.mobile||'')}</td>
+ <td><span class="badge ${s.status==='APPROVED'?'ok':s.status==='PENDING'?'warn':'bad'}">${s.status}</span></td>
+ <td><select onchange="setStudent(${s.id},{batch_id:this.value?+this.value:null})" style="margin:0"><option value="">—</option>${CACHE.batches.map(b=>`<option value="${b.id}" ${s.batch_id===b.id?'selected':''}>${esc(b.name)}</option>`).join('')}</select></td>
+ <td style="white-space:nowrap">${s.status!=='APPROVED'?`<button class="btn small" onclick="setStudent(${s.id},{status:'APPROVED'})">Approve</button>`:''}
+ ${s.status==='PENDING'?`<button class="btn small danger" onclick="setStudent(${s.id},{status:'REJECTED'})">Reject</button>`:''}
+ ${s.status==='APPROVED'?`<button class="btn small warn" onclick="setStudent(${s.id},{status:'BLOCKED'})">Block</button>`:s.status==='BLOCKED'||s.status==='SUSPENDED'?`<button class="btn small" onclick="setStudent(${s.id},{status:'APPROVED'})">Unblock</button>`:''}
+ <button class="btn small secondary" onclick="revoke(${s.id})">Revoke Device</button> <button class="btn small secondary" onclick="stuProg(${s.id},'${esc(s.name)}')">Progress</button></td></tr>`).join('')||'<tr><td colspan="5" class="muted">No students found</td></tr>'}</table></div>`)}catch(e){toast(e.message)}}
+async function setStudent(id,body){await api('/api/admin/students/'+id,{method:'PUT',body:JSON.stringify(body)});toast('Updated ✓');studentsView()}
+async function revoke(id){await api('/api/admin/students/'+id+'/revoke-session',{method:'POST',body:'{}'});toast('Device session revoked ✓')}
+async function stuProg(id,name){const d=await api('/api/admin/students/'+id+'/progress');
+ modal(`<h3>📈 ${esc(name)}</h3><h4 style="margin:10px 0 6px">Lectures</h4>${d.watched.map(w=>`<p>${w.completed?'✅':'▶'} ${esc(w.title)} <small class="muted">(${w.position_sec}s)</small></p>`).join('')||'<p class="muted">None</p>'}
+ <h4 style="margin:12px 0 6px">Test Results</h4>${d.results.map(r=>`<p>${esc(r.title)}: <b>${r.score}/${r.total}</b></p>`).join('')||'<p class="muted">None</p>'}<br><button class="btn secondary" onclick="closeModal()">Close</button>`)}
+
+/* STRUCTURE CRUD */
+function crudSection(title,items,fields,apiPath,extra=''){return `<div class="card"><h3>${title}</h3>
+ <div class="row" style="flex-wrap:wrap">${fields}${extra}<button class="btn small" onclick="createItem('${apiPath}')">+ Add</button></div>
+ ${items.map(it=>`<div class="row between" style="border-top:1px solid var(--line);padding:9px 0"><span>${it._label}</span><span>
+ <button class="btn small secondary" onclick="renameItem('${apiPath}',${it.id},'${esc(it.name).replace(/'/g,"\\'")}')">Edit</button>
+ <button class="btn small secondary" onclick="togglePub('${apiPath}',${it.id},${it.published?0:1})">${it.published?'Unpublish':'Publish'}</button>
+ <button class="btn small danger" onclick="delItem('${apiPath}',${it.id})">Delete</button></span></div>`).join('')||'<p class="muted">None yet</p>'}</div>`}
+async function structureView(){loading();await loadBase();
+ const cls=CACHE.classes.map(c=>({...c,_label:`<b>${esc(c.name)}</b> ${c.published?'<span class="badge ok">Live</span>':'<span class="badge warn">Hidden</span>'}`}));
+ const sbs=CACHE.subjects.map(s=>({...s,_label:`${esc(s.icon||'')} <b>${esc(s.name)}</b> <small class="muted">${esc((CACHE.classes.find(c=>c.id===s.class_id)||{}).name||'')}</small>`}));
+ const chs=CACHE.chapters.map(c=>({...c,_label:`<b>${esc(c.name)}</b> <small class="muted">${esc((CACHE.subjects.find(s=>s.id===c.subject_id)||{}).name||'')}</small>`}));
+ main(`<h1>🗂 Classes, Subjects & Chapters</h1><p class="muted" style="margin-bottom:12px">Order (sort) controls display sequence in the student app.</p>
+ ${crudSection('🏫 Classes',cls,`<input id="f-classes-name" placeholder="Class name e.g. Class 10" style="max-width:220px;margin:0"><input id="f-classes-sort" type="number" value="0" style="max-width:80px;margin:0">`,'classes')}
+ ${crudSection('📚 Subjects',sbs,`<select id="f-subjects-class_id" style="max-width:170px;margin:0">${CACHE.classes.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select><input id="f-subjects-name" placeholder="Subject e.g. Mathematics" style="max-width:200px;margin:0"><input id="f-subjects-icon" placeholder="📐" style="max-width:70px;margin:0"><input id="f-subjects-sort" type="number" value="0" style="max-width:80px;margin:0">`,'subjects')}
+ ${crudSection('📖 Chapters',chs,`<select id="f-chapters-subject_id" style="max-width:220px;margin:0">${CACHE.subjects.map(s=>`<option value="${s.id}">${esc((CACHE.classes.find(c=>c.id===s.class_id)||{}).name||'')} › ${esc(s.name)}</option>`).join('')}</select><input id="f-chapters-name" placeholder="Chapter name" style="max-width:220px;margin:0"><input id="f-chapters-sort" type="number" value="0" style="max-width:80px;margin:0">`,'chapters')}`)}
+async function createItem(t){const body={published:1};document.querySelectorAll(`[id^="f-${t}-"]`).forEach(el=>{const k=el.id.replace(`f-${t}-`,'');body[k]=el.type==='number'?+el.value:(k.endsWith('_id')?+el.value:el.value)});
+ if(!body.name)return toast('Enter a name');await api('/api/admin/'+t,{method:'POST',body:JSON.stringify(body)});toast('Added ✓');structureView()}
+async function renameItem(t,id,cur){const n=prompt('Edit name:',cur);if(n){await api(`/api/admin/${t}/${id}`,{method:'PUT',body:JSON.stringify({name:n})});structureView()}}
+async function togglePub(t,id,v){await api(`/api/admin/${t}/${id}`,{method:'PUT',body:JSON.stringify({published:v})});structureView()}
+async function delItem(t,id){if(confirm('Delete this item? Related items under it will also be removed.')){await api(`/api/admin/${t}/${id}`,{method:'DELETE'});toast('Deleted');VIEW==='structure'?structureView():batchesView()}}
+
+/* BATCHES */
+async function batchesView(){loading();await loadBase();
+ main(`<h1>👥 Batches</h1><div class="card"><div class="row" style="flex-wrap:wrap"><input id="bn" placeholder="Batch name e.g. Class 10 Batch" style="max-width:240px;margin:0">
+ <select id="bc" style="max-width:180px;margin:0"><option value="">No class link</option>${CACHE.classes.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select>
+ <button class="btn small" onclick="addBatch()">+ Create Batch</button></div>
+ ${CACHE.batches.map(b=>`<div class="row between" style="border-top:1px solid var(--line);padding:10px 0"><span><b>${esc(b.name)}</b> <span class="badge ${b.active?'ok':'warn'}">${b.active?'Active':'Inactive'}</span> <small class="muted">${esc(b.description||'')}</small></span>
+ <span><button class="btn small secondary" onclick="toggleBatch(${b.id},${b.active?0:1})">${b.active?'Deactivate':'Activate'}</button>
+ <button class="btn small secondary" onclick="batchAnn(${b.id},'${esc(b.name)}')">📢 Announce</button>
+ <button class="btn small danger" onclick="delItem('batches',${b.id})">Delete</button></span></div>`).join('')||'<p class="muted">No batches yet</p>'}
+ <p class="muted" style="margin-top:10px">Assign students to batches from the <b>Students</b> tab. Assign videos/PDFs/tests to batches inside each content form (empty = visible to all).</p></div>`)}
+async function addBatch(){await api('/api/admin/batches',{method:'POST',body:JSON.stringify({name:$('#bn').value,class_id:$('#bc').value?+$('#bc').value:null,active:1})});toast('Batch created ✓');batchesView()}
+async function toggleBatch(id,v){await api('/api/admin/batches/'+id,{method:'PUT',body:JSON.stringify({active:v})});batchesView()}
+async function batchAnn(id,name){const t=prompt('Announcement title for '+name+':');if(!t)return;const body=prompt('Announcement message:');if(body){await api('/api/admin/announcements',{method:'POST',body:JSON.stringify({title:t,body,batch_id:id})});toast('Announcement posted ✓')}}
+
+/* VIDEOS */
+async function videosView(){loading();await loadBase();const d=await api('/api/admin/videos');
+ main(`<h1>🎬 Video Lectures</h1><div class="card"><h3>Upload / Add Lecture</h3>
+ <label>Title</label><input id="vt" placeholder="e.g. Real Numbers – Lecture 1">
+ <label>Description</label><textarea id="vd" rows="2"></textarea>
+ <label>Chapter</label><select id="vc">${chapterOpts()}</select>
+ <label>Video File (MP4/WebM, max 500MB) — or paste a URL / YouTube link below</label>
+ <div class="drop" id="vdrop">📤 Drag & drop video here or <input type="file" id="vf" accept="video/*" style="max-width:260px;display:inline"></div>
+ <label>OR Video URL / YouTube Link (HLS .m3u8 supported)</label><input id="vu" placeholder="https://…">
+ <label>Thumbnail Image (optional)</label><input type="file" id="vth" accept="image/*">
+ <label>Extra Quality URLs (optional — shown in player only if filled; e.g. from your video host/CDN)</label>
+ <div class="grid2"><input id="vq240" placeholder="240p URL"><input id="vq360" placeholder="360p URL"></div>
+ <input id="vq720" placeholder="720p URL">
+ <label>Assign to Batches (empty = all)</label><div>${batchChecks()}</div>
+ <div class="row" style="margin-top:8px"><label class="chk"><input type="checkbox" id="vpub" checked> Publish now</label><label class="chk"><input type="checkbox" id="vdl"> Allow download</label></div>
+ <div class="progressbar" id="vprog" style="display:none;margin:10px 0"><i style="width:0%"></i></div><p class="muted" id="vstat"></p>
+ <button class="btn" onclick="uploadVideo()">Upload Lecture ✓</button></div>
+ <div class="card" style="overflow:auto"><h3>All Lectures (${d.items.length})</h3><table><tr><th>Title</th><th>Type</th><th>Status</th><th></th></tr>
+ ${d.items.map(v=>`<tr><td><b>${esc(v.title)}</b></td><td>${v.source_type}</td><td><span class="badge ${v.published?'ok':'warn'}">${v.published?'Published':'Draft'}</span></td>
+ <td style="white-space:nowrap"><button class="btn small secondary" onclick="toggleVideo(${v.id},${v.published?0:1},'${esc(v.title).replace(/'/g,"\\'")}')">${v.published?'Unpublish':'Publish'}</button>
+ <button class="btn small danger" onclick="if(confirm('Delete lecture?'))delGo('/api/admin/videos/${v.id}',videosView)">Delete</button></td></tr>`).join('')||'<tr><td colspan="4" class="muted">No videos yet</td></tr>'}</table></div>`);
+ const dz=$('#vdrop');dz.ondragover=e=>{e.preventDefault();dz.classList.add('over')};dz.ondragleave=()=>dz.classList.remove('over');
+ dz.ondrop=e=>{e.preventDefault();dz.classList.remove('over');$('#vf').files=e.dataTransfer.files;$('#vstat').textContent='Selected: '+e.dataTransfer.files[0].name}}
+async function toggleVideo(id,pub,title){const d=await api('/api/admin/videos');const v=d.items.find(x=>x.id===id);
+ await api('/api/admin/videos/'+id,{method:'PUT',body:JSON.stringify({title:v.title,description:v.description,chapter_id:v.chapter_id,url:v.url,source_type:v.source_type,downloadable:v.downloadable,published:pub,sort:v.sort})});videosView()}
+async function delGo(path,fn){await api(path,{method:'DELETE'});toast('Deleted');fn()}
+async function editVideo(id){await loadBase();const d=await api('/api/admin/videos');const v=d.items.find(x=>x.id===id);if(!v)return;
+ let quals=[];try{quals=JSON.parse(v.qualities||'[]')}catch{}
+ const qv=l=>(quals.find(q=>q.label===l)||{}).url||'';
+ modal(`<h3>✏️ Edit Lecture</h3><label>Title</label><input id="ev-t" value="${esc(v.title)}">
+ <label>Description</label><textarea id="ev-d" rows="2">${esc(v.description||'')}</textarea>
+ <label>Chapter</label><select id="ev-c">${chapterOpts(v.chapter_id)}</select>
+ <label>URL (for URL/YouTube lectures)</label><input id="ev-u" value="${esc(v.url||'')}">
+ <div class="grid2"><div><label>Order (sort)</label><input id="ev-s" type="number" value="${v.sort||0}"></div>
+ <div><label>Thumbnail URL/path</label><input id="ev-th" value="${esc(v.thumbnail||'')}"></div></div>
+ <label>Quality URLs</label><div class="grid2"><input id="ev-q240" placeholder="240p" value="${esc(qv('240p'))}"><input id="ev-q360" placeholder="360p" value="${esc(qv('360p'))}"></div>
+ <input id="ev-q720" placeholder="720p" value="${esc(qv('720p'))}">
+ <label>Batches (empty = all)</label><div>${batchChecks(v.batch_ids)}</div>
+ <div class="row"><label class="chk"><input type="checkbox" id="ev-pub" ${v.published?'checked':''}> Published</label><label class="chk"><input type="checkbox" id="ev-dl" ${v.downloadable?'checked':''}> Downloadable</label></div>
+ <button class="btn" onclick="saveVideo(${id},'${v.source_type}')">Save Changes ✓</button>
+ <button class="btn secondary" style="margin-top:8px" onclick="closeModal()">Cancel</button>`)}
+async function saveVideo(id,st){const qualities=[['240p','#ev-q240'],['360p','#ev-q360'],['720p','#ev-q720']].map(([label,s])=>({label,url:$(s).value.trim()})).filter(q=>q.url);
+ await api('/api/admin/videos/'+id,{method:'PUT',body:JSON.stringify({title:$('#ev-t').value,description:$('#ev-d').value,chapter_id:$('#ev-c').value||null,url:$('#ev-u').value,source_type:st,thumbnail:$('#ev-th').value||null,qualities,sort:+$('#ev-s').value,published:$('#ev-pub').checked,downloadable:$('#ev-dl').checked,batch_ids:getBatches('#modal')})});
+ closeModal();toast('Lecture updated ✓');videosView()}
+async function uploadThumbIfAny(){const f=$('#vth')?.files?.[0];if(!f)return null;const fd=new FormData();fd.append('file',f);const d=await api('/api/admin/thumbnail',{method:'POST',body:fd});return d.path}
+async function uploadVideo(){const thumb=await uploadThumbIfAny().catch(()=>null);
+ const qualities=[['240p','#vq240'],['360p','#vq360'],['720p','#vq720']].map(([label,s])=>({label,url:$(s).value.trim()})).filter(q=>q.url);
+ const f=new FormData();f.append('title',$('#vt').value);f.append('description',$('#vd').value);f.append('chapter_id',$('#vc').value);
+ if(thumb)f.append('thumbnail',thumb);f.append('qualities',JSON.stringify(qualities));
+ f.append('url',$('#vu').value);f.append('source_type',$('#vu').value.includes('youtu')?'youtube':'url');f.append('published',$('#vpub').checked?'1':'');f.append('downloadable',$('#vdl').checked?'1':'');
+ f.append('batch_ids',JSON.stringify(getBatches()));const file=$('#vf').files[0];if(file)f.append('file',file);
+ if(!$('#vt').value||(!file&&!$('#vu').value))return toast('Title + video file or URL required');
+ const xhr=new XMLHttpRequest();xhr.open('POST','/api/admin/videos');xhr.setRequestHeader('Authorization','Bearer '+TOKEN);
+ $('#vprog').style.display='block';xhr.upload.onprogress=e=>{if(e.lengthComputable){const p=Math.round(e.loaded/e.total*100);$('#vprog i').style.width=p+'%';$('#vstat').textContent='Uploading… '+p+'%'}};
+ xhr.onload=()=>{if(xhr.status<300){toast('Lecture uploaded ✓');videosView()}else toast('Upload failed: '+xhr.responseText.slice(0,120))};
+ xhr.onerror=()=>toast('Upload failed — check connection & retry');xhr.send(f)}
+
+/* PDFS */
+async function pdfsView(){loading();await loadBase();const d=await api('/api/admin/pdfs');
+ main(`<h1>📄 PDF Notes</h1><div class="card"><h3>Upload Notes (multiple PDFs allowed)</h3>
+ <label>Title</label><input id="pt" placeholder="e.g. Real Numbers – Handwritten Notes">
+ <label>Chapter</label><select id="pc">${chapterOpts()}</select>
+ <div class="drop" id="pdrop">📤 Drag & drop PDFs here or <input type="file" id="pf" accept="application/pdf" multiple style="max-width:260px;display:inline"></div>
+ <label>Assign to Batches (empty = all)</label><div>${batchChecks()}</div>
+ <div class="row"><label class="chk"><input type="checkbox" id="ppub" checked> Publish now</label><label class="chk"><input type="checkbox" id="pdl" checked> Allow download</label></div>
+ <p class="muted" id="pstat"></p><button class="btn" onclick="uploadPdf()">Upload Notes ✓</button></div>
+ <div class="card"><h3>All Notes (${d.items.length})</h3>${d.items.map(p=>`<div class="row between" style="border-top:1px solid var(--line);padding:9px 0"><span><b>${esc(p.title)}</b> <span class="badge ${p.published?'ok':'warn'}">${p.published?'Published':'Draft'}</span></span>
+ <span><button class="btn small" onclick="editPdf(${p.id})">✏️ Edit</button>
+ <button class="btn small secondary" onclick="togglePdf(${p.id},${p.published?0:1})">${p.published?'Unpublish':'Publish'}</button>
+ <button class="btn small danger" onclick="if(confirm('Delete notes?'))delGo('/api/admin/pdfs/${p.id}',pdfsView)">Delete</button></span></div>`).join('')||'<p class="muted">No notes yet</p>'}</div>`);
+ const dz=$('#pdrop');dz.ondragover=e=>{e.preventDefault();dz.classList.add('over')};dz.ondrop=e=>{e.preventDefault();$('#pf').files=e.dataTransfer.files;$('#pstat').textContent=e.dataTransfer.files.length+' file(s) selected'}}
+async function editPdf(id){await loadBase();const d=await api('/api/admin/pdfs');const p=d.items.find(x=>x.id===id);if(!p)return;
+ modal(`<h3>✏️ Edit Notes</h3><label>Title</label><input id="ep-t" value="${esc(p.title)}">
+ <label>Description</label><textarea id="ep-d" rows="2">${esc(p.description||'')}</textarea>
+ <label>Chapter</label><select id="ep-c">${chapterOpts(p.chapter_id)}</select>
+ <label>Order (sort)</label><input id="ep-s" type="number" value="${p.sort||0}">
+ <label>Batches (empty = all)</label><div>${batchChecks(p.batch_ids)}</div>
+ <div class="row"><label class="chk"><input type="checkbox" id="ep-pub" ${p.published?'checked':''}> Published</label><label class="chk"><input type="checkbox" id="ep-dl" ${p.downloadable?'checked':''}> Downloadable (watermarked)</label></div>
+ <button class="btn" onclick="savePdf(${id})">Save Changes ✓</button><button class="btn secondary" style="margin-top:8px" onclick="closeModal()">Cancel</button>`)}
+async function savePdf(id){await api('/api/admin/pdfs/'+id,{method:'PUT',body:JSON.stringify({title:$('#ep-t').value,description:$('#ep-d').value,chapter_id:$('#ep-c').value||null,sort:+$('#ep-s').value,published:$('#ep-pub').checked,downloadable:$('#ep-dl').checked,batch_ids:getBatches('#modal')})});
+ closeModal();toast('Notes updated ✓');pdfsView()}
+async function togglePdf(id,pub){const d=await api('/api/admin/pdfs');const p=d.items.find(x=>x.id===id);
+ await api('/api/admin/pdfs/'+id,{method:'PUT',body:JSON.stringify({title:p.title,description:p.description,chapter_id:p.chapter_id,downloadable:p.downloadable,published:pub,sort:p.sort})});pdfsView()}
+async function uploadPdf(){const f=new FormData();f.append('title',$('#pt').value);f.append('chapter_id',$('#pc').value);f.append('published',$('#ppub').checked?'1':'');f.append('downloadable',$('#pdl').checked?'1':'0');f.append('batch_ids',JSON.stringify(getBatches()));
+ [...$('#pf').files].forEach(x=>f.append('files',x));if(!$('#pf').files.length)return toast('Select at least one PDF');
+ try{await api('/api/admin/pdfs',{method:'POST',body:f});toast('Notes uploaded ✓');pdfsView()}catch(e){toast(e.message)}}
+
+/* TESTS */
+async function testsView(){loading();await loadBase();const d=await api('/api/admin/tests');
+ main(`<h1>📝 Tests</h1><div class="card"><h3>Create Test</h3><label>Title</label><input id="tt" placeholder="e.g. Chapter Test – Real Numbers">
+ <label>Instructions</label><textarea id="ti" rows="2" placeholder="Attempt all questions…"></textarea><label>Chapter</label><select id="tc">${chapterOpts()}</select>
+ <div class="grid2"><div><label>Duration (minutes)</label><input id="tdur" type="number" value="30"></div><div><label>Negative mark per wrong</label><input id="tneg" type="number" step="0.25" value="0"></div></div>
+ <div class="grid2"><div><label>Opens at (optional)</label><input id="tstart" type="datetime-local"></div><div><label>Closes at (optional)</label><input id="tend" type="datetime-local"></div></div>
+ <label>Batches (empty = all)</label><div>${batchChecks()}</div>
+ <label class="chk" style="margin-top:8px"><input type="checkbox" id="tshow" checked> Show correct answers after submission</label>
+ <button class="btn" style="margin-top:10px" onclick="createTest()">Create Draft Test → Add Questions</button></div>
+ <div class="card"><h3>All Tests</h3>${d.items.map(t=>`<div class="row between" style="border-top:1px solid var(--line);padding:10px 0;flex-wrap:wrap"><span><b>${esc(t.title)}</b> <span class="badge ${t.state==='PUBLISHED'?'ok':t.state==='CLOSED'?'bad':'warn'}">${t.state}</span> <small class="muted">${t.questionCount} Qs · ${t.duration_min} min</small></span>
+ <span><button class="btn small" onclick="editTest(${t.id})">✏️ Edit</button>
+ <button class="btn small" onclick="questionsView(${t.id},'${esc(t.title).replace(/'/g,"\\'")}')">Questions</button>
+ <button class="btn small secondary" onclick="testResults(${t.id},'${esc(t.title).replace(/'/g,"\\'")}')">Results</button>
+ <select onchange="setTestState(${t.id},this.value)" style="width:auto;display:inline;margin:0">${['DRAFT','SCHEDULED','PUBLISHED','CLOSED'].map(s=>`<option ${t.state===s?'selected':''}>${s}</option>`).join('')}</select>
+ <button class="btn small danger" onclick="if(confirm('Delete test?'))delGo('/api/admin/tests/${t.id}',testsView)">Delete</button></span></div>`).join('')||'<p class="muted">No tests yet</p>'}</div>`)}
+async function createTest(){try{const d=await api('/api/admin/tests',{method:'POST',body:JSON.stringify({title:$('#tt').value,instructions:$('#ti').value,chapter_id:$('#tc').value||null,duration_min:+$('#tdur').value,negative_mark:+$('#tneg').value,show_answers:$('#tshow').checked,state:$('#tstart').value?'SCHEDULED':'DRAFT',starts_at:$('#tstart').value?new Date($('#tstart').value).toISOString():null,ends_at:$('#tend').value?new Date($('#tend').value).toISOString():null,batch_ids:getBatches()})});
+ toast('Test created — now add questions');questionsView(d.item.id,d.item.title)}catch(e){toast(e.message)}}
+function toLocalInput(iso){if(!iso)return '';const d=new Date(iso);return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16)}
+async function editTest(id){await loadBase();const d=await api('/api/admin/tests');const t=d.items.find(x=>x.id===id);if(!t)return;
+ modal(`<h3>✏️ Edit Test</h3><label>Title</label><input id="et-t" value="${esc(t.title)}">
+ <label>Instructions</label><textarea id="et-i" rows="2">${esc(t.instructions||'')}</textarea>
+ <label>Chapter</label><select id="et-c">${chapterOpts(t.chapter_id)}</select>
+ <div class="grid2"><div><label>Duration (min)</label><input id="et-dur" type="number" value="${t.duration_min}"></div>
+ <div><label>Negative mark</label><input id="et-neg" type="number" step="0.25" value="${t.negative_mark||0}"></div></div>
+ <div class="grid2"><div><label>Opens at</label><input id="et-s" type="datetime-local" value="${toLocalInput(t.starts_at)}"></div>
+ <div><label>Closes at</label><input id="et-e" type="datetime-local" value="${toLocalInput(t.ends_at)}"></div></div>
+ <label>State</label><select id="et-st">${['DRAFT','SCHEDULED','PUBLISHED','CLOSED'].map(s=>`<option ${t.state===s?'selected':''}>${s}</option>`).join('')}</select>
+ <label>Batches (empty = all)</label><div>${batchChecks(t.batch_ids)}</div>
+ <label class="chk"><input type="checkbox" id="et-show" ${t.show_answers?'checked':''}> Show answers after submission</label>
+ <button class="btn" style="margin-top:10px" onclick="saveTest(${id})">Save Changes ✓</button><button class="btn secondary" style="margin-top:8px" onclick="closeModal()">Cancel</button>`)}
+async function saveTest(id){await api('/api/admin/tests/'+id,{method:'PUT',body:JSON.stringify({title:$('#et-t').value,instructions:$('#et-i').value,chapter_id:$('#et-c').value||null,duration_min:+$('#et-dur').value,negative_mark:+$('#et-neg').value,show_answers:$('#et-show').checked,state:$('#et-st').value,starts_at:$('#et-s').value?new Date($('#et-s').value).toISOString():null,ends_at:$('#et-e').value?new Date($('#et-e').value).toISOString():null,batch_ids:getBatches('#modal')})});
+ closeModal();toast('Test updated ✓');testsView()}
+async function setTestState(id,state){const d=await api('/api/admin/tests');const t=d.items.find(x=>x.id===id);
+ await api('/api/admin/tests/'+id,{method:'PUT',body:JSON.stringify({...t,state})});toast('State: '+state);testsView()}
+async function questionsView(tid,title){loading();const d=await api('/api/admin/tests/'+tid+'/questions');
+ main(`<button class="btn small secondary" onclick="testsView()">← Tests</button><h1 style="margin:12px 0">❓ ${esc(title)}</h1>
+ <div class="card"><h3>Add MCQ Question</h3><label>Question</label><textarea id="qt" rows="2"></textarea>
+ ${[0,1,2,3].map(i=>`<label>Option ${String.fromCharCode(65+i)}</label><input id="qo${i}">`).join('')}
+ <div class="grid2"><div><label>Correct Option</label><select id="qc">${[0,1,2,3].map(i=>`<option value="${i}">${String.fromCharCode(65+i)}</option>`).join('')}</select></div>
+ <div><label>Marks</label><input id="qm" type="number" value="1"></div></div>
+ <label>Explanation (shown after test, if enabled)</label><textarea id="qe" rows="2"></textarea>
+ <button class="btn" onclick="addQ(${tid},'${esc(title).replace(/'/g,"\\'")}')">Add Question ✓</button></div>
+ ${d.items.map((q,i)=>`<div class="card"><div class="row between"><b>Q${i+1}. ${esc(q.text)}</b><button class="btn small danger" onclick="delGo('/api/admin/questions/${q.id}',()=>questionsView(${tid},'${esc(title).replace(/'/g,"\\'")}'))">Delete</button></div>
+ ${q.options.map((o,j)=>`<p style="margin-top:4px">${j===q.correct?'✅':'▫️'} ${String.fromCharCode(65+j)}. ${esc(o)}</p>`).join('')}<small class="muted">${q.marks} mark(s) ${q.explanation?'· 💡 '+esc(q.explanation):''}</small></div>`).join('')}`)}
+async function addQ(tid,title){const options=[0,1,2,3].map(i=>$('#qo'+i).value);if(!$('#qt').value||options.some(x=>!x))return toast('Fill question + all 4 options');
+ await api('/api/admin/tests/'+tid+'/questions',{method:'POST',body:JSON.stringify({text:$('#qt').value,options,correct:+$('#qc').value,marks:+$('#qm').value,explanation:$('#qe').value})});
+ toast('Question added ✓');questionsView(tid,title)}
+async function testResults(tid,title){loading();const d=await api('/api/admin/tests/'+tid+'/results');
+ main(`<button class="btn small secondary" onclick="testsView()">← Tests</button><h1 style="margin:12px 0">🏆 Results — ${esc(title)}</h1>
+ <a class="btn small" style="text-decoration:none;display:inline-block;width:auto" href="/api/admin/tests/${tid}/export.csv?token=${encodeURIComponent(TOKEN)}">⬇ Export CSV</a>
+ <div class="card" style="margin-top:12px;overflow:auto"><table><tr><th>#</th><th>Student</th><th>Score</th><th>✔/✘/Skip</th><th>Time</th></tr>
+ ${d.results.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.name)}<br><small class="muted">${esc(r.mobile||'')}</small></td><td><b>${r.score}/${r.total}</b></td><td>${r.correct_cnt}/${r.wrong_cnt}/${r.skipped_cnt}</td><td>${Math.floor(r.time_taken_sec/60)}m ${r.time_taken_sec%60}s</td></tr>`).join('')||'<tr><td colspan="5" class="muted">No submissions yet</td></tr>'}</table></div>`)}
+
+/* PRACTICE */
+async function practiceView(chapterId=''){loading();await loadBase();const d=await api('/api/admin/practice'+(chapterId?'?chapter_id='+chapterId:''));
+ main(`<h1>✏️ Practice Questions</h1><p class="muted" style="margin-bottom:12px">Untimed questions with instant feedback — students practise inside each chapter.</p>
+ <div class="card"><h3>Add Practice Question</h3><label>Chapter</label><select id="prc">${chapterOpts(chapterId)}</select>
+ <label>Question</label><textarea id="prt" rows="2"></textarea>
+ ${[0,1,2,3].map(i=>`<label>Option ${String.fromCharCode(65+i)}</label><input id="pro${i}">`).join('')}
+ <label>Correct Option</label><select id="prcorr">${[0,1,2,3].map(i=>`<option value="${i}">${String.fromCharCode(65+i)}</option>`).join('')}</select>
+ <label>Explanation</label><textarea id="pre" rows="2"></textarea>
+ <button class="btn" onclick="addPractice()">Add Practice Question ✓</button></div>
+ <div class="card"><div class="row"><h3 style="flex:1">Questions (${d.items.length})</h3>
+ <select onchange="practiceView(this.value)" style="max-width:280px;margin:0"><option value="">All Chapters</option>${(CACHE.chapters||[]).map(c=>`<option value="${c.id}" ${+chapterId===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
+ ${d.items.map(q=>`<div style="border-top:1px solid var(--line);padding:10px 0"><b>${esc(q.text)}</b> <span class="badge ${q.published?'ok':'warn'}">${q.published?'Published':'Hidden'}</span>
+ ${q.options.map((o,j)=>`<p style="margin-top:3px">${j===q.correct?'✅':'▫️'} ${String.fromCharCode(65+j)}. ${esc(o)}</p>`).join('')}
+ <button class="btn small danger" onclick="if(confirm('Delete question?'))delGo('/api/admin/practice/${q.id}',()=>practiceView('${chapterId}'))">Delete</button></div>`).join('')||'<p class="muted">No practice questions yet</p>'}</div>`)}
+async function addPractice(){const options=[0,1,2,3].map(i=>$('#pro'+i).value);if(!$('#prc').value||!$('#prt').value||options.some(x=>!x))return toast('Fill chapter, question + all 4 options');
+ await api('/api/admin/practice',{method:'POST',body:JSON.stringify({chapter_id:+$('#prc').value,text:$('#prt').value,options,correct:+$('#prcorr').value,explanation:$('#pre').value})});
+ toast('Practice question added ✓');practiceView($('#prc').value)}
+
+/* DOUBTS ADMIN */
+async function doubtsAdmin(filter=''){loading();const d=await api('/api/doubts');
+ const list=d.doubts.filter(x=>!filter||x.status===filter);
+ main(`<h1>💬 Student Doubts</h1><div class="row" style="margin:12px 0;flex-wrap:wrap">${['','PENDING','IN_PROGRESS','ANSWERED','RESOLVED'].map(f=>`<button class="btn small ${filter===f?'':'secondary'}" onclick="doubtsAdmin('${f}')">${f||'All'}</button>`).join(' ')}</div>
+ ${list.map(x=>`<div class="card"><div class="row between"><b>${esc(x.student_name)}</b><span class="badge ${x.status==='RESOLVED'?'ok':x.status==='PENDING'?'warn':''}">${x.status.replace('_',' ')}</span></div>
+ <p style="margin:8px 0">${esc(x.question)}</p>${x.image?`<img src="${esc(imgUrl(x.image))}" style="max-width:320px;border-radius:12px">`:''}<p class="muted">${esc(x.created_at)}</p>
+ ${x.replies.map(r=>`<div style="border-left:3px solid ${r.author_role==='STUDENT'?'var(--line)':'var(--brand)'};padding:6px 10px;margin:8px 0"><b>${r.author_role==='STUDENT'?esc(x.student_name):'Dream Sir'}:</b> ${esc(r.text)}${r.image?`<br><img src="${esc(imgUrl(r.image))}" style="max-width:280px;border-radius:10px;margin-top:6px">`:''}${r.pdf?`<br><a href="${esc(imgUrl(r.pdf))}" target="_blank">📄 PDF Solution</a>`:''}</div>`).join('')}
+ <label>Your Answer</label><textarea id="ar-${x.id}" rows="2" placeholder="Explain the solution…"></textarea>
+ <label>Attach solution image (optional)</label><input type="file" id="ai-${x.id}" accept="image/*">
+ <label>Attach PDF solution (optional)</label><input type="file" id="ap-${x.id}" accept="application/pdf">
+ <div class="row"><button class="btn small" onclick="answerDoubt(${x.id},'ANSWERED')">Send Answer ✓</button>
+ <button class="btn small secondary" onclick="answerDoubt(${x.id},'IN_PROGRESS')">Mark In Progress</button>
+ <button class="btn small secondary" onclick="setDStatus(${x.id},'${x.status==='RESOLVED'?'PENDING':'RESOLVED'}')">${x.status==='RESOLVED'?'Reopen':'Resolve'}</button></div></div>`).join('')||'<div class="empty"><div class="big">💬</div><p>No doubts here.</p></div>'}`)}
+async function answerDoubt(id,st){const f=new FormData();f.append('text',$('#ar-'+id).value);f.append('status',st);const img=$('#ai-'+id).files[0];if(img)f.append('image',img);const pdf=$('#ap-'+id)?.files?.[0];if(pdf)f.append('pdf',pdf);
+ await api('/api/doubts/'+id+'/reply',{method:'POST',body:f});toast('Reply sent ✓ Student notified in-app');doubtsAdmin()}
+async function setDStatus(id,s){await api('/api/doubts/'+id+'/status',{method:'PUT',body:JSON.stringify({status:s})});doubtsAdmin()}
+
+/* NOTIFICATIONS */
+async function notifyView(){loading();await loadBase();const [h,annSt]=await Promise.all([api('/api/admin/notifications'),api('/api/admin/students')]);
+ main(`<h1>🔔 Notification Center</h1><div class="card"><h3>Send Notification</h3>
+ <label>Title</label><input id="nt" placeholder="e.g. Chapter 3 Notes Uploaded!">
+ <label>Message</label><textarea id="nm" rows="2" placeholder="New notes are available in My Classes…"></textarea>
+ <label>Send To</label><select id="ntype" onchange="ntarget()"><option value="ALL">All Students</option><option value="BATCH">A Batch</option><option value="CLASS">A Class</option><option value="STUDENT">One Student</option></select>
+ <select id="ntid" style="display:none"></select>
+ <label>Schedule (optional — leave empty to send now)</label><input id="nsch" type="datetime-local">
+ <div class="card" style="background:var(--bg)"><small class="muted">PREVIEW</small><p><b id="pvT">Title</b><br><span id="pvM" class="muted">Message…</span></p></div>
+ <button class="btn" onclick="sendNotif()">Send Notification ✓</button>
+ <p class="muted" style="margin-top:8px;font-size:.8rem">Delivered in-app + as a phone push alert (Web Push) to students who enabled notifications on their device. Scheduled messages send automatically.</p></div>
+ <div class="card"><h3>📢 Post Announcement (shown on student Home)</h3><label>Title</label><input id="at"><label>Message</label><textarea id="ab" rows="2"></textarea>
+ <button class="btn" onclick="postAnn()">Post Announcement</button></div>
+ <div class="card"><h3>History</h3>${h.items.map(n=>`<p style="margin-top:7px"><b>${esc(n.title)}</b> → ${esc(n.target_type)} <span class="badge ${n.status==='SCHEDULED'?'warn':'ok'}">${n.status}${n.scheduled_at?' · '+esc(n.scheduled_at):''}</span><br><small class="muted">${esc(n.message)} · ${esc(n.created_at)}</small></p>`).join('')||'<p class="muted">None yet</p>'}</div>`);
+ $('#nt').oninput=e=>$('#pvT').textContent=e.target.value||'Title';$('#nm').oninput=e=>$('#pvM').textContent=e.target.value||'Message…';
+ window._students=annSt.students}
+function ntarget(){const t=$('#ntype').value,s=$('#ntid');if(t==='ALL'){s.style.display='none';return}s.style.display='block';
+ const src=t==='BATCH'?CACHE.batches:t==='CLASS'?CACHE.classes:(window._students||[]);
+ s.innerHTML=src.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('')}
+async function sendNotif(){if(!confirm('Send this notification now?'))return;
+ const sch=$('#nsch').value;
+ const d=await api('/api/admin/notifications',{method:'POST',body:JSON.stringify({title:$('#nt').value,message:$('#nm').value,target_type:$('#ntype').value,target_id:$('#ntype').value==='ALL'?null:+$('#ntid').value,scheduled_at:sch?sch.replace('T',' '):null})});
+ toast((sch?'Scheduled':'Sent')+' ✓ → '+(d.recipients??'')+' student(s)');notifyView()}
+async function postAnn(){await api('/api/admin/announcements',{method:'POST',body:JSON.stringify({title:$('#at').value,body:$('#ab').value})});toast('Announcement posted ✓')}
+
+/* SETTINGS */
+async function settingsView(){loading();const s=await api('/api/admin/settings');
+ const cfg=await api('/api/admin/config-status').catch(()=>({warnings:[]}));
+ const cfgCard=cfg.warnings?.length?`<div class="card" style="background:#fef3c7;border-color:#f59e0b;color:#231300"><h3>⚠️ Production Configuration Warnings</h3>${cfg.warnings.map(w=>`<p style="margin-top:6px">• ${esc(w)}</p>`).join('')}<p style="margin-top:8px"><small>OTP mode: ${esc(cfg.otpMode||'')} · Push ready: ${cfg.webPushReady?'Yes':'No'} · HTTPS: ${cfg.https?'Yes':'No'} · See PRODUCTION.md / .env.example in the project.</small></p></div>`:`<div class="card"><h3>✅ Production Configuration</h3><p class="muted">No configuration warnings. OTP: ${esc(cfg.otpMode||'')} · HTTPS: ${cfg.https?'Yes':'No'}</p></div>`;
+ let teachers='';if(USER.role==='SUPER_ADMIN'){const t=await api('/api/admin/teachers');
+  teachers=`<div class="card"><h3>👩‍🏫 Teachers</h3>${t.items.map(x=>`<p style="margin-top:6px">${esc(x.name)} — ${esc(x.email)} <span class="badge">${x.role}</span></p>`).join('')}
+  <div class="row" style="flex-wrap:wrap;margin-top:12px"><input id="tn" placeholder="Teacher name" style="max-width:180px;margin:0"><input id="te" placeholder="Email" style="max-width:200px;margin:0"><input id="tp" type="password" placeholder="Password" style="max-width:160px;margin:0"><button class="btn small" onclick="addTeacher()">+ Add Teacher</button></div></div>`}
+ main(`<h1>⚙️ Settings</h1>${cfgCard}<div class="card"><h3>Student Registration Approval</h3>
+ <p class="muted">MANUAL = Dream Sir approves each new student. AUTO = students get instant access after OTP.</p>
+ <select id="appr"><option value="MANUAL" ${s.approval_mode==='MANUAL'?'selected':''}>Manual Approval (recommended)</option><option value="AUTO" ${s.approval_mode==='AUTO'?'selected':''}>Automatic Approval</option></select>
+ <button class="btn" onclick="saveSettings()">Save Settings ✓</button></div>${teachers}
+ <div class="card"><h3>🔐 Change My Password</h3>
+ <label>Current Password</label><input id="cp1" type="password"><label>New Password (min 8 characters)</label><input id="cp2" type="password">
+ <button class="btn" onclick="changePw()">Change Password</button><p class="muted" style="margin-top:6px">You will be logged out after changing.</p></div>
+ ${USER.role==='SUPER_ADMIN'?`<div class="card"><h3>💾 Database Backup</h3><p class="muted">Download a full copy of the database file. Store it safely; also back up the <b>uploads/</b> folder on the server.</p>
+ <a class="btn small" style="text-decoration:none;display:inline-block;width:auto;margin-top:8px" href="/api/admin/backup.db?token=${encodeURIComponent(TOKEN)}">Download Backup (.db)</a></div>`:''}
+ <div class="card"><h3>ℹ️ Institute</h3><p><b>Dream Classes</b> · Dream Sir<br>Kothwara, Dobhi, Gaya, Bihar, India<br>Panel login: ${esc(USER.email||'')} (${USER.role})</p>
+ <p class="muted" style="margin-top:8px">Production checklist (SMS/WhatsApp OTP, Firebase push, domain, APK) — see README in project folder.</p></div>`)}
+async function changePw(){try{await api('/api/admin/change-password',{method:'POST',body:JSON.stringify({current:$('#cp1').value,next:$('#cp2').value})});toast('Password changed. Please login again');setTimeout(logout,1200)}catch(e){toast(e.message)}}
+async function saveSettings(){await api('/api/admin/settings',{method:'PUT',body:JSON.stringify({approval_mode:$('#appr').value})});toast('Settings saved ✓')}
+
+async function boot(){if(!TOKEN)return loginView();try{const d=await api('/api/auth/me');USER=d.user;if(USER.role==='STUDENT')throw new Error('x');shell();go('dash')}catch{logout()}}
+boot();
+</script></body></html>
+TO" ${s.approval_mode==='AUTO'?'selected':''}>Automatic Approval</option></select>
+ <button class="btn" onclick="saveSettings()">Save Settings ✓</button></div>${teachers}
+ <div class="card"><h3>ℹ️ Institute</h3><p><b>Dream Classes</b> · Dream Sir<br>Kothwara, Dobhi, Gaya, Bihar, India<br>Panel login: ${esc(USER.email||'')} (${USER.role})</p>
+ <p class="muted" style="margin-top:8px">Production checklist (SMS/WhatsApp OTP, Firebase push, domain, APK) — see README in project folder.</p></div>`)}
+async function saveSettings(){await api('/api/admin/settings',{method:'PUT',body:JSON.stringify({approval_mode:$('#appr').value})});toast('Settings saved ✓')}
+async function addTeacher(){try{await api('/api/admin/teachers',{method:'POST',body:JSON.stringify({name:$('#tn').value,email:$('#te').value,password:$('#tp').value})});toast('Teacher added ✓');settingsView()}catch(e){toast(e.message)}}
+
+async function boot(){if(!TOKEN)return loginView();try{const d=await api('/api/auth/me');USER=d.user;if(USER.role==='STUDENT')throw new Error('x');shell();go('dash')}catch{logout()}}
+boot();
+</script></body></html>

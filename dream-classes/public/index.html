@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dream Classes — by Dream Sir</title>
+<meta name="theme-color" content="#4f46e5"><link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-512.png"><link rel="stylesheet" href="/css/style.css">
+<script src="/js/app-config.js"></script><script src="/vendor/pdf.min.js"></script><script src="/vendor/hls.min.js"></script><script src="/js/native-bridge.js"></script>
+<style>
+.wrap{max-width:560px;margin:0 auto;padding:0 14px 96px}
+.topbar{position:sticky;top:0;z-index:40;background:linear-gradient(135deg,#4f46e5,#3730a3);color:#fff;padding:14px}
+.topbar .row{max-width:560px;margin:0 auto}
+.logo{width:44px;height:44px;border-radius:12px;object-fit:cover}
+.bell{position:relative;background:rgba(255,255,255,.15);border:0;color:#fff;width:42px;height:42px;border-radius:12px;font-size:1.15rem}
+.bell b{position:absolute;top:-4px;right:-4px;background:#f59e0b;color:#000;font-size:.62rem;border-radius:99px;padding:2px 6px}
+.bottomnav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;z-index:50;padding-bottom:env(safe-area-inset-bottom)}
+.bottomnav button{flex:1;background:none;border:0;padding:9px 2px 7px;color:var(--muted);font-size:.68rem;font-weight:700}
+.bottomnav button span{display:block;font-size:1.25rem}
+.bottomnav button.on{color:var(--brand)}
+.hero{background:linear-gradient(135deg,#4f46e5,#7c6cf8);color:#fff;border-radius:20px;padding:18px;margin:14px 0}
+.tile{display:flex;gap:12px;align-items:center;cursor:pointer}
+.tile .ic{width:52px;height:52px;border-radius:14px;background:#eef2ff;display:grid;place-items:center;font-size:1.5rem;flex:none}
+[data-theme=dark] .tile .ic{background:#232c4d}
+video{width:100%;background:#000;border-radius:14px}
+.wm{position:absolute;color:rgba(255,255,255,.55);font-size:.7rem;font-weight:700;text-shadow:0 1px 3px #000;pointer-events:none;transition:all 1s;text-align:center;line-height:1.5;z-index:5}
+.qnav{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.qnav button{width:38px;height:38px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--text);font-weight:700}
+.qnav button.ans{background:#dcfce7;border-color:#16a34a}.qnav button.rev{background:#fef3c7;border-color:#f59e0b}.qnav button.cur{outline:2.5px solid var(--brand)}
+.opt{display:block;border:1.5px solid var(--line);border-radius:12px;padding:13px;margin:8px 0;cursor:pointer}
+.opt.sel{border-color:var(--brand);background:#eef2ff}[data-theme=dark] .opt.sel{background:#232c4d}
+.opt.right{border-color:var(--ok);background:#dcfce7;color:#14532d}.opt.wrong{border-color:var(--bad);background:#fee2e2;color:#7f1d1d}
+iframe.pdf{width:100%;height:68vh;border:1px solid var(--line);border-radius:14px;background:#fff}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;color:var(--brand)}
+h2.sec{font-size:1.05rem;margin:20px 0 10px}
+.authbox{max-width:420px;margin:6vh auto;padding:0 16px}
+.chip{display:inline-block;border:1.5px solid var(--line);border-radius:99px;padding:7px 14px;margin:3px;cursor:pointer;font-size:.85rem}
+.chip.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+</style></head>
+<body>
+<div id="app"></div>
+<script>
+const $=s=>document.querySelector(s), app=$('#app');
+const IS_NATIVE=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+let API_BASE=(localStorage.getItem('dc_api_base')||window.DC_API_BASE||'').replace(/\/+$/,'');
+const B=p=>{if(!p||typeof p!=='string')return p;return p.startsWith('/')?API_BASE+p:p};
+function saveServerUrl(){let u=($('#srvUrl').value||'').trim().replace(/\/+$/,'');if(!/^https:\/\/.+/.test(u))return toast('Sahi address dein — https:// se shuru hona chahiye');localStorage.setItem('dc_api_base',u);toast('Server jud gaya ✓ App dobara khul raha hai…');setTimeout(()=>location.reload(),800)}
+function serverCard(){if(!IS_NATIVE)return '';if(API_BASE)return `<div class="card" style="margin-top:14px"><p class="muted">🌐 Server: <b>${esc(API_BASE)}</b></p><button class="btn small secondary" style="margin-top:8px" onclick="if(confirm('Server address hatayein?')){localStorage.removeItem('dc_api_base');location.reload()}">Server Badlein</button></div>`;
+return `<div class="card" style="margin-top:14px;background:#fef3c7;border-color:#f59e0b;color:#231300"><h3>⚠️ Server Setup Pending</h3><p style="margin:8px 0;font-size:.9rem">App taiyar hai, lekin abhi ye kisi server se juda nahi hai. Jab Dream Classes ka server internet par live ho jaye, uska address yahan daalein — bina nayi APK banaye app jud jayega.</p><label style="color:#231300">Server ka address (https:// se shuru)</label><input id="srvUrl" placeholder="https://dream-classes.onrender.com"><button class="btn" onclick="saveServerUrl()">Server Se Jodein →</button></div>`}
+let TOKEN=localStorage.getItem('dc_token')||'', USER=null, VIEW='home', STRUCT=null, TEST=null, DEFERRED=null;
+const theme=localStorage.getItem('dc_theme')||'system';
+function applyTheme(t){localStorage.setItem('dc_theme',t);document.documentElement.dataset.theme=(t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches))?'dark':'light'}
+applyTheme(theme);
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();DEFERRED=e});
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),3400)}
+function imgUrl(p){if(!p)return '';if(p.startsWith('/uploads/images/'))return B('/api/files/images/'+p.split('/').pop()+'?token='+encodeURIComponent(TOKEN));return B(p)}
+function esc(s){return String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]))}
+async function api(path,opt={}){opt.headers={...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(TOKEN?{Authorization:'Bearer '+TOKEN}:{})};
+ const r=await fetch(B(path),opt); const d=await r.json().catch(()=>({}));
+ if(r.status===401&&TOKEN){logout(false);throw new Error(d.error||'Session expired')}
+ if(!r.ok) throw new Error(d.message||d.error||'Network error'); return d}
+function loading(){$('#main').innerHTML='<div class="spinner"></div><p class="center muted">Loading…</p>'}
+function errBox(e,retry){return `<div class="empty"><div class="big">⚠️</div><p>${esc(e.message||e)}</p><br><button class="btn small" onclick="${retry}">↻ Retry</button></div>`}
+
+/* ---------- AUTH ---------- */
+function loginView(step='mobile',data={}){
+ app.innerHTML=`<div class="authbox"><div class="center"><img src="/icons/icon-512.png" style="width:92px;height:92px;border-radius:22px" alt="Dream Classes logo">
+ <h1 style="margin:12px 0 4px">DREAM CLASSES</h1><p class="muted">by <b>Dream Sir</b><br>Kothwara, Dobhi, Gaya, Bihar</p></div>
+ ${serverCard()}
+ <div class="card" style="margin-top:20px"><h3 style="margin-bottom:8px">Student Login / Register</h3>
+ ${step==='mobile'?`<label>Mobile Number (10-digit)</label><input id="mob" inputmode="numeric" maxlength="10" placeholder="e.g. 9876543210" value="${esc(data.mobile||'')}">
+ <button class="btn" onclick="sendOtp()">Send OTP →</button><p class="muted" style="margin-top:10px;font-size:.78rem">New student? Enter your mobile number — we will create your account after OTP verification.</p>`
+ :step==='otp'?`<p class="muted">OTP sent to <b>+91 ${esc(data.mobile)}</b></p>${data.dev?`<div class="card" style="background:#fef3c7;border-color:#f59e0b"><b>Test Mode OTP: ${esc(data.dev)}</b><br><span class="muted">(In production this arrives by SMS/WhatsApp)</span></div>`:''}
+ <label>Enter 6-digit OTP</label><input id="otp" inputmode="numeric" maxlength="6" placeholder="------">
+ <div id="newuser" style="display:${data.needName?'block':'none'}"><label>Your Full Name (new students)</label><input id="nm" placeholder="e.g. Rahul Kumar">
+ <label>Select Your Class</label><select id="cls"><option value="">-- Select --</option>${(data.classes||[]).map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></div>
+ <button class="btn" onclick="verifyOtp('${esc(data.mobile)}')">Verify & Login ✓</button>
+ <button class="btn secondary" style="margin-top:8px" onclick="loginView()">← Change Number</button>`:''}
+ </div><p class="center muted" style="font-size:.8rem">Teacher? <a href="/admin">Open Teacher Panel →</a><br><br>
+ <a href="#" onclick="staticPage('privacy');return false">Privacy Policy</a> · <a href="#" onclick="staticPage('terms');return false">Terms</a> · <a href="#" onclick="staticPage('help');return false">Help</a></p></div>`;
+}
+async function sendOtp(){if(IS_NATIVE&&!API_BASE)return toast('⚠️ Pehle upar server ka address jodein (Server Setup Pending)');try{const m=$('#mob').value.trim();const d=await api('/api/auth/request-otp',{method:'POST',body:JSON.stringify({mobile:m})});
+ const cat=await api('/api/catalog').catch(()=>({classes:[]}));loginView('otp',{mobile:m,dev:d.devOtp,classes:cat.classes})}catch(e){toast(e.message)}}
+async function verifyOtp(m){try{const body={mobile:m,code:$('#otp').value.trim(),device_id:navigator.userAgent.slice(0,60)};
+ const nm=$('#nm'); if(nm&&$('#newuser').style.display!=='none'){body.name=nm.value.trim();body.class_id=$('#cls').value||null}
+ const d=await api('/api/auth/verify-otp',{method:'POST',body:JSON.stringify(body)});
+ TOKEN=d.token;localStorage.setItem('dc_token',TOKEN);USER=d.user;boot()}catch(e){
+ if(e.message.includes('full name')||e.message.includes('NAME')){$('#newuser').style.display='block';toast('New student — please enter your name & class, then tap Verify again')}else toast(e.message)}}
+function logout(notify=true){if(notify&&TOKEN)api('/api/auth/logout',{method:'POST'}).catch(()=>{});TOKEN='';USER=null;localStorage.removeItem('dc_token');loginView()}
+
+/* ---------- SHELL ---------- */
+function shell(){
+ app.innerHTML=`<div class="topbar"><div class="row between"><div class="row"><img class="logo" src="/icons/icon-512.png">
+ <div><b style="font-size:1.02rem">DREAM CLASSES</b><br><small style="opacity:.85">Dream Sir · Gaya, Bihar</small></div></div>
+ <button class="bell" onclick="go('notifications')">🔔<b id="belln" style="display:none">0</b></button></div></div>
+ <div class="wrap"><div id="main"></div></div>
+ <nav class="bottomnav">${[['home','🏠','Home'],['classes','📚','My Classes'],['tests','📝','Tests'],['doubts','💬','Doubts'],['profile','👤','Profile']].map(([v,i,l])=>`<button data-v="${v}" onclick="go('${v}')"><span>${i}</span>${l}</button>`).join('')}</nav>`;
+ updateBell();
+}
+function go(v){VIEW=v;document.querySelectorAll('.bottomnav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));({home:homeView,classes:classesView,tests:testsView,doubts:doubtsView,profile:profileView,notifications:notifView}[v]||homeView)();window.scrollTo(0,0)}
+async function updateBell(){try{const d=await api('/api/notifications');const n=d.notifications.filter(x=>!x.read).length;const b=$('#belln');if(b){b.style.display=n?'block':'none';b.textContent=n}}catch{}}
+
+/* ---------- HOME ---------- */
+async function homeView(){loading();try{
+ if(USER.status!=='APPROVED'){$('#main').innerHTML=`<div class="empty"><div class="big">⏳</div><h3>Approval Pending</h3><p>Namaste ${esc(USER.name)}! Your registration is waiting for approval by <b>Dream Sir</b>. You will get full access once approved.</p><br><button class="btn small secondary" onclick="logout()">Logout</button></div>`;return}
+ const [d,ann]=await Promise.all([api('/api/dashboard'),api('/api/announcements')]);
+ $('#main').innerHTML=`<div class="hero"><small>Namaste 🙏</small><h2>${esc(USER.name)}</h2>
+ <p style="opacity:.9;font-size:.88rem">Course Progress: ${d.completed}/${d.totalVideos} lectures (${d.coursePct}%)</p>
+ <div class="progressbar" style="background:rgba(255,255,255,.3);margin-top:8px"><i style="width:${d.coursePct}%;background:#f59e0b"></i></div></div>
+ ${ann.announcements.length?`<h2 class="sec">📢 Announcements</h2>${ann.announcements.slice(0,3).map(a=>`<div class="card"><b>${esc(a.title)}</b><p class="muted">${esc(a.body)}</p></div>`).join('')}`:''}
+ <div class="grid2"><div class="card center"><h2>${d.attempts}</h2><p class="muted">Tests Attempted</p></div><div class="card center"><h2>${d.avgPct}%</h2><p class="muted">Avg Score · Best ${d.bestPct}%</p></div>
+ <div class="card center"><h2>${d.pendingDoubts}</h2><p class="muted">Pending Doubts</p></div><div class="card center"><h2>${d.resolvedDoubts}</h2><p class="muted">Doubts Resolved</p></div></div>
+ <h2 class="sec">▶️ Continue Learning</h2>${d.recent.length?d.recent.map(v=>`<div class="card tile" onclick="playVideo(${v.id})"><div class="ic">🎬</div><div style="flex:1"><b>${esc(v.title)}</b><br><span class="muted">${v.completed?'✅ Completed':'Resume from '+Math.floor(v.position_sec/60)+'m '+(v.position_sec%60)+'s'}</span></div>›</div>`).join(''):'<div class="empty"><div class="big">🎬</div><p>No lectures watched yet.<br>Go to <b>My Classes</b> to start learning!</p></div>'}
+ <h2 class="sec">📄 Latest Notes</h2>${d.latestNotes.length?d.latestNotes.map(p=>`<div class="card tile" onclick="openPdf(${p.id},'${esc(p.title)}')"><div class="ic">📄</div><div><b>${esc(p.title)}</b></div></div>`).join(''):'<p class="muted">No notes uploaded yet.</p>'}
+ <h2 class="sec">📅 Upcoming Tests</h2>${(d.upcomingTests||[]).length?d.upcomingTests.map(t=>`<div class="card tile" onclick="go('tests')"><div class="ic">📝</div><div style="flex:1"><b>${esc(t.title)}</b><br><span class="muted">${t.state==='SCHEDULED'?'Opens '+(t.starts_at||'soon'):'Open now'} · ${t.duration_min} min</span></div>›</div>`).join(''):'<p class="muted">No upcoming tests.</p>'}
+ ${(d.subjectPerformance||[]).length?`<h2 class="sec">📊 Subject-wise Performance</h2><div class="card">${d.subjectPerformance.map(s=>`<div style="margin:8px 0"><div class="row between"><b>${esc(s.subject)}</b><span class="muted">${s.pct||0}% · ${s.attempts} test(s)</span></div><div class="progressbar"><i style="width:${s.pct||0}%"></i></div></div>`).join('')}<p class="muted" style="margin-top:6px">Practice questions solved: <b>${d.practice?.correct||0}/${d.practice?.answered||0}</b> correct</p></div>`:''}
+ <h2 class="sec">📥 My Downloads (Offline)</h2><div class="card tile" onclick="downloadsView()"><div class="ic">📥</div><div style="flex:1"><b>Downloaded Lessons & Notes</b><br><span class="muted">Watch/read without internet — stored privately in this app</span></div>›</div>
+ <h2 class="sec">🏆 Recent Results</h2>${d.results.length?d.results.map(r=>`<div class="card row between"><span>${esc(r.title)}</span><b>${r.score}/${r.total}</b></div>`).join(''):'<p class="muted">No test results yet.</p>'}`;
+}catch(e){$('#main').innerHTML=errBox(e,'homeView()')}}
+
+/* ---------- CLASSES ---------- */
+async function classesView(){loading();try{
+ if(!STRUCT) STRUCT=(await api('/api/structure')).classes;
+ $('#main').innerHTML=`<h2 class="sec">📚 My Classes</h2>`+(STRUCT.length?STRUCT.map(c=>`<div class="card"><h3>${esc(c.name)}</h3><div style="margin-top:10px">${c.subjects.map(s=>`<div class="tile" style="padding:9px 0;border-bottom:1px solid var(--line)" onclick="subjectView(${c.id},${s.id})"><div class="ic">${esc(s.icon||'📚')}</div><div style="flex:1"><b>${esc(s.name)}</b><br><span class="muted">${s.chapters.length} chapters</span></div>›</div>`).join('')||'<p class="muted">No subjects yet</p>'}</div></div>`).join(''):'<div class="empty"><div class="big">📚</div><p>No classes published yet.</p></div>');
+}catch(e){$('#main').innerHTML=errBox(e,'classesView()')}}
+function subjectView(cid,sid){const c=STRUCT.find(x=>x.id===cid),s=c.subjects.find(x=>x.id===sid);
+ $('#main').innerHTML=`<button class="btn small secondary" onclick="classesView()">← Back</button><h2 class="sec">${esc(s.icon||'')} ${esc(s.name)} · ${esc(c.name)}</h2>`+
+ (s.chapters.length?s.chapters.map((ch,i)=>`<div class="card tile" onclick="chapterView(${ch.id},'${esc(ch.name)}')"><div class="ic">${i+1}</div><div style="flex:1"><b>${esc(ch.name)}</b>${ch.description?`<br><span class="muted">${esc(ch.description)}</span>`:''}</div>›</div>`).join(''):'<div class="empty"><div class="big">📖</div><p>Chapters coming soon.</p></div>')}
+async function chapterView(id,name){loading();try{const d=await api('/api/chapters/'+id+'/content');
+ $('#main').innerHTML=`<button class="btn small secondary" onclick="classesView()">← Back</button><h2 class="sec">📖 ${esc(name)}</h2>
+ <h3 style="margin:12px 0 8px">🎬 Video Lectures</h3>${d.videos.length?d.videos.map(v=>`<div class="card tile" onclick="playVideo(${v.id})">${v.thumbnail?`<img src="${esc(v.thumbnail)}" style="width:72px;height:52px;object-fit:cover;border-radius:12px">`:'<div class="ic">▶️</div>'}<div style="flex:1"><b>${esc(v.title)}</b><br><span class="muted">${v.progress?.completed?'✅ Completed':v.progress?'▶ Resume':'Not started'}${v.downloadable?' · ⬇ Downloadable':''}</span></div></div>`).join(''):'<p class="muted">No lectures yet.</p>'}
+ <h3 style="margin:16px 0 8px">📄 PDF Notes</h3>${d.pdfs.length?d.pdfs.map(p=>`<div class="card tile" onclick="openPdf(${p.id},'${esc(p.title)}',${p.downloadable})"><div class="ic">📄</div><div style="flex:1"><b>${esc(p.title)}</b></div></div>`).join(''):'<p class="muted">No notes yet.</p>'}
+ <h3 style="margin:16px 0 8px">📝 Tests</h3>${d.tests.length?d.tests.map(t=>`<div class="card tile" onclick="go('tests')"><div class="ic">📝</div><div style="flex:1"><b>${esc(t.title)}</b><br><span class="badge">${t.state}</span> <span class="muted">${t.duration_min} min</span></div></div>`).join(''):'<p class="muted">No tests yet.</p>'}
+ ${d.practiceCount?`<h3 style="margin:16px 0 8px">✏️ Practice Questions (${d.practiceCount})</h3><div id="practiceBox"><button class="btn secondary" onclick="loadPractice(${id})">Start Practice →</button></div>`:''}`;
+}catch(e){$('#main').innerHTML=errBox(e,`chapterView(${id},'${esc(name)}')`)}}
+
+/* ---------- VIDEO PLAYER ---------- */
+let WM_TIMER=null,SAVE_TIMER=null;
+async function playVideo(id){loading();try{const d=await api('/api/videos/'+id+'/play');d.streamUrl=B(d.streamUrl);if(d.video&&d.video.url)d.video.url=B(d.video.url);
+ const isYT=d.video.source_type==='youtube'||/youtube|youtu\.be/.test(d.video.url||'');
+ const ytId=isYT?(d.video.url.match(/(?:v=|youtu\.be\/)([\w-]{6,})/)||[])[1]:null;
+ $('#main').innerHTML=`<button class="btn small secondary" onclick="go('classes')">← Back</button>
+ <div style="position:relative;margin-top:12px" id="pwrap">
+ ${isYT?`<iframe width="100%" height="240" style="border-radius:14px;border:0" src="https://www.youtube.com/embed/${ytId}?rel=0&playsinline=1" allowfullscreen allow="accelerometer;autoplay;encrypted-media" title="Lecture"></iframe>`
+ :`<video id="vid" controls playsinline controlsList="nodownload" oncontextmenu="return false" src="${esc(d.streamUrl)}"></video>
+ <div class="wm" id="wm">DREAM CLASSES<br>${esc(d.watermark.name)} · ${esc(d.watermark.mobile)}</div>`}
+ </div><h2 style="margin:12px 0 4px;font-size:1.1rem">${esc(d.video.title)}</h2><p class="muted">${esc(d.video.description||'')}</p>
+ ${!isYT?`<div class="row" style="margin:12px 0;flex-wrap:wrap"><span class="muted">Speed:</span>${[0.5,1,1.25,1.5,2].map(s=>`<span class="chip spd" onclick="document.querySelector('#vid').playbackRate=${s};document.querySelectorAll('.spd').forEach(c=>c.classList.remove('on'));this.classList.add('on')">${s}x</span>`).join('')}
+ <button class="btn small secondary" onclick="fullScreen()">⛶ Fullscreen</button>
+ ${d.video.downloadable?`<button class="btn small secondary" id="dlBtn" onclick="downloadVideoOffline(${id},'${esc(d.video.title).replace(/'/g,"\\'")}')">📥 Save Offline</button>`:''}</div>
+ ${(d.video.qualities||[]).length?`<div class="row" style="margin:4px 0 10px;flex-wrap:wrap"><span class="muted">Quality:</span><span class="chip ql on" onclick="setQuality(null,this)">Auto/Original</span>${d.video.qualities.map(q=>`<span class="chip ql" onclick="setQuality('${esc(q.url)}',this)">${esc(q.label)}</span>`).join('')}</div>`:''}
+ <p class="muted" id="vstat">Resume position: ${d.resumeAt}s</p>`:''}
+ <div class="row" style="margin-top:14px">${d.prev?`<button class="btn secondary" onclick="playVideo(${d.prev.id})">⏮ Previous</button>`:''}${d.next?`<button class="btn" onclick="playVideo(${d.next.id})">Next Lecture ⏭</button>`:''}</div>
+ <p class="muted" style="margin-top:12px;font-size:.78rem">🔒 Protected lecture — your name & masked mobile are watermarked. Sharing recordings is prohibited.</p>`;
+ const v=$('#vid'); window._origSrc=d.streamUrl;
+ if(v&&/\.m3u8/.test(d.streamUrl||'')&&window.Hls&&Hls.isSupported()&&!v.canPlayType('application/vnd.apple.mpegurl')){const h=new Hls();h.loadSource(d.streamUrl);h.attachMedia(v);window._hls=h}
+ if(v){v.addEventListener('loadedmetadata',()=>{if(d.resumeAt>5&&d.resumeAt<v.duration-10)v.currentTime=d.resumeAt});
+  clearInterval(SAVE_TIMER);SAVE_TIMER=setInterval(()=>{if(v&&!v.paused)api('/api/progress',{method:'POST',body:JSON.stringify({video_id:id,position_sec:v.currentTime,completed:v.duration&&v.currentTime/v.duration>0.9})}).catch(()=>{})},8000);
+  v.addEventListener('ended',()=>api('/api/progress',{method:'POST',body:JSON.stringify({video_id:id,position_sec:v.currentTime,completed:true})}).catch(()=>{}));
+  const wm=$('#wm');const move=()=>{if(!wm)return;wm.style.left=(5+Math.random()*55)+'%';wm.style.top=(8+Math.random()*65)+'%'};move();clearInterval(WM_TIMER);WM_TIMER=setInterval(move,6000)}
+}catch(e){$('#main').innerHTML=errBox(e,'go("classes")')}}
+function fullScreen(){const w=$('#pwrap');if(w.requestFullscreen)w.requestFullscreen()}
+
+/* ---------- PDF (PDF.js in-app reader: page nav, zoom, resume, watermark) ---------- */
+let PDFDOC=null,PDFPAGE=1,PDFSCALE=1.2,PDFID=null;
+async function renderPdfPage(){if(!PDFDOC)return;const page=await PDFDOC.getPage(PDFPAGE);const vp=page.getViewport({scale:PDFSCALE});
+ const cv=$('#pdfCanvas');if(!cv)return;cv.width=vp.width;cv.height=vp.height;
+ await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+ const st=$('#pdfStat');if(st)st.textContent=`Page ${PDFPAGE} / ${PDFDOC.numPages}`;
+ api('/api/pdfs/'+PDFID+'/progress',{method:'POST',body:JSON.stringify({page:PDFPAGE})}).catch(()=>{})}
+function pdfNav(d){if(!PDFDOC)return;PDFPAGE=Math.min(Math.max(1,PDFPAGE+d),PDFDOC.numPages);renderPdfPage()}
+function pdfZoom(f){PDFSCALE=Math.min(3,Math.max(.5,PDFSCALE*f));renderPdfPage()}
+async function openPdf(id,title,dl=1,offlineBlob=null){loading();PDFID=id;try{
+ const pr=offlineBlob?{page:1}:await api('/api/pdfs/'+id+'/progress').catch(()=>({page:1}));PDFPAGE=pr.page||1;PDFSCALE=1.2;
+ $('#main').innerHTML=`<button class="btn small secondary" onclick="go('classes')">← Back</button><h2 class="sec">📄 ${esc(title)}</h2>
+ <div class="row" style="flex-wrap:wrap;gap:6px;margin-bottom:8px">
+ <button class="btn small secondary" onclick="pdfNav(-1)">◀ Prev</button><button class="btn small secondary" onclick="pdfNav(1)">Next ▶</button>
+ <button class="btn small secondary" onclick="pdfZoom(1.2)">🔍＋</button><button class="btn small secondary" onclick="pdfZoom(0.85)">🔍－</button>
+ <span class="muted" id="pdfStat">Loading…</span></div>
+ <div style="position:relative;overflow:auto;border:1px solid var(--line);border-radius:14px;background:#525659;user-select:none" oncontextmenu="return false">
+ <canvas id="pdfCanvas" style="display:block;margin:0 auto;max-width:none"></canvas>
+ <div class="wm" style="position:absolute;left:8px;bottom:8px;color:rgba(255,255,255,.75)">DREAM CLASSES · ${esc(USER.name)} · ${esc(USER.maskedMobile||'')}</div></div>
+ <div class="row" style="margin-top:10px;flex-wrap:wrap">
+ ${dl?`<a class="btn small" style="text-align:center;text-decoration:none" href="${B('/api/pdfs/'+id+'/file?download=1&token='+encodeURIComponent(TOKEN))}">⬇ Download (watermarked)</a>
+ <button class="btn small secondary" onclick="downloadPdfOffline(${id},'${esc(title).replace(/'/g,"\\'")}')">📥 Save Offline</button>`:''}</div>
+ <p class="muted" style="font-size:.78rem;margin-top:6px">🔒 For Dream Classes students only. Downloads carry your name watermark.</p>`;
+ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/vendor/pdf.worker.min.js';
+ let data;
+ if(offlineBlob){data=await offlineBlob.arrayBuffer()}
+ else{const r=await fetch(B('/api/pdfs/'+id+'/file'),{headers:{Authorization:'Bearer '+TOKEN}});if(!r.ok)throw new Error('Could not load PDF');data=await r.arrayBuffer()}
+ PDFDOC=await window.pdfjsLib.getDocument({data}).promise;
+ if(PDFPAGE>PDFDOC.numPages)PDFPAGE=1; await renderPdfPage();
+}catch(e){if(!offlineBlob){$('#main').innerHTML=`<button class="btn small secondary" onclick="go('classes')">← Back</button><h2 class="sec">📄 ${esc(title)}</h2><iframe class="pdf" src="${B('/api/pdfs/'+id+'/file?token='+encodeURIComponent(TOKEN))}"></iframe>`}else $('#main').innerHTML=errBox(e,'downloadsView()')}}
+async function savePage(id){await api('/api/pdfs/'+id+'/progress',{method:'POST',body:JSON.stringify({page:PDFPAGE})});toast('Page saved ✓')}
+
+/* ---------- PRACTICE ---------- */
+async function loadPractice(chapterId){const box=$('#practiceBox');box.innerHTML='<div class="spinner"></div>';
+ try{const d=await api('/api/chapters/'+chapterId+'/practice');
+ box.innerHTML=d.questions.length?d.questions.map((q,i)=>`<div class="card"><b>Q${i+1}. ${esc(q.text)}</b> ${q.answered===1?'<span class="badge ok">Solved ✔</span>':q.answered===0?'<span class="badge warn">Try again</span>':''}
+ ${q.options.map((o,j)=>`<label class="opt" id="po-${q.id}-${j}"><input type="radio" name="pq-${q.id}" value="${j}" style="width:auto;margin-right:8px">${String.fromCharCode(65+j)}. ${esc(o)}</label>`).join('')}
+ <button class="btn small" onclick="checkPractice(${q.id})">Check Answer</button><p id="pf-${q.id}" style="margin-top:8px"></p></div>`).join(''):'<p class="muted">No practice questions yet.</p>';
+ }catch(e){box.innerHTML='<p class="muted">⚠️ '+esc(e.message)+'</p>'}}
+async function checkPractice(qid){const sel=document.querySelector(`input[name="pq-${qid}"]:checked`);if(!sel)return toast('Select an option first');
+ try{const d=await api('/api/practice/'+qid+'/check',{method:'POST',body:JSON.stringify({selected:+sel.value})});
+ document.querySelectorAll(`[id^="po-${qid}-"]`).forEach(el=>el.classList.remove('right','wrong'));
+ const correctEl=$('#po-'+qid+'-'+d.correctIndex);if(correctEl)correctEl.classList.add('right');
+ if(!d.correct){const w=$('#po-'+qid+'-'+sel.value);if(w)w.classList.add('wrong')}
+ $('#pf-'+qid).innerHTML=(d.correct?'<b style="color:var(--ok)">✔ Correct! Well done 🎉</b>':'<b style="color:var(--bad)">✘ Not correct — see the right answer above.</b>')+(d.explanation?`<br><span class="muted">💡 ${esc(d.explanation)}</span>`:'');
+ }catch(e){toast(e.message)}}
+
+/* ---------- OFFLINE DOWNLOADS (IndexedDB, app-private in the browser) ---------- */
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('dream-classes',1);r.onupgradeneeded=()=>r.result.createObjectStore('files',{keyPath:'key'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function idbPut(key,val){const db=await idb();return new Promise((res,rej)=>{const t=db.transaction('files','readwrite');t.objectStore('files').put({key,...val});t.oncomplete=res;t.onerror=()=>rej(t.error)})}
+async function idbAll(){const db=await idb();return new Promise((res,rej)=>{const rq=db.transaction('files').objectStore('files').getAll();rq.onsuccess=()=>res(rq.result||[]);rq.onerror=()=>rej(rq.error)})}
+async function idbDel(key){const db=await idb();return new Promise((res,rej)=>{const t=db.transaction('files','readwrite');t.objectStore('files').delete(key);t.oncomplete=res;t.onerror=()=>rej(t.error)})}
+async function downloadPdfOffline(id,title){toast('Downloading for offline… ⏳');
+ try{const r=await fetch(B('/api/pdfs/'+id+'/file?download=1'),{headers:{Authorization:'Bearer '+TOKEN}});if(!r.ok)throw new Error('Download failed');
+ const blob=await r.blob();await idbPut('pdf-'+id,{type:'pdf',refId:id,title,blob,savedAt:Date.now()});toast('Saved offline ✓ Find it in My Downloads')}catch(e){toast(e.message)}}
+async function downloadVideoOffline(id,title){const btn=$('#dlBtn');if(btn){btn.disabled=true;btn.textContent='⏳ Downloading…'}
+ try{const d=await api('/api/videos/'+id+'/play');d.streamUrl=B(d.streamUrl);const url=d.video.source_type==='upload'?d.streamUrl:(B(d.video.url)||d.streamUrl);
+ const r=await fetch(url);if(!r.ok)throw new Error('Download failed');const blob=await r.blob();
+ await idbPut('video-'+id,{type:'video',refId:id,title,blob,savedAt:Date.now()});toast('Lecture saved offline ✓');if(btn)btn.textContent='✔ Saved Offline'}
+ catch(e){toast('Offline download failed: '+e.message);if(btn){btn.disabled=false;btn.textContent='📥 Save Offline'}}}
+async function downloadsView(){loading();try{const items=await idbAll();
+ $('#main').innerHTML=`<button class="btn small secondary" onclick="go('home')">← Home</button><h2 class="sec">📥 My Downloads</h2>
+ <p class="muted" style="margin-bottom:10px">Stored privately inside this app on your device (browser storage limits apply — very large files may need space). Works without internet.</p>`+
+ (items.length?items.map(it=>`<div class="card tile"><div class="ic">${it.type==='pdf'?'📄':'🎬'}</div><div style="flex:1"><b>${esc(it.title)}</b><br><span class="muted">${it.type==='pdf'?'Notes':'Lecture'} · ${(it.blob.size/1048576).toFixed(1)} MB · ${new Date(it.savedAt).toLocaleDateString()}</span></div>
+ <button class="btn small" onclick="openOffline('${it.key}')">Open</button>
+ <button class="btn small danger" onclick="deleteOffline('${it.key}')">🗑</button></div>`).join(''):'<div class="empty"><div class="big">📥</div><p>No offline downloads yet.<br>Open a lecture or notes and tap <b>📥 Save Offline</b>.</p></div>');
+ }catch(e){$('#main').innerHTML=errBox(e,'downloadsView()')}}
+async function openOffline(key){const items=await idbAll();const it=items.find(x=>x.key===key);if(!it)return;
+ if(it.type==='pdf')return openPdf(it.refId,it.title,0,it.blob);
+ const url=URL.createObjectURL(it.blob);
+ $('#main').innerHTML=`<button class="btn small secondary" onclick="downloadsView()">← Downloads</button><h2 class="sec">🎬 ${esc(it.title)} (Offline)</h2>
+ <div style="position:relative"><video controls playsinline style="width:100%;background:#000;border-radius:14px" src="${url}"></video>
+ <div class="wm">DREAM CLASSES<br>${esc(USER.name)} · ${esc(USER.maskedMobile||'')}</div></div>`}
+async function deleteOffline(key){if(confirm('Delete this offline file?')){await idbDel(key);downloadsView()}}
+function setQuality(url,el){const v=$('#vid');if(!v)return;document.querySelectorAll('.ql').forEach(c=>c.classList.remove('on'));el.classList.add('on');
+ const t=v.currentTime,wasPlaying=!v.paused;if(window._hls){window._hls.destroy();window._hls=null}
+ const src=url||window._origSrc;
+ if(/\.m3u8/.test(src)&&window.Hls&&Hls.isSupported()){const h=new Hls();h.loadSource(src);h.attachMedia(v);window._hls=h}else v.src=src;
+ v.addEventListener('loadedmetadata',function once(){v.currentTime=t;if(wasPlaying)v.play();v.removeEventListener('loadedmetadata',once)})}
+
+/* ---------- WEB PUSH ---------- */
+function b64ToU8(s){const pad='='.repeat((4-s.length%4)%4);const raw=atob((s+pad).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from(raw,c=>c.charCodeAt(0))}
+async function enablePush(){try{
+ if(!('serviceWorker' in navigator)||!('PushManager' in window))return toast('Push is not supported on this browser');
+ const perm=await Notification.requestPermission();if(perm!=='granted')return toast('Permission: '+perm);
+ const reg=await navigator.serviceWorker.ready;const {publicKey}=await api('/api/push/key');
+ let sub=await reg.pushManager.getSubscription();
+ if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToU8(publicKey)});
+ await api('/api/push/subscribe',{method:'POST',body:JSON.stringify(sub.toJSON())});
+ toast('🔔 Push notifications enabled on this device ✓')}catch(e){toast('Push failed: '+e.message)}}
+
+/* ---------- TESTS ---------- */
+async function testsView(){loading();try{const [d,r]=await Promise.all([api('/api/tests'),api('/api/my/results')]);
+ $('#main').innerHTML=`<h2 class="sec">📝 Online Tests</h2>`+(d.tests.length?d.tests.map(t=>`<div class="card"><div class="row between"><b>${esc(t.title)}</b><span class="badge ${t.state==='PUBLISHED'?'ok':t.state==='CLOSED'?'bad':'warn'}">${t.state}</span></div>
+ <p class="muted">${esc(t.subject_name||'')} ${t.chapter_name?'· '+esc(t.chapter_name):''} · ${t.questionCount} questions · ${t.duration_min} min${t.negative_mark?' · Negative: '+t.negative_mark:''}</p>
+ ${t.myAttempt?`<p>✅ Your score: <b>${t.myAttempt.score}/${t.myAttempt.total}</b></p><button class="btn secondary" onclick="reviewTest(${t.myAttempt.id})">View Result & Answers</button>`
+ :t.state==='PUBLISHED'?`<button class="btn" onclick="startTest(${t.id})">Start Test →</button>`:`<p class="muted">${t.state==='SCHEDULED'?'Opens '+(t.starts_at||'soon'):'This test is closed.'}</p>`}</div>`).join(''):'<div class="empty"><div class="big">📝</div><p>No tests available yet.</p></div>')
+ +`<h2 class="sec">🏆 My Results</h2>`+(r.results.length?r.results.map(x=>`<div class="card row between"><span>${esc(x.title)}<br><small class="muted">${x.correct_cnt}✔ ${x.wrong_cnt}✘ ${x.skipped_cnt}– skipped</small></span><b>${x.score}/${x.total} (${x.total?Math.round(x.score/x.total*100):0}%)</b></div>`).join(''):'<p class="muted">No results yet.</p>');
+}catch(e){$('#main').innerHTML=errBox(e,'testsView()')}}
+async function startTest(id){if(!confirm('Start the test now? Timer will begin immediately.'))return;loading();
+ try{TEST=await api('/api/tests/'+id+'/start',{method:'POST',body:'{}'});TEST.i=0;TEST.answers=TEST.savedAnswers||{};TEST.review=new Set();renderQ()}catch(e){toast(e.message);testsView()}}
+function renderQ(){const t=TEST,q=t.questions[t.i];const left=Math.max(0,t.test.duration_min*60-Math.floor((Date.now()-t.startedAt)/1000));
+ $('#main').innerHTML=`<div class="row between"><b>${esc(t.test.title)}</b><span class="timer" id="tmr"></span></div>
+ <p class="muted">${esc(t.test.instructions||'')}</p><div class="qnav">${t.questions.map((_,i)=>`<button class="${t.answers[t.questions[i].id]!==undefined?'ans':''} ${t.review.has(i)?'rev':''} ${i===t.i?'cur':''}" onclick="TEST.i=${i};renderQ()">${i+1}</button>`).join('')}</div>
+ <div class="card"><p class="muted">Question ${t.i+1} of ${t.questions.length} · ${q.marks} mark(s)</p><h3 style="margin:8px 0">${esc(q.text)}</h3>
+ ${q.options.map((o,i)=>`<label class="opt ${+t.answers[q.id]===i?'sel':''}"><input type="radio" name="op" ${+t.answers[q.id]===i?'checked':''} onchange="pick(${q.id},${i})" style="width:auto;margin-right:8px">${String.fromCharCode(65+i)}. ${esc(o)}</label>`).join('')}</div>
+ <div class="row"><button class="btn secondary" onclick="if(TEST.i>0){TEST.i--;renderQ()}" ${t.i===0?'disabled':''}>← Prev</button>
+ <button class="btn secondary" onclick="TEST.review.has(TEST.i)?TEST.review.delete(TEST.i):TEST.review.add(TEST.i);renderQ()">⭐ Review</button>
+ ${t.i<t.questions.length-1?`<button class="btn" onclick="TEST.i++;renderQ()">Next →</button>`:`<button class="btn warn" onclick="submitTest()">Submit ✓</button>`}</div>
+ ${t.i===t.questions.length-1?'':'<button class="btn warn" style="margin-top:10px" onclick="submitTest()">Submit Test</button>'}`;
+ clearInterval(window._tt);const tick=()=>{const s=Math.max(0,t.test.duration_min*60-Math.floor((Date.now()-t.startedAt)/1000));const el=$('#tmr');if(!el){clearInterval(window._tt);return}el.textContent='⏱ '+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');if(s<=0){clearInterval(window._tt);toast('Time up! Auto-submitting…');submitTest(true)}};tick();window._tt=setInterval(tick,1000)}
+async function pick(qid,i){TEST.answers[qid]=i;api('/api/tests/attempts/'+TEST.attemptId+'/save',{method:'POST',body:JSON.stringify({answers:TEST.answers})}).catch(()=>{});renderQ()}
+async function submitTest(auto=false){if(!auto&&!confirm('Submit test? You cannot change answers after submission.'))return;clearInterval(window._tt);loading();
+ try{const d=await api('/api/tests/attempts/'+TEST.attemptId+'/submit',{method:'POST',body:JSON.stringify({answers:TEST.answers})});const r=d.result;
+ $('#main').innerHTML=`<div class="card center"><div style="font-size:2.6rem">${r.percentage>=60?'🏆':r.percentage>=35?'👍':'💪'}</div><h2>${r.score} / ${r.total}</h2><p class="muted">${r.percentage}% · Time: ${Math.floor(r.timeTakenSec/60)}m ${r.timeTakenSec%60}s</p>
+ <div class="grid2" style="margin-top:12px"><div>✔ Correct<b style="display:block">${r.correct}</b></div><div>✘ Wrong<b style="display:block">${r.wrong}</b></div><div>– Skipped<b style="display:block">${r.skipped}</b></div><div>Attempted<b style="display:block">${r.attempted}/${r.totalQuestions}</b></div></div></div>
+ <button class="btn" onclick="reviewTest(${r.attemptId})">${r.showAnswers?'View Answers & Explanations':'View My Answers'}</button>
+ <button class="btn secondary" style="margin-top:8px" onclick="go('tests')">Back to Tests</button>`;TEST=null}catch(e){toast(e.message);go('tests')}}
+async function reviewTest(aid){loading();try{const d=await api('/api/tests/attempts/'+aid+'/review');
+ $('#main').innerHTML=`<button class="btn small secondary" onclick="go('tests')">← Back</button><h2 class="sec">${esc(d.test.title)} — Review</h2>
+ <div class="card"><b>Score: ${d.attempt.score}/${d.attempt.total}</b> · ✔ ${d.attempt.correct_cnt} · ✘ ${d.attempt.wrong_cnt} · Skipped ${d.attempt.skipped_cnt}</div>
+ ${d.questions.map((q,i)=>`<div class="card"><b>Q${i+1}. ${esc(q.text)}</b>${q.options.map((o,j)=>`<div class="opt ${q.correct===j?'right':q.selected===j?'wrong':''}">${String.fromCharCode(65+j)}. ${esc(o)} ${q.selected===j?'← your answer':''} ${q.correct===j?'✔':''}</div>`).join('')}${q.explanation?`<p class="muted">💡 ${esc(q.explanation)}</p>`:''}</div>`).join('')}`;
+}catch(e){$('#main').innerHTML=errBox(e,'go("tests")')}}
+
+/* ---------- DOUBTS ---------- */
+async function doubtsView(){loading();try{const d=await api('/api/doubts');
+ $('#main').innerHTML=`<h2 class="sec">💬 Ask a Doubt</h2><div class="card">
+ <label>Your Question</label><textarea id="dq" rows="3" placeholder="Write your doubt clearly…"></textarea>
+ <label>Photo of Question (optional)</label><input type="file" id="dimg" accept="image/*">
+ <button class="btn" onclick="askDoubt()">Send to Dream Sir →</button></div>
+ <h2 class="sec">My Doubts</h2>`+(d.doubts.length?d.doubts.map(x=>`<div class="card"><div class="row between"><b>${esc(x.question)}</b><span class="badge ${x.status==='RESOLVED'?'ok':x.status==='ANSWERED'?'':'warn'}">${x.status.replace('_',' ')}</span></div>
+ ${x.image?`<img src="${esc(imgUrl(x.image))}" style="max-width:100%;border-radius:12px;margin:8px 0">`:''}<p class="muted">${esc(x.created_at)}</p>
+ ${x.replies.map(r=>`<div style="border-left:3px solid ${r.author_role==='STUDENT'?'var(--line)':'var(--brand)'};padding:6px 10px;margin:8px 0"><b>${r.author_role==='STUDENT'?'You':'Dream Sir'}:</b> ${esc(r.text)}${r.image?`<br><img src="${esc(imgUrl(r.image))}" style="max-width:100%;border-radius:10px;margin-top:6px">`:''}${r.pdf?`<br><a href="${esc(imgUrl(r.pdf))}" target="_blank">📄 View PDF Solution</a>`:''}</div>`).join('')}
+ <div class="row"><input id="fr-${x.id}" placeholder="Follow-up question…" style="margin:0"><button class="btn small" onclick="followUp(${x.id})">Send</button></div>
+ ${x.status!=='RESOLVED'?`<button class="btn small secondary" style="margin-top:8px" onclick="doubtStatus(${x.id},'RESOLVED')">✅ Mark Resolved</button>`:`<button class="btn small secondary" style="margin-top:8px" onclick="doubtStatus(${x.id},'PENDING')">↩ Reopen</button>`}</div>`).join(''):'<div class="empty"><div class="big">💬</div><p>No doubts yet. Ask your first doubt above!</p></div>');
+}catch(e){$('#main').innerHTML=errBox(e,'doubtsView()')}}
+async function askDoubt(){const f=new FormData();f.append('question',$('#dq').value);const img=$('#dimg').files[0];if(img)f.append('image',img);
+ try{await api('/api/doubts',{method:'POST',body:f});toast('Doubt sent to Dream Sir ✓');doubtsView()}catch(e){toast(e.message)}}
+async function followUp(id){const f=new FormData();f.append('text',$('#fr-'+id).value);try{await api('/api/doubts/'+id+'/reply',{method:'POST',body:f});doubtsView()}catch(e){toast(e.message)}}
+async function doubtStatus(id,s){await api('/api/doubts/'+id+'/status',{method:'PUT',body:JSON.stringify({status:s})});doubtsView()}
+
+/* ---------- NOTIFICATIONS / PROFILE ---------- */
+async function notifView(){loading();try{const d=await api('/api/notifications');
+ $('#main').innerHTML=`<h2 class="sec">🔔 Notifications</h2>`+(d.notifications.length?d.notifications.map(n=>`<div class="card" style="${n.read?'':'border-color:var(--brand)'}"><b>${esc(n.title)}</b><p class="muted">${esc(n.message)}</p><small class="muted">${esc(n.created_at)}</small>${n.read?'':` <button class="btn small secondary" onclick="markRead(${n.id})">Mark read</button>`}</div>`).join(''):'<div class="empty"><div class="big">🔔</div><p>No notifications.</p></div>');
+ document.querySelectorAll('.bottomnav button').forEach(b=>b.classList.remove('on'));
+}catch(e){$('#main').innerHTML=errBox(e,'notifView()')}}
+async function markRead(id){await api('/api/notifications/'+id+'/read',{method:'POST',body:'{}'});updateBell();notifView()}
+function profileView(){
+ $('#main').innerHTML=`<h2 class="sec">👤 My Profile</h2><div class="card center">
+ ${USER.photo?`<img src="${esc(imgUrl(USER.photo))}" style="width:84px;height:84px;border-radius:50%;object-fit:cover">`:'<div style="font-size:3rem">🎓</div>'}
+ <h3>${esc(USER.name)}</h3><p class="muted">Mobile: ${esc(USER.maskedMobile||'')} · Status: <span class="badge ${USER.status==='APPROVED'?'ok':'warn'}">${USER.status}</span><br>Member since ${esc((USER.created_at||'').slice(0,10))}</p>
+ <label style="display:block;margin-top:10px">Change Photo</label><input type="file" accept="image/*" onchange="uploadPhoto(this)"></div>
+ <div class="card"><b>🎨 Theme</b><div style="margin-top:8px">${['light','dark','system'].map(t=>`<span class="chip ${localStorage.getItem('dc_theme')===t?'on':''}" onclick="applyTheme('${t}');profileView()">${t==='light'?'☀️ Light':t==='dark'?'🌙 Dark':'⚙️ System'}</span>`).join('')}</div></div>
+ <div class="card"><b>📥 Install App</b><p class="muted">Install Dream Classes on your phone for the full app experience.</p><button class="btn small" onclick="installApp()">Install App</button>
+ <p class="muted" style="margin-top:8px">🔔 <button class="btn small secondary" onclick="askNotif()">Enable Notifications</button></p></div>
+ <div class="card"><p><a href="#" onclick="staticPage('privacy');return false">🔒 Privacy Policy</a></p><p style="margin-top:8px"><a href="#" onclick="staticPage('terms');return false">📜 Terms & Conditions</a></p><p style="margin-top:8px"><a href="#" onclick="staticPage('help');return false">🆘 Help & Support</a></p></div>
+ <button class="btn secondary" onclick="logout()">🚪 Logout</button>
+ <button class="btn danger" style="margin-top:10px" onclick="deleteAccount()">🗑 Delete My Account</button>
+ <p class="center muted" style="margin-top:16px;font-size:.78rem">Dream Classes · Dream Sir<br>Kothwara, Dobhi, Gaya, Bihar</p>`;
+}
+async function uploadPhoto(inp){const f=new FormData();f.append('photo',inp.files[0]);try{await api('/api/auth/photo',{method:'POST',body:f});USER=(await api('/api/auth/me')).user;profileView();toast('Photo updated ✓')}catch(e){toast(e.message)}}
+function installApp(){if(DEFERRED){DEFERRED.prompt()}else toast('In Chrome: tap ⋮ menu → "Add to Home screen / Install app"')}
+function askNotif(){enablePush()}
+async function deleteAccount(){if(confirm('Delete your account permanently? This cannot be undone.')&&confirm('Are you sure?')){await api('/api/auth/account',{method:'DELETE'});logout(false);toast('Account deleted')}}
+function staticPage(k){const P={
+ privacy:`<h2 class="sec">🔒 Privacy Policy (Draft)</h2><div class="card"><p><b>Dream Classes</b>, run by Dream Sir, Kothwara, Dobhi, Gaya, Bihar, collects only what is needed to run online classes:</p><p style="margin-top:8px">• Name, mobile number, class/batch — for your student account & OTP login.<br>• Learning activity (lectures watched, test answers, doubts) — to show your progress and help your teacher guide you.<br>• Photos you upload (profile/doubt images).<br>• We do <b>not</b> sell your data. Passwords/OTPs are stored hashed. Content access is limited to approved students of your batch.<br>• You may request account deletion anytime from Profile (deletes your account data).<br>• This is a working draft — the final policy must be updated to match the exact services (SMS/WhatsApp OTP provider, video host, push service) used in production.</p></div>`,
+ terms:`<h2 class="sec">📜 Terms & Conditions (Draft)</h2><div class="card"><p>• One account per student; login is restricted to a single device at a time.<br>• Lectures, notes and tests are for enrolled students only — recording, copying or sharing outside Dream Classes is prohibited and lectures carry a personal watermark.<br>• Accounts may be suspended for misuse or sharing of content.<br>• Test scores are s restricted to a single device at a time.<br>• Lectures, notes and tests are for enrolled students only — recording, copying or sharing outside Dream Classes is prohibited and lectures carry a personal watermark.<br>• Accounts may be suspended for misuse or sharing of content.<br>• Test scores are calculated by the system; contact Dream Sir for any discrepancy.<br>• Draft terms — to be finalised by the institute before public launch.</p></div>`,
+ help:`<h2 class="sec">🆘 Help & Support</h2><div class="card"><p>For login approval, batch change, or any problem, please contact:</p><p style="margin-top:8px"><b>Dream Sir</b><br>Dream Classes<br>Kothwara, Dobhi, Gaya, Bihar, India</p><p class="muted" style="margin-top:8px">Subject doubts: use the <b>Doubts</b> tab in the app.</p></div>`};
+ const back=TOKEN?`<button class="btn small secondary" onclick="go('profile')">← Back</button>`:`<button class="btn small secondary" onclick="loginView()">← Back to Login</button>`;
+ if($('#main'))$('#main').innerHTML=back+P[k]; else app.innerHTML=`<div class="wrap" style="padding-top:18px">${back}${P[k]}</div>`}
+
+/* ---------- BOOT ---------- */
+async function boot(){if(!TOKEN)return loginView();try{USER=(await api('/api/auth/me')).user;shell();go('home')}catch{loginView()}}
+boot();
+</script></body></html>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Dream Classes</string>
+    <string name="title_activity_main">Dream Classes</string>
+    <string name="package_name">in.dreamclasses.app</string>
+    <string name="custom_url_scheme">in.dreamclasses.app</string>
+</resources>

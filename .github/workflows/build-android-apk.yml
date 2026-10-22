@@ -1,0 +1,138 @@
+name: Build Android APK (Dream Classes)
+
+# Phone se chalane ke liye: GitHub repo -> Actions -> "Build Android APK (Dream Classes)"
+# -> "Run workflow" dabayein. Neeche "server_url" me apne live server ka address
+# de sakte hain (jaise https://dreamclasses.onrender.com). Khali chhodne par
+# capacitor.config.json wala address use hoga.
+on:
+  workflow_dispatch:
+    inputs:
+      server_url:
+        description: "Live server URL (optional) — e.g. https://your-server-domain.com"
+        required: false
+        default: ""
+        type: string
+  push:
+    branches: ["main", "arena/1a0a35fd-ppp"]
+    paths:
+      - "dream-classes/**"
+      - ".github/workflows/build-android-apk.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: Build debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: dream-classes
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 21 (Capacitor 8 ke liye zaroori)
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+          cache-dependency-path: |
+            dream-classes/android/*.gradle*
+            dream-classes/android/app/*.gradle*
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: dream-classes/package-lock.json
+
+      - name: Setup Android SDK (runner me pehle se maujud SDK)
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
+          which sdkmanager
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+
+      - name: Set server URL (agar input diya gaya ho)
+        if: ${{ inputs.server_url != '' }}
+        run: |
+          python3 - <<'PY'
+          import os
+          url = os.environ["SERVER_URL"].strip().rstrip("/")
+          open("public/js/app-config.js", "w").write("/* GitHub Actions build dwara set kiya gaya server address */\nwindow.DC_API_BASE = '" + url + "';\n")
+          print("API base set to:", url)
+          PY
+        env:
+          SERVER_URL: ${{ inputs.server_url }}
+
+      - name: Install project dependencies
+        run: npm ci
+
+      - name: Sync web app into Android project
+        run: npx cap sync android
+
+      - name: Build debug APK (Gradle)
+        working-directory: dream-classes/android
+        run: |
+          chmod +x gradlew
+          set +e
+          ./gradlew assembleDebug --no-daemon 2>&1 | tee /tmp/gradle.log
+          code=${PIPESTATUS[0]}
+          if [ "$code" -ne 0 ]; then
+            echo "::error::Gradle build failed — key lines:"
+            grep -aiE "error:|e: file|FAILURE:|What went wrong|Execution failed|AAPT|not found|requires|failed to" /tmp/gradle.log | head -25 | while IFS= read -r l; do echo "::error::${l:0:280}"; done
+          fi
+          exit $code
+
+      - name: Upload Gradle log on failure (debugging ke liye)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-log
+          path: /tmp/gradle.log
+          retention-days: 7
+
+      - name: Verify APK (package id + app name)
+        working-directory: dream-classes/android
+        run: |
+          APK=app/build/outputs/apk/debug/app-debug.apk
+          ls -lh "$APK"
+          AAPT="$ANDROID_HOME/build-tools/36.0.0/aapt2"
+          "$AAPT" dump badging "$APK" | grep -E "^package:|^application-label:|^launchable-activity:" | while IFS= read -r l; do echo "::notice::$l"; done
+          if unzip -p "$APK" assets/capacitor.config.json | grep -q "YOUR-PRODUCTION-DOMAIN"; then echo "::error::GALTI: placeholder server.url abhi bhi APK me hai!"; exit 1; fi
+          if unzip -p "$APK" assets/capacitor.config.json | grep -q '"url"'; then echo "::error::GALTI: server.url APK me hai — app bundled UI ki jagah web page kholega!"; exit 1; fi
+          unzip -l "$APK" | grep -q "assets/public/vendor/pdf.min.js" || { echo "::error::GALTI: bundled PDF.js APK me nahi hai!"; exit 1; }
+          echo "::notice::Bundled-mode check PASS: APK apne andar ki Dream Classes UI se chalega (koi nakli server URL nahi)" 
+
+      - name: Prepare friendly APK file
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk "$GITHUB_WORKSPACE/DreamClasses-v1.0-debug.apk"
+          ls -lh "$GITHUB_WORKSPACE/DreamClasses-v1.0-debug.apk"
+
+      - name: Upload APK (download karne ke liye)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dream-Classes-APK
+          path: DreamClasses-v1.0-debug.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish APK to GitHub Release (permanent direct download link)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-latest
+          name: Dream Classes Android App (APK Download)
+          body: |
+            🎓 **Dream Classes** — Android App (by Dream Sir, Kothwara, Dobhi, Gaya, Bihar)
+
+            📥 Install karne ke liye neeche **DreamClasses-v1.0-debug.apk** file par tap karke download karein, phir use kholkar Install dabayein.
+            (Phone "unknown apps" ki permission maange to Allow kar dein.)
+
+            ℹ️ Ye debug build hai. Ye hamesha sabse naye safal build se update ho jata hai, isliye ye link permanent hai.
+          files: DreamClasses-v1.0-debug.apk
+          make_latest: true

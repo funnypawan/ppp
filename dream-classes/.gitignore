@@ -1,0 +1,8 @@
+node_modules/
+data/*.db*
+uploads/videos/*
+uploads/pdfs/*
+uploads/images/*
+uploads/thumbs/*
+.env
+!.env.example
