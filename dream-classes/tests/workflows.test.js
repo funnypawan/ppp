@@ -1,5 +1,6 @@
 // Round 3: Workflows A–F + security probes. Run via npm test.
 const { spawn } = require('child_process');
+const { createTestContext } = require('./test-env');
 const { PDFDocument } = require('pdf-lib');
 const BASE = 'http://127.0.0.1:3102';
 let pass = 0, fail = 0;
@@ -21,11 +22,12 @@ async function makeStudent(AT, label, batchId) {
 }
 
 (async () => {
-  const srv = spawn('node', ['server.js'], { cwd: __dirname + '/..', env: { ...process.env, PORT: '3102' }, stdio: 'pipe' });
+  const ctx = createTestContext('dream-classes-workflows-');
+  const srv = spawn('node', ['server.js'], { cwd: __dirname + '/..', env: { ...ctx.env, PORT: '3102' }, stdio: 'pipe' });
   await sleep(1700);
   const C = {}; // cleanup ids
   try {
-    const AT = (await req('/api/auth/admin-login', { method: 'POST', body: { email: 'admin@dreamclasses.in', password: process.env.ADMIN_PASSWORD || 'Dream@12345' } })).data.token;
+    const AT = (await req('/api/auth/admin-login', { method: 'POST', body: { email: 'admin@dreamclasses.in', password: ctx.adminPassword } })).data.token;
     ok('Admin login', !!AT);
 
     // Two batches + two students
@@ -132,7 +134,7 @@ async function makeStudent(AT, label, batchId) {
     await req(`/api/tests/attempts/${ls.data.attemptId}/save`, { method: 'POST', token: stuY.token, body: { answers: { [lqid]: 1 } } }); // autosaved CORRECT
     try {
       const { DatabaseSync } = require('node:sqlite');
-      const d = new DatabaseSync(__dirname + '/../data/dream.db'); d.exec('PRAGMA busy_timeout=5000');
+      const d = new DatabaseSync(ctx.dbPath); d.exec('PRAGMA busy_timeout=5000');
       d.prepare('UPDATE test_attempts SET started_at=? WHERE id=?').run(Date.now() - (30 * 60 + 600) * 1000, ls.data.attemptId); d.close();
       const lateSubmit = await req(`/api/tests/attempts/${ls.data.attemptId}/submit`, { method: 'POST', token: stuY.token, body: { answers: { [lqid]: 0 } } }); // WRONG after time
       ok('SEC: Late submit scored from auto-saved answers (1/1, post-time change ignored)', lateSubmit.data.result?.score === 1);
@@ -151,8 +153,8 @@ async function makeStudent(AT, label, batchId) {
     ok('SEC: Student → students list 403', (await req('/api/admin/students', { token: stuX.token })).status === 403);
     ok('SEC: Student → config-status 403', (await req('/api/admin/config-status', { token: stuX.token })).status === 403);
     const cfg = await req('/api/admin/config-status', { token: AT });
-    ok('CFG: Admin config-status reports dev OTP warning', cfg.status === 200 && cfg.data.warnings.some(w => w.includes('OTP')));
-    ok('CFG: config-status flags default admin password', cfg.data.warnings.some(w => w.includes('DEFAULT password')));
+    ok('CFG: Admin config-status reports local test OTP warning', cfg.status === 200 && cfg.data.warnings.some(w => w.includes('OTP')));
+    ok('CFG: Seeded test admin does NOT use a default password', !cfg.data.warnings.some(w => w.includes('DEFAULT password')));
     ok('SEC: No token → content 401', (await req('/api/structure')).status === 401);
     ok('SEC: Garbage token → 401', (await req('/api/structure', { token: 'x.y.z' })).status === 401);
     ok('SEC: Path traversal on file route blocked', [400, 404].includes((await req('/api/files/images/..%2F..%2Fdata%2Fdream.db', { token: AT, raw: true })).status));
@@ -162,16 +164,16 @@ async function makeStudent(AT, label, batchId) {
 
     /* ---------- WORKFLOW F: block student → content denied ---------- */
     await req(`/api/admin/students/${stuX.id}`, { method: 'PUT', token: AT, body: { status: 'BLOCKED' } });
-    ok('F: Blocked student existing token denied structure (403)', (await req('/api/structure', { token: stuX.token })).status === 403);
-    ok('F: Blocked student denied video play (403)', (await req(`/api/videos/${C.videoId}/play`, { token: stuX.token })).status === 403);
-    ok('F: Blocked student denied PDF file (403)', (await req(`/api/pdfs/${C.pdfId}/file`, { token: stuX.token, raw: true })).status === 403);
+    ok('F: Blocked student existing token immediately revoked/denied structure', [401, 403].includes((await req('/api/structure', { token: stuX.token })).status));
+    ok('F: Blocked student denied video play', [401, 403].includes((await req(`/api/videos/${C.videoId}/play`, { token: stuX.token })).status));
+    ok('F: Blocked student denied PDF file', [401, 403].includes((await req(`/api/pdfs/${C.pdfId}/file`, { token: stuX.token, raw: true })).status));
     const otpF = await req('/api/auth/request-otp', { method: 'POST', body: { mobile: stuX.mobile } });
     ok('F: Blocked student cannot re-login (403)', (await req('/api/auth/verify-otp', { method: 'POST', body: { mobile: stuX.mobile, code: otpF.data.devOtp, device_id: 'f' } })).status === 403);
   } catch (e) { console.error('Crash:', e); fail++; }
   srv.kill(); await sleep(400);
   try {
     const { DatabaseSync } = require('node:sqlite');
-    const d = new DatabaseSync(__dirname + '/../data/dream.db'); d.exec('PRAGMA busy_timeout=5000');
+    const d = new DatabaseSync(ctx.dbPath); d.exec('PRAGMA busy_timeout=5000');
     if (C.videoId) d.prepare('DELETE FROM videos WHERE id=?').run(C.videoId);
     if (C.pdfId) d.prepare('DELETE FROM pdf_notes WHERE id=?').run(C.pdfId);
     [C.testId, C.lateTestId].forEach(id => { if (id) { d.prepare('DELETE FROM test_attempts WHERE test_id=?').run(id); d.prepare('DELETE FROM tests WHERE id=?').run(id); } });
@@ -182,6 +184,7 @@ async function makeStudent(AT, label, batchId) {
     (C.students || []).forEach(id => d.prepare("DELETE FROM notifications WHERE target_type='STUDENT' AND target_id=?").run(id));
     d.close(); console.log('🧹 Workflow test data cleaned up');
   } catch (e) { console.warn('Cleanup warning:', e.message); }
+  ctx.cleanup();
   console.log(`\n${pass} passed, ${fail} failed`);
   process.exit(fail ? 1 : 0);
 })();

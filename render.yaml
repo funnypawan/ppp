@@ -1,14 +1,18 @@
-# Dream Classes server ko Render par free deploy karne ke liye (phone browser se ho jayega).
+# Dream Classes server ko Render par deploy karne ke liye.
 # Render Dashboard -> New -> Blueprint -> ye GitHub repo chunein.
-# NOTE: Free plan par disk temporary hoti hai — server restart par data (students/uploads)
-# mit sakta hai. Asli use ke liye Render ka paid Disk (mountPath /var/data) jodein aur
-# data/uploads ko wahin rakhein, ya koi VPS lein. Testing/demo ke liye free theek hai.
+#
+# IMPORTANT storage note:
+# Free plan par disk temporary hoti hai — restart/redeploy par database aur
+# uploads mit sakte hain. Asli students ke liye paid service + Persistent Disk
+# jodein, disk ka Mount Path /var/data rakhein, phir STORAGE_DIR env me
+# /var/data/dream-classes set karein. Code database ko STORAGE_DIR/data aur
+# uploads ko STORAGE_DIR/uploads me rakhega.
 services:
   - type: web
     name: dream-classes
     env: node
     rootDir: dream-classes
-    buildCommand: npm install
+    buildCommand: npm ci
     startCommand: node seed.js && node server.js
     plan: free
     branch: main
@@ -24,7 +28,23 @@ services:
       - key: ADMIN_EMAIL
         value: admin@dreamclasses.in
       - key: ADMIN_PASSWORD
-        sync: false      # Render aapse khud puchega — majboot password dein
+        sync: false      # Render aapse puchega — 12+ characters ka strong password dein
+      - key: ADMIN_SETUP_TOKEN
+        generateValue: true
       - key: TRUST_PROXY
         value: "1"
-      # OTP ke liye baad me Render env me add karein: OTP_MODE=production, MSG91_AUTH_KEY, MSG91_TEMPLATE_ID
+      - key: OTP_MODE
+        value: production
+      # Persistent Disk jodne ke baad hi /var/data/dream-classes bharein.
+      - key: STORAGE_DIR
+        sync: false
+      # Sirf EK SMS provider bharein. Khaali rehne par OTP surakshit roop se
+      # "not configured" kahega; demo OTP production me kabhi nahi dikhega.
+      - key: MSG91_AUTH_KEY
+        sync: false
+      - key: MSG91_TEMPLATE_ID
+        sync: false
+      - key: TWOFACTOR_API_KEY
+        sync: false
+      - key: TWOFACTOR_TEMPLATE_NAME
+        sync: false

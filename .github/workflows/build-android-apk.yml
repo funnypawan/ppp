@@ -2,8 +2,8 @@ name: Build Android APK (Dream Classes)
 
 # Phone se chalane ke liye: GitHub repo -> Actions -> "Build Android APK (Dream Classes)"
 # -> "Run workflow" dabayein. Neeche "server_url" me apne live server ka address
-# de sakte hain (jaise https://dreamclasses.onrender.com). Khali chhodne par
-# capacitor.config.json wala address use hoga.
+# de sakte hain (jaise https://dreamclasses.onrender.com). Khali chhodne par APK
+# bundled mode me banega aur app pehli baar khulne par server address puchega.
 on:
   workflow_dispatch:
     inputs:
@@ -13,7 +13,7 @@ on:
         default: ""
         type: string
   push:
-    branches: ["main", "arena/1a0a35fd-ppp"]
+    branches: ["main"]
     paths:
       - "dream-classes/**"
       - ".github/workflows/build-android-apk.yml"

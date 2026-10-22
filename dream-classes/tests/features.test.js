@@ -1,6 +1,7 @@
 // Feature tests (round 2): practice, Web Push, scheduled notifications, PDF watermark,
 // video qualities/HLS config, password change, weekly analytics, doubt PDF solutions.
 const { spawn } = require('child_process');
+const { createTestContext } = require('./test-env');
 const { PDFDocument } = require('pdf-lib');
 const BASE = 'http://127.0.0.1:3101';
 let pass = 0, fail = 0;
@@ -15,11 +16,12 @@ async function req(path, { method = 'GET', token, body, form, raw } = {}) {
 }
 
 (async () => {
-  const srv = spawn('node', ['server.js'], { cwd: __dirname + '/..', env: { ...process.env, PORT: '3101' }, stdio: 'pipe' });
+  const ctx = createTestContext('dream-classes-features-');
+  const srv = spawn('node', ['server.js'], { cwd: __dirname + '/..', env: { ...ctx.env, PORT: '3101' }, stdio: 'pipe' });
   await sleep(1600);
   const cleanup = { videoId: null, pdfIds: [], practiceIds: [], teacherEmail: null, studentId: null };
   try {
-    const adm = await req('/api/auth/admin-login', { method: 'POST', body: { email: 'admin@dreamclasses.in', password: process.env.ADMIN_PASSWORD || 'Dream@12345' } });
+    const adm = await req('/api/auth/admin-login', { method: 'POST', body: { email: 'admin@dreamclasses.in', password: ctx.adminPassword } });
     const AT = adm.data.token; ok('Admin login', !!AT);
 
     // Student (auto via OTP, approve)
@@ -122,14 +124,14 @@ async function req(path, { method = 'GET', token, body, form, raw } = {}) {
 
     // PASSWORD CHANGE (via a throwaway teacher)
     cleanup.teacherEmail = 't' + Date.now() + '@dreamclasses.in';
-    await req('/api/admin/teachers', { method: 'POST', token: AT, body: { name: 'Temp Teacher', email: cleanup.teacherEmail, password: 'OldPass@123' } });
-    const tLogin = await req('/api/auth/admin-login', { method: 'POST', body: { email: cleanup.teacherEmail, password: 'OldPass@123' } });
+    await req('/api/admin/teachers', { method: 'POST', token: AT, body: { name: 'Temp Teacher', email: cleanup.teacherEmail, password: 'OldPassword@123' } });
+    const tLogin = await req('/api/auth/admin-login', { method: 'POST', body: { email: cleanup.teacherEmail, password: 'OldPassword@123' } });
     const TT = tLogin.data.token; ok('Teacher login works', !!TT);
-    ok('Wrong current password rejected', (await req('/api/admin/change-password', { method: 'POST', token: TT, body: { current: 'nope', next: 'NewPass@123' } })).status === 400);
-    ok('Short password rejected', (await req('/api/admin/change-password', { method: 'POST', token: TT, body: { current: 'OldPass@123', next: 'short' } })).status === 400);
-    ok('Password change succeeds', (await req('/api/admin/change-password', { method: 'POST', token: TT, body: { current: 'OldPass@123', next: 'NewPass@123' } })).data.ok === true);
+    ok('Wrong current password rejected', (await req('/api/admin/change-password', { method: 'POST', token: TT, body: { current: 'nope', next: 'NewPassword@123' } })).status === 400);
+    ok('Short password rejected', (await req('/api/admin/change-password', { method: 'POST', token: TT, body: { current: 'OldPassword@123', next: 'short' } })).status === 400);
+    ok('Password change succeeds', (await req('/api/admin/change-password', { method: 'POST', token: TT, body: { current: 'OldPassword@123', next: 'NewPassword@123' } })).data.ok === true);
     ok('Old token revoked after password change', (await req('/api/auth/me', { token: TT })).status === 401);
-    ok('New password logs in', !!(await req('/api/auth/admin-login', { method: 'POST', body: { email: cleanup.teacherEmail, password: 'NewPass@123' } })).data.token);
+    ok('New password logs in', !!(await req('/api/auth/admin-login', { method: 'POST', body: { email: cleanup.teacherEmail, password: 'NewPassword@123' } })).data.token);
 
     // BACKUP (super admin only)
     const bk = await req('/api/admin/backup.db', { token: AT, raw: true });
@@ -141,7 +143,7 @@ async function req(path, { method = 'GET', token, body, form, raw } = {}) {
   // Clean up test artifacts directly in DB
   try {
     const { DatabaseSync } = require('node:sqlite');
-    const d = new DatabaseSync(__dirname + '/../data/dream.db');
+    const d = new DatabaseSync(ctx.dbPath);
     if (cleanup.videoId) d.prepare('DELETE FROM videos WHERE id=?').run(cleanup.videoId);
     cleanup.pdfIds.forEach(id => d.prepare('DELETE FROM pdf_notes WHERE id=?').run(id));
     cleanup.practiceIds.forEach(id => d.prepare('DELETE FROM practice_questions WHERE id=?').run(id));
@@ -150,6 +152,7 @@ async function req(path, { method = 'GET', token, body, form, raw } = {}) {
     d.prepare("DELETE FROM notifications WHERE title IN ('Future Notice XYZ','Instant Notice XYZ')").run();
     d.close(); console.log('🧹 Test data cleaned up');
   } catch (e) { console.warn('Cleanup warning:', e.message); }
+  ctx.cleanup();
   console.log(`\n${pass} passed, ${fail} failed`);
   process.exit(fail ? 1 : 0);
 })();

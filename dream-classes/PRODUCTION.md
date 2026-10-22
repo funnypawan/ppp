@@ -1,52 +1,161 @@
 # 🚀 Dream Classes — Production Runbook
 
-## 1. Server setup (any Node 18+ host / VPS)
+यह guide real students के लिए app चलाने की है। **Demo OTP production में बंद है।**
+SMS credentials न हों तो server झूठा “OTP sent” नहीं कहेगा; student को honest
+“OTP SMS service is not configured yet” message मिलेगा।
+
+## 1. Server setup
+
 ```bash
-git clone <repo> && cd dream-classes
-cp .env.example .env      # fill real values (see below), chmod 600 .env
-npm install --omit=dev
-set -a; . ./.env; set +a   # load env (or use your process manager's env file)
-node seed.js               # first run only: creates Super Admin + base structure
-npm start                  # or: pm2 start server.js --name dream-classes
+cd dream-classes
+npm ci
+# Host/Render की Environment settings में .env.example वाले variables भरें
+node seed.js   # पहला Super Admin + editable starter structure (सिर्फ एक बार)
+npm start
 ```
-Server prints ⚠️ CONFIG warnings at startup for anything not production-ready.
-The same warnings appear in **Admin → Settings**.
 
-## 2. HTTPS (required for PWA install, Web Push, camera)
-Put the app behind a reverse proxy with a free Let's Encrypt certificate:
-- **Caddy** (simplest): `yourdomain.in { reverse_proxy localhost:3000 }`
-- Or Nginx + Certbot. Set `TRUST_PROXY=1` so rate-limiting/HTTPS detection work.
+- Student App: `/`
+- Teacher Panel: `/admin`
+- Health: `/api/health` → `{ ok: true, app: "Dream Classes" }`
+- Server startup और **Teacher Panel → Settings** में configuration warnings दिखती हैं।
 
-## 3. Authentication / OTP provider
-- Dev mode shows OTP on screen (testing only; server warns).
-- Production: create an **MSG91** account → approve a DLT SMS template → set
-  `OTP_MODE=production`, `MSG91_AUTH_KEY`, `MSG91_TEMPLATE_ID` in `.env`, restart.
-  The server calls MSG91's SendOTP API; without keys it returns an honest
-  "OTP service is not configured" error instead of pretending to send.
-- WhatsApp OTP needs a WhatsApp Business API provider (MSG91/Twilio) — same keys pattern.
+## 2. Database और uploads को permanent रखना
 
-## 4. Database
-- SQLite file `data/dream.db` (zero-config). Back it up daily:
-  Admin → Settings → **Download Backup**, or cron-copy `data/` + `uploads/`.
-- Large scale later: migrate to Postgres (schema in `db.js` maps 1:1 to tables).
+Default paths:
 
-## 5. File & video storage
-- Uploads live in `uploads/` (videos/pdfs/images/thumbs). Videos/PDFs/private images
-  are served ONLY through authenticated API routes — never as public static files.
-- For big video libraries use a CDN/video host: paste direct MP4/HLS (.m3u8) URLs
-  (and 240p/360p/720p variants) in the Video form instead of uploading.
-- Optional auto-transcoding: install `ffmpeg` on the server and add a post-upload
-  job filling `videos.qualities` (see README limitations).
+- Database: `data/dream.db`
+- Uploads: `uploads/`
 
-## 6. Push notifications
-- **Web Push works out of the box** (VAPID keys auto-generated into the DB).
-  Requires HTTPS. Students tap *Enable Push Notifications* once per device.
-- FCM is only for a future fully-native build (see `.env.example` optional var).
+Render free/ephemeral disk पर ये restart/redeploy पर मिट सकते हैं। Real use के लिए:
 
-## 7. Go-live checklist
-- [ ] `.env` filled; `JWT_SECRET` random; default admin password changed
-- [ ] HTTPS active; Admin → Settings shows **no warnings**
-- [ ] OTP_MODE=production with provider keys (test one real OTP)
-- [ ] Approval mode chosen (Settings); test student registration end-to-end
-- [ ] Backups scheduled (DB + uploads); `npm test` green (76 tests)
-- [ ] Privacy Policy/Terms drafts reviewed & finalised for your providers
+1. Render service को paid instance पर लें।
+2. Persistent Disk जोड़ें और **Mount Path = `/var/data`** रखें।
+3. Environment में set करें:
+
+   ```text
+   STORAGE_DIR=/var/data/dream-classes
+   ```
+
+4. Redeploy करें। अब database `STORAGE_DIR/data` और uploads `STORAGE_DIR/uploads`
+   में रहेंगे। अलग paths चाहिए हों तो `DATA_DIR` और `UPLOADS_DIR` इस्तेमाल करें।
+5. Teacher Panel → Settings से समय-समय पर database backup download करें और uploads
+   का भी backup रखें।
+
+पहले से app folder में database हो और नया `DATA_DIR` खाली हो, तो startup पर पुरानी
+database एक बार नए folder में copy हो जाती है। Uploads के लिए पुरानी files नए
+`UPLOADS_DIR` में copy करना ज़रूरी हो सकता है; तब तक server पुरानी location से
+fallback करके file खोजता है।
+
+## 3. पहला Teacher account बनाना
+
+कोई public/default password नहीं है।
+
+### तरीका A — Render environment से (recommended)
+
+```text
+ADMIN_EMAIL=admin@dreamclasses.in
+ADMIN_PASSWORD=<12+ characters का strong password>
+```
+
+फिर redeploy करें। Start command `node seed.js && node server.js` पहला Super Admin
+बनाएगा। बाद में केवल `ADMIN_PASSWORD` बदलने से पुराना password खुद नहीं बदलेगा—
+यह सुरक्षा के लिए है।
+
+### तरीका B — Protected first-time setup form
+
+अगर कोई Super Admin नहीं है और server पर 24+ characters का
+`ADMIN_SETUP_TOKEN` set है, तो `/admin` पर first-time setup form दिखेगा।
+Token सिर्फ server owner को पता होना चाहिए।
+
+### Password भूल जाएँ / “Invalid email or password” आए तो
+
+1. Render → service → Environment में `ADMIN_EMAIL` वही रखें।
+2. `ADMIN_PASSWORD` में नया strong password (12+) डालें।
+3. एक और variable जोड़ें: `ADMIN_PASSWORD_RESET=1`
+4. Redeploy करें और नए password से login करें।
+5. Login सफल होते ही `ADMIN_PASSWORD_RESET` हटा दें।
+
+Reset से पुराने teacher sessions भी revoke हो जाते हैं।
+
+## 4. Real SMS OTP चालू करना
+
+Code दो India OTP providers support करता है। Credentials **केवल backend/Render
+Environment** में रहेंगे—APK या frontend में कभी नहीं।
+
+### Option 1 — MSG91 (existing setup के लिए recommended)
+
+MSG91 account में KYC/onboarding पूरा करके OTP template तैयार करें। India SMS के
+लिए MSG91 आपसे DLT principal entity, approved header/sender ID और approved content
+template माँग सकता है। MSG91 panel से OTP template ID लें, फिर Render में set करें:
+
+```text
+OTP_MODE=production
+SMS_PROVIDER=msg91
+MSG91_AUTH_KEY=<secret>
+MSG91_TEMPLATE_ID=<approved OTP template id>
+```
+
+अगर MSG91 auth key पर IP security/whitelist on हो, तो Render server के outbound
+access के लिए MSG91 support/panel settings में उसे ठीक करना होगा।
+
+### Option 2 — 2Factor
+
+```text
+OTP_MODE=production
+SMS_PROVIDER=2factor
+TWOFACTOR_API_KEY=<secret>
+TWOFACTOR_TEMPLATE_NAME=<optional template name>
+```
+
+`SMS_PROVIDER` खाली छोड़ने पर server उपलब्ध credentials से provider auto-detect
+करता है। Provider HTTP 200 के साथ error body दे, तो भी app उसे success नहीं मानता।
+SMS fail होने पर OTP challenge `SEND_FAILED` हो जाता है और verify नहीं होता।
+
+> जब तक आप अपने provider account से एक असली test OTP सफलतापूर्वक न भेज लें,
+> SMS को “working” न मानें। Automated tests mocked provider इस्तेमाल करते हैं और
+> कोई real SMS credit खर्च नहीं करते।
+
+### OTP सुरक्षा
+
+- 6-digit OTP cryptographic random से बनता है।
+- OTP hash होकर store होता है; plaintext database/log में नहीं जाता।
+- Default validity 10 minutes, resend cooldown 60 seconds।
+- Per-mobile और per-IP hourly limits, अधिकतम 5 wrong attempts।
+- नया OTP पुराने को supersede करता है; सही OTP सिर्फ एक बार चलता है।
+- नए student का नाम न भरा हो तो OTP consume नहीं होता—वही OTP नाम भरकर फिर
+  verify किया जा सकता है।
+- Manual approval mode में नया student PENDING रहता है और content नहीं देख सकता।
+
+## 5. HTTPS और CORS
+
+- Render का HTTPS URL ही Android app में डालें। GitHub repository URL न डालें।
+- App server address save करने से पहले `/api/health` check करता है।
+- Capacitor origins (`https://localhost`, `capacitor://localhost`) code में built-in हैं।
+  अलग web domain हो तो `ALLOWED_ORIGINS` में जोड़ें।
+- `TRUST_PROXY=1` Render/reverse proxy के पीछे रखें।
+
+## 6. Go-live checklist
+
+- [ ] `JWT_SECRET` random और secret है
+- [ ] Teacher account strong password से login होता है
+- [ ] `ADMIN_PASSWORD_RESET` हटाया गया है
+- [ ] Persistent disk + `STORAGE_DIR` set है
+- [ ] एक redeploy के बाद student/teacher/content data बना रहता है
+- [ ] `OTP_MODE=production` और एक SMS provider configured है
+- [ ] अपने असली mobile पर एक OTP test सफल हुआ है
+- [ ] Teacher Panel → Settings में serious warnings नहीं हैं
+- [ ] Student registration → pending → teacher approval → content flow test हुआ है
+- [ ] PDF/video upload करके approved student से open test हुआ है
+- [ ] Database + uploads backup की व्यवस्था है
+- [ ] `npm test` green है
+
+## 7. Tests
+
+```bash
+npm test
+```
+
+Tests isolated temporary database/uploads इस्तेमाल करते हैं। इसलिए वे आपकी real
+`data/` या `uploads/` को नहीं बदलते। Local test OTP सिर्फ `NODE_ENV=test` +
+`ALLOW_DEV_OTP=1` में API response में मिलता है; student UI उसे कभी प्रदर्शित नहीं
+करती और production उसे हमेशा ignore करता है।
