@@ -33,13 +33,16 @@ services:
         generateValue: true
       - key: TRUST_PROXY
         value: "1"
+      # Student app ab naam-only login use karta hai — mobile/SMS OTP band hai.
+      - key: STUDENT_AUTH_MODE
+        value: name
       - key: OTP_MODE
         value: production
       # Persistent Disk jodne ke baad hi /var/data/dream-classes bharein.
       - key: STORAGE_DIR
         sync: false
-      # Sirf EK SMS provider bharein. Khaali rehne par OTP surakshit roop se
-      # "not configured" kahega; demo OTP production me kabhi nahi dikhega.
+      # SMS keys ab zaruri nahi hain. Sirf agar bhavishya me
+      # STUDENT_AUTH_MODE=otp karein, tab EK SMS provider bharein.
       - key: MSG91_AUTH_KEY
         sync: false
       - key: MSG91_TEMPLATE_ID

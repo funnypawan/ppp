@@ -27,14 +27,22 @@ function toast(m){const t=document.createElement('div');t.className='toast';t.te
 function imgUrl(p){if(!p)return '';if(p.startsWith('/uploads/images/'))return B('/api/files/images/'+p.split('/').pop()+'?ft='+encodeURIComponent(FILE_TOKEN));return B(p)}
 function esc(s){return String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]))}
 function escJs(s){return esc(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r/g,'\\r').replace(/\n/g,'\\n')}
-async function api(p,opt={}){opt.headers={...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(TOKEN?{Authorization:'Bearer '+TOKEN}:{})};
- let r;try{r=await fetch(B(p),opt)}catch(e){throw new Error('Server se sampark nahi ho raha. Internet/Render server check karein; free server ko jaagne me 1 minute lag sakta hai.')}
+async function api(p,opt={}){const isForm=opt.body instanceof FormData;opt.headers={...(isForm?{}:{'Content-Type':'application/json'}),...(TOKEN?{Authorization:'Bearer '+TOKEN}:{})};
+ const ctl=!isForm&&typeof AbortController!=='undefined'?new AbortController():null;const timer=ctl?setTimeout(()=>ctl.abort(),75000):null;if(ctl)opt.signal=ctl.signal;
+ let r;try{r=await fetch(B(p),opt)}catch(e){if(timer)clearTimeout(timer);throw new Error(e.name==='AbortError'?'Server time par jawab nahi de raha. Free Render server ko jaagne me 1 minute se zyada lag sakta hai — Retry dabayein.':'Server se sampark nahi ho raha. Internet/Render server check karein; free server ko jaagne me 1 minute lag sakta hai.')}if(timer)clearTimeout(timer);
  const d=await r.json().catch(()=>({}));if(r.status===401&&TOKEN&&!p.includes('admin-login')){TOKEN='';FILE_TOKEN='';localStorage.removeItem('dc_admin');loginView()}if(!r.ok){const err=new Error(d.message||d.error||'Error');err.code=d.code||d.error;err.status=r.status;err.data=d;throw err}return d}
 async function ensureFileToken(force=false){if(!TOKEN)return '';if(!force&&FILE_TOKEN&&Date.now()-FILE_TOKEN_AT<25*60*1000)return FILE_TOKEN;const d=await api('/api/auth/file-token');FILE_TOKEN=d.fileToken;FILE_TOKEN_AT=Date.now();return FILE_TOKEN}
-function main(html){$('#content').innerHTML=html}
-function loading(){main('<div class="spinner"></div>')}
-async function loadBase(){const [c,s,ch,b]=await Promise.all([api('/api/admin/classes'),api('/api/admin/subjects'),api('/api/admin/chapters'),api('/api/admin/batches')]);
- CACHE={classes:c.items,subjects:s.items,chapters:ch.items,batches:b.items}}
+function main(html){const el=$('#content');if(el)el.innerHTML=html}
+function loading(msg='Loading…'){main(`<div class="spinner"></div><p class="center muted">${esc(msg)}<br><small>Free server soya ho to jaagne me lagbhag 1 minute lag sakta hai.</small></p>`)}
+function viewError(e,retry){main(`<div class="empty"><div class="big">⚠️</div><h3>Page load nahi hua</h3><p>${esc(e.message||e)}</p><br><button class="btn small" onclick="${retry}">↻ Retry</button></div>`)}
+function baseWarning(){return CACHE.baseError?`<div class="card" style="background:#fef3c7;border-color:#f59e0b;color:#231300">⚠️ Class/Subject/Chapter/Batch list poori load nahi hui: ${esc(CACHE.baseError)}<br><button class="btn small secondary" style="margin-top:8px" onclick="go('${VIEW}')">↻ Dobara Load Karein</button></div>`:''}
+async function loadBase(){
+ const reqs=[['classes','/api/admin/classes'],['subjects','/api/admin/subjects'],['chapters','/api/admin/chapters'],['batches','/api/admin/batches']];
+ const results=await Promise.allSettled(reqs.map(([,path])=>api(path)));
+ const next={classes:[],subjects:[],chapters:[],batches:[],baseError:''};const errors=[];
+ results.forEach((result,i)=>{const key=reqs[i][0];if(result.status==='fulfilled')next[key]=result.value.items||[];else errors.push(result.reason?.message||String(result.reason))});
+ CACHE=next;if(errors.length)CACHE.baseError=[...new Set(errors)].join(' · ');
+ return CACHE}
 function batchChecks(sel=[]){return (CACHE.batches||[]).map(b=>`<label class="chk"><input type="checkbox" class="bchk" value="${b.id}" ${sel.includes(b.id)?'checked':''}>${esc(b.name)}</label>`).join('')||'<span class="muted">No batches (leave empty = all students)</span>'}
 function getBatches(scope){const root=scope?document.querySelector(scope):document;return [...(root||document).querySelectorAll('.bchk:checked')].map(x=>+x.value)}
 function chapterOpts(sel){return `<option value="">-- Chapter --</option>`+(CACHE.chapters||[]).map(c=>{const s=(CACHE.subjects||[]).find(x=>x.id===c.subject_id);const cl=s?(CACHE.classes||[]).find(x=>x.id===s.class_id):null;return `<option value="${c.id}" ${+sel===c.id?'selected':''}>${esc(cl?cl.name+' › ':'')}${esc(s?s.name+' › ':'')}${esc(c.name)}</option>`}).join('')}
@@ -45,9 +53,9 @@ function closeModal(){$('#modal')?.remove()}
 function normalizeServerUrl(raw){try{const u=new URL(String(raw||'').trim());if(u.protocol!=='https:')return '';return u.origin}catch{return ''}}
 async function checkServerUrl(u){const ctl=new AbortController();const timer=setTimeout(()=>ctl.abort(),75000);try{const r=await fetch(u+'/api/health',{signal:ctl.signal,cache:'no-store'});const d=await r.json().catch(()=>({}));if(!r.ok||d.ok!==true||d.app!=='Dream Classes')throw new Error('bad health');return true}finally{clearTimeout(timer)}}
 async function saveAdminServer(){const raw=$('#srvUrl').value.trim();if(!raw){localStorage.removeItem('dc_api_base');location.reload();return}const u=normalizeServerUrl(raw);if(!u)return toast('Sahi https Render address dein. GitHub link yahan nahi daalna hai.');const btn=$('#srvBtn');if(btn){btn.disabled=true;btn.textContent='⏳ Checking…'}try{await checkServerUrl(u);localStorage.setItem('dc_api_base',u);toast('Server mil gaya ✓ Panel dobara khul raha hai…');setTimeout(()=>location.reload(),700)}catch{toast('Is address par Dream Classes server nahi mila.');if(btn){btn.disabled=false;btn.textContent='Server Check & Save'}}}
-function loginView(){app.innerHTML=`<div style="max-width:400px;margin:8vh auto;padding:0 16px"><div class="center"><img src="/icons/icon-512.png" style="width:84px;height:84px;border-radius:20px"><h1 style="margin:10px 0 2px">DREAM CLASSES</h1><p class="muted">Teacher / Admin Panel<br>Dream Sir · Kothwara, Dobhi, Gaya</p></div>
+function loginView(){app.innerHTML=`<div style="max-width:400px;margin:8vh auto;padding:0 16px"><div class="center"><img src="/icons/logo.png" style="width:84px;height:84px;border-radius:20px"><h1 style="margin:10px 0 2px">DREAM CLASSES</h1><p class="muted">Teacher / Admin Panel<br>Dream Sir · Kothwara, Dobhi, Gaya</p></div>
 <div id="setupBox"></div><div class="card"><label>Email</label><input id="em" type="email" autocomplete="username" placeholder="admin@dreamclasses.in"><label>Password</label><input id="pw" type="password" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-<button class="btn" id="loginBtn" onclick="doLogin()">Login to Panel →</button><p class="muted center" style="margin-top:10px">Student? <a href="${esc(B('/'))}">Open Student App</a></p></div>
+<button class="btn" id="loginBtn" onclick="doLogin()">Login to Panel →</button><p class="muted center" style="margin-top:10px">Student? <a href="/index.html">Open Student App</a></p></div>
 <div class="card"><h3>🌐 Server Address</h3><p class="muted" style="margin:6px 0">Agar panel Android app ke andar khula hai, yahan Render ka https address hona chahiye. Chrome me server ke /admin page par ise khaali chhod sakte hain.</p><input id="srvUrl" value="${esc(API_BASE)}" placeholder="https://dream-classes.onrender.com"><button class="btn small secondary" id="srvBtn" onclick="saveAdminServer()">Server Check & Save</button></div></div>`;checkSetup()}
 async function checkSetup(){try{const d=await api('/api/setup/status');const box=$('#setupBox');if(!box||!d.setupRequired)return;box.innerHTML=`<div class="card" style="background:#fef3c7;border-color:#f59e0b;color:#231300"><h3>👋 First-time Teacher Setup</h3><p style="margin:8px 0;font-size:.9rem">Abhi koi Super Admin account nahi bana hai.</p>${d.setupTokenConfigured?`<label style="color:#231300">Setup Token (Render ki ADMIN_SETUP_TOKEN setting se)</label><input id="su-token" type="password" autocomplete="off"><label style="color:#231300">Teacher Name</label><input id="su-name" value="Dream Sir"><label style="color:#231300">Email</label><input id="su-email" type="email" placeholder="admin@dreamclasses.in"><label style="color:#231300">New Password (kam se kam 12 characters)</label><input id="su-pass" type="password" autocomplete="new-password"><label style="color:#231300">Password Dobara</label><input id="su-pass2" type="password" autocomplete="new-password"><button class="btn" id="setupBtn" onclick="doSetup()">Teacher Account Banayein ✓</button>`:`<p style="font-size:.9rem">Server par pehle <b>ADMIN_EMAIL</b> aur <b>ADMIN_PASSWORD</b> (12+ characters) set karke redeploy karein. Koi default password nahi chalega.</p>`}</div>`}catch{}}
 async function doSetup(){if($('#su-pass').value!==$('#su-pass2').value)return toast('Dono password ek jaise nahi hain');const btn=$('#setupBtn');if(btn){btn.disabled=true;btn.textContent='⏳ Account ban raha hai…'}try{const d=await api('/api/setup/admin',{method:'POST',headers:{'x-setup-token':$('#su-token').value},body:JSON.stringify({name:$('#su-name').value.trim(),email:$('#su-email').value.trim().toLowerCase(),password:$('#su-pass').value})});TOKEN=d.token;localStorage.setItem('dc_admin',TOKEN);USER=d.user;await ensureFileToken().catch(()=>{});boot()}catch(e){toast(e.message);if(btn){btn.disabled=false;btn.textContent='Teacher Account Banayein ✓'}}}
@@ -56,13 +64,14 @@ async function logout(){const old=TOKEN;TOKEN='';FILE_TOKEN='';FILE_TOKEN_AT=0;l
 
 /* SHELL */
 const NAV=[['dash','📊 Dashboard'],['students','👨‍🎓 Students'],['structure','🗂 Classes & Chapters'],['batches','👥 Batches'],['videos','🎬 Videos'],['pdfs','📄 PDF Notes'],['tests','📝 Tests'],['practice','✏️ Practice'],['doubts','💬 Doubts'],['notify','🔔 Notifications'],['settings','⚙️ Settings']];
-function shell(){app.innerHTML=`<div class="layout"><aside class="side" id="side"><div class="row" style="margin-bottom:14px"><img src="/icons/icon-512.png" style="width:40px;height:40px;border-radius:10px"><div><b>DREAM CLASSES</b><br><small>${esc(USER.name)} · ${USER.role}</small></div></div>
+function shell(){app.innerHTML=`<div class="layout"><aside class="side" id="side"><div class="row" style="margin-bottom:14px"><img src="/icons/logo.png" style="width:40px;height:40px;border-radius:10px"><div><b>DREAM CLASSES</b><br><small>${esc(USER.name)} · ${USER.role}</small></div></div>
 ${NAV.map(([v,l])=>`<button data-v="${v}" onclick="go('${v}')">${l}</button>`).join('')}
 <button onclick="toggleTheme()">🌓 Theme</button><button onclick="logout()">🚪 Logout</button></aside>
 <div class="main"><button class="btn small secondary menuBtn" onclick="document.querySelector('#side').classList.toggle('open')">☰ Menu</button><div id="content"></div></div></div>`}
 function toggleTheme(){const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;localStorage.setItem('dc_theme',t)}
-function go(v){VIEW=v;document.querySelectorAll('.side button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));$('#side').classList.remove('open');
- ({dash:dashView,students:studentsView,structure:structureView,batches:batchesView,videos:videosView,pdfs:pdfsView,tests:testsView,practice:practiceView,doubts:doubtsAdmin,notify:notifyView,settings:settingsView}[v])()}
+function go(v){VIEW=v;document.querySelectorAll('.side button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));$('#side')?.classList.remove('open');
+ const fn={dash:dashView,students:studentsView,structure:structureView,batches:batchesView,videos:videosView,pdfs:pdfsView,tests:testsView,practice:practiceView,doubts:doubtsAdmin,notify:notifyView,settings:settingsView}[v]||dashView;
+ Promise.resolve().then(()=>fn()).catch(e=>viewError(e,`go('${v}')`))}
 
 /* DASHBOARD */
 async function dashView(){loading();try{const [d,w]=await Promise.all([api('/api/admin/stats'),api('/api/admin/weekly').catch(()=>({days:[]}))]);
@@ -75,19 +84,19 @@ async function dashView(){loading();try{const [d,w]=await Promise.all([api('/api
  ${S('Videos',d.videos,'🎬')}${S('PDF Notes',d.pdfs,'📄')}${S('Tests',d.tests,'📝')}${S('Test Attempts',d.attempts,'🏆')}
  ${S('Pending Doubts',d.pendingDoubts,'💬')}${S('Doubts Answered',d.answeredDoubts,'✔️')}</div>
  <div class="grid2" style="margin-top:16px">
- <div class="card"><h3>🆕 Recent Registrations</h3>${d.recentStudents.map(s=>`<p style="margin-top:7px">${esc(s.name)} <span class="badge ${s.status==='APPROVED'?'ok':'warn'}">${s.status}</span><br><small class="muted">${esc(s.mobile||'')} · ${esc((s.created_at||'').slice(0,10))}</small></p>`).join('')||'<p class="muted">No students yet</p>'}</div>
+ <div class="card"><h3>🆕 Recent Registrations</h3>${d.recentStudents.map(s=>`<p style="margin-top:7px">${esc(s.name)} <span class="badge ${s.status==='APPROVED'?'ok':'warn'}">${s.status}</span><br><small class="muted">${esc(s.mobile||'Name login')} · ${esc((s.created_at||'').slice(0,10))}</small></p>`).join('')||'<p class="muted">No students yet</p>'}</div>
  <div class="card"><h3>🏆 Recent Submissions</h3>${d.recentSubmissions.map(s=>`<p style="margin-top:7px">${esc(s.name)} — ${esc(s.title)}: <b>${s.score}/${s.total}</b></p>`).join('')||'<p class="muted">None yet</p>'}
  <h3 style="margin-top:14px">💬 Recent Doubts</h3>${d.recentDoubts.map(s=>`<p style="margin-top:7px">${esc(s.name)}: ${esc(s.question.slice(0,60))} <span class="badge">${s.status}</span></p>`).join('')||'<p class="muted">None yet</p>'}</div></div>`+weeklyHtml)}catch(e){main('<div class="empty">⚠️ '+esc(e.message)+'</div>')}}
 
 /* STUDENTS */
 async function studentsView(q=''){loading();await loadBase().catch(()=>{});try{const d=await api('/api/admin/students'+(q?'?'+q:''));
- main(`<h1>👨‍🎓 Students</h1><div class="row" style="flex-wrap:wrap;margin:12px 0"><input id="sq" placeholder="Search name / mobile…" style="max-width:240px;margin:0">
+ main(`<h1>👨‍🎓 Students</h1>${baseWarning()}<div class="row" style="flex-wrap:wrap;margin:12px 0"><input id="sq" placeholder="Search student name…" style="max-width:240px;margin:0">
  <select id="sst" style="max-width:180px;margin:0"><option value="">All Status</option>${['PENDING','APPROVED','BLOCKED','SUSPENDED','REJECTED'].map(s=>`<option>${s}</option>`).join('')}</select>
  <select id="scl" style="max-width:170px;margin:0"><option value="">All Classes</option>${(CACHE.classes||[]).map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select>
  <select id="sb" style="max-width:180px;margin:0"><option value="">All Batches</option>${(CACHE.batches||[]).map(b=>`<option value="${b.id}">${esc(b.name)}</option>`).join('')}</select>
  <button class="btn small" onclick="studentsView('search='+encodeURIComponent($('#sq').value)+'&status='+$('#sst').value+'&class_id='+$('#scl').value+'&batch_id='+$('#sb').value)">Search / Filter</button></div>
- <div class="card" style="overflow:auto"><table><tr><th>Student</th><th>Mobile</th><th>Status</th><th>Batch</th><th>Actions</th></tr>
- ${d.students.map(s=>`<tr><td><b>${esc(s.name)}</b><br><small class="muted">${esc((s.created_at||'').slice(0,10))}</small></td><td>${esc(s.mobile||'')}</td>
+ <div class="card" style="overflow:auto"><table><tr><th>Student</th><th>Login</th><th>Status</th><th>Batch</th><th>Actions</th></tr>
+ ${d.students.map(s=>`<tr><td><b>${esc(s.name)}</b><br><small class="muted">${esc((s.created_at||'').slice(0,10))}</small></td><td>${esc(s.mobile||'Name only')}</td>
  <td><span class="badge ${s.status==='APPROVED'?'ok':s.status==='PENDING'?'warn':'bad'}">${s.status}</span></td>
  <td><select onchange="setStudent(${s.id},{batch_id:this.value?+this.value:null})" style="margin:0"><option value="">—</option>${CACHE.batches.map(b=>`<option value="${b.id}" ${s.batch_id===b.id?'selected':''}>${esc(b.name)}</option>`).join('')}</select></td>
  <td style="white-space:nowrap">${s.status!=='APPROVED'?`<button class="btn small" onclick="setStudent(${s.id},{status:'APPROVED'})">Approve</button>`:''}
@@ -111,7 +120,7 @@ async function structureView(){loading();await loadBase();
  const cls=CACHE.classes.map(c=>({...c,_label:`<b>${esc(c.name)}</b> ${c.published?'<span class="badge ok">Live</span>':'<span class="badge warn">Hidden</span>'}`}));
  const sbs=CACHE.subjects.map(s=>({...s,_label:`${esc(s.icon||'')} <b>${esc(s.name)}</b> <small class="muted">${esc((CACHE.classes.find(c=>c.id===s.class_id)||{}).name||'')}</small>`}));
  const chs=CACHE.chapters.map(c=>({...c,_label:`<b>${esc(c.name)}</b> <small class="muted">${esc((CACHE.subjects.find(s=>s.id===c.subject_id)||{}).name||'')}</small>`}));
- main(`<h1>🗂 Classes, Subjects & Chapters</h1><p class="muted" style="margin-bottom:12px">Order (sort) controls display sequence in the student app.</p>
+ main(`<h1>🗂 Classes, Subjects & Chapters</h1>${baseWarning()}<p class="muted" style="margin-bottom:12px">Order (sort) controls display sequence in the student app.</p>
  ${crudSection('🏫 Classes',cls,`<input id="f-classes-name" placeholder="Class name e.g. Class 10" style="max-width:220px;margin:0"><input id="f-classes-sort" type="number" value="0" style="max-width:80px;margin:0">`,'classes')}
  ${crudSection('📚 Subjects',sbs,`<select id="f-subjects-class_id" style="max-width:170px;margin:0">${CACHE.classes.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select><input id="f-subjects-name" placeholder="Subject e.g. Mathematics" style="max-width:200px;margin:0"><input id="f-subjects-icon" placeholder="📐" style="max-width:70px;margin:0"><input id="f-subjects-sort" type="number" value="0" style="max-width:80px;margin:0">`,'subjects')}
  ${crudSection('📖 Chapters',chs,`<select id="f-chapters-subject_id" style="max-width:220px;margin:0">${CACHE.subjects.map(s=>`<option value="${s.id}">${esc((CACHE.classes.find(c=>c.id===s.class_id)||{}).name||'')} › ${esc(s.name)}</option>`).join('')}</select><input id="f-chapters-name" placeholder="Chapter name" style="max-width:220px;margin:0"><input id="f-chapters-sort" type="number" value="0" style="max-width:80px;margin:0">`,'chapters')}`)}
@@ -123,7 +132,7 @@ async function delItem(t,id){if(confirm('Delete this item? Related items under i
 
 /* BATCHES */
 async function batchesView(){loading();await loadBase();
- main(`<h1>👥 Batches</h1><div class="card"><div class="row" style="flex-wrap:wrap"><input id="bn" placeholder="Batch name e.g. Class 10 Batch" style="max-width:240px;margin:0">
+ main(`<h1>👥 Batches</h1>${baseWarning()}<div class="card"><div class="row" style="flex-wrap:wrap"><input id="bn" placeholder="Batch name e.g. Class 10 Batch" style="max-width:240px;margin:0">
  <select id="bc" style="max-width:180px;margin:0"><option value="">No class link</option>${CACHE.classes.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select>
  <button class="btn small" onclick="addBatch()">+ Create Batch</button></div>
  ${CACHE.batches.map(b=>`<div class="row between" style="border-top:1px solid var(--line);padding:10px 0"><span><b>${esc(b.name)}</b> <span class="badge ${b.active?'ok':'warn'}">${b.active?'Active':'Inactive'}</span> <small class="muted">${esc(b.description||'')}</small></span>
@@ -137,7 +146,7 @@ async function batchAnn(id,name){const t=prompt('Announcement title for '+name+'
 
 /* VIDEOS */
 async function videosView(){loading();await loadBase();const d=await api('/api/admin/videos');
- main(`<h1>🎬 Video Lectures</h1><div class="card"><h3>Upload / Add Lecture</h3>
+ main(`<h1>🎬 Video Lectures</h1>${baseWarning()}<div class="card"><h3>Upload / Add Lecture</h3>
  <label>Title</label><input id="vt" placeholder="e.g. Real Numbers – Lecture 1">
  <label>Description</label><textarea id="vd" rows="2"></textarea>
  <label>Chapter</label><select id="vc">${chapterOpts()}</select>
@@ -195,7 +204,7 @@ async function uploadVideo(){const thumb=await uploadThumbIfAny().catch(()=>null
 
 /* PDFS */
 async function pdfsView(){loading();await loadBase();const d=await api('/api/admin/pdfs');
- main(`<h1>📄 PDF Notes</h1><div class="card"><h3>Upload Notes (multiple PDFs allowed)</h3>
+ main(`<h1>📄 PDF Notes</h1>${baseWarning()}<div class="card"><h3>Upload Notes (multiple PDFs allowed)</h3>
  <label>Title</label><input id="pt" placeholder="e.g. Real Numbers – Handwritten Notes">
  <label>Chapter</label><select id="pc">${chapterOpts()}</select>
  <div class="drop" id="pdrop">📤 Drag & drop PDFs here or <input type="file" id="pf" accept="application/pdf" multiple style="max-width:260px;display:inline"></div>
@@ -225,7 +234,7 @@ async function uploadPdf(){const f=new FormData();f.append('title',$('#pt').valu
 
 /* TESTS */
 async function testsView(){loading();await loadBase();const d=await api('/api/admin/tests');
- main(`<h1>📝 Tests</h1><div class="card"><h3>Create Test</h3><label>Title</label><input id="tt" placeholder="e.g. Chapter Test – Real Numbers">
+ main(`<h1>📝 Tests</h1>${baseWarning()}<div class="card"><h3>Create Test</h3><label>Title</label><input id="tt" placeholder="e.g. Chapter Test – Real Numbers">
  <label>Instructions</label><textarea id="ti" rows="2" placeholder="Attempt all questions…"></textarea><label>Chapter</label><select id="tc">${chapterOpts()}</select>
  <div class="grid2"><div><label>Duration (minutes)</label><input id="tdur" type="number" value="30"></div><div><label>Negative mark per wrong</label><input id="tneg" type="number" step="0.25" value="0"></div></div>
  <div class="grid2"><div><label>Opens at (optional)</label><input id="tstart" type="datetime-local"></div><div><label>Closes at (optional)</label><input id="tend" type="datetime-local"></div></div>
@@ -278,7 +287,7 @@ async function testResults(tid,title){loading();await ensureFileToken().catch(()
 
 /* PRACTICE */
 async function practiceView(chapterId=''){loading();await loadBase();const d=await api('/api/admin/practice'+(chapterId?'?chapter_id='+chapterId:''));
- main(`<h1>✏️ Practice Questions</h1><p class="muted" style="margin-bottom:12px">Untimed questions with instant feedback — students practise inside each chapter.</p>
+ main(`<h1>✏️ Practice Questions</h1>${baseWarning()}<p class="muted" style="margin-bottom:12px">Untimed questions with instant feedback — students practise inside each chapter.</p>
  <div class="card"><h3>Add Practice Question</h3><label>Chapter</label><select id="prc">${chapterOpts(chapterId)}</select>
  <label>Question</label><textarea id="prt" rows="2"></textarea>
  ${[0,1,2,3].map(i=>`<label>Option ${String.fromCharCode(65+i)}</label><input id="pro${i}">`).join('')}
@@ -313,7 +322,7 @@ async function setDStatus(id,s){await api('/api/doubts/'+id+'/status',{method:'P
 
 /* NOTIFICATIONS */
 async function notifyView(){loading();await loadBase();const [h,annSt]=await Promise.all([api('/api/admin/notifications'),api('/api/admin/students')]);
- main(`<h1>🔔 Notification Center</h1><div class="card"><h3>Send Notification</h3>
+ main(`<h1>🔔 Notification Center</h1>${baseWarning()}<div class="card"><h3>Send Notification</h3>
  <label>Title</label><input id="nt" placeholder="e.g. Chapter 3 Notes Uploaded!">
  <label>Message</label><textarea id="nm" rows="2" placeholder="New notes are available in My Classes…"></textarea>
  <label>Send To</label><select id="ntype" onchange="ntarget()"><option value="ALL">All Students</option><option value="BATCH">A Batch</option><option value="CLASS">A Class</option><option value="STUDENT">One Student</option></select>

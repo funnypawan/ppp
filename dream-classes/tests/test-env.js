@@ -8,11 +8,14 @@ const { spawnSync } = require('child_process');
 const projectDir = path.join(__dirname, '..');
 const TEST_ADMIN_PASSWORD = 'TestAdminPassword@123';
 
-function createTestContext(prefix = 'dream-classes-test-') {
+function createTestContext(prefix = 'dream-classes-test-', envOverrides = {}) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
   const env = {
     ...process.env,
     NODE_ENV: 'test',
+    // Legacy suites exercise the optional OTP backend explicitly. The
+    // name-login suite overrides this to the production default: name.
+    STUDENT_AUTH_MODE: 'otp',
     OTP_MODE: 'test',
     ALLOW_DEV_OTP: '1',
     OTP_RESEND_COOLDOWN_SECONDS: '0',
@@ -23,7 +26,8 @@ function createTestContext(prefix = 'dream-classes-test-') {
     ADMIN_PASSWORD: TEST_ADMIN_PASSWORD,
     MIGRATE_LEGACY_DB: '0',
     DATA_DIR: path.join(root, 'data'),
-    UPLOADS_DIR: path.join(root, 'uploads')
+    UPLOADS_DIR: path.join(root, 'uploads'),
+    ...envOverrides
   };
   const seed = spawnSync('node', ['seed.js'], { cwd: projectDir, env, encoding: 'utf8' });
   if (seed.status !== 0) {

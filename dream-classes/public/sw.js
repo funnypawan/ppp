@@ -1,7 +1,7 @@
 // Dream Classes service worker — network-first app shell + offline fallback.
 // Protected API/media responses are never cached.
-const C = 'dream-v2';
-const SHELL = ['/', '/css/style.css', '/manifest.webmanifest', '/icons/icon-512.png'];
+const C = 'dream-v3';
+const SHELL = ['/', '/css/style.css', '/manifest.webmanifest', '/icons/icon-512.png', '/icons/icon-192.png', '/icons/logo.png'];
 
 self.addEventListener('install', e => e.waitUntil(
   caches.open(C).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())

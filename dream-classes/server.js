@@ -28,6 +28,12 @@ const OTP_MODE = String(process.env.OTP_MODE || (IS_PRODUCTION ? 'production' : 
 // closed until a real SMS provider is configured; it never returns a demo OTP.
 const LOCAL_OTP_MODE = !IS_PRODUCTION && ['development', 'test', 'local'].includes(OTP_MODE) && process.env.ALLOW_DEV_OTP === '1';
 const DEV_OTP_MODE = LOCAL_OTP_MODE; // kept name for config-status compatibility
+// Owner-requested default: students sign in with their name only. The older
+// mobile/SMS OTP endpoints stay available only when an operator explicitly
+// sets STUDENT_AUTH_MODE=otp; the shipped student app no longer asks for a
+// mobile number or OTP.
+const STUDENT_AUTH_MODE = String(process.env.STUDENT_AUTH_MODE || 'name').toLowerCase() === 'otp' ? 'otp' : 'name';
+const OTP_LOGIN_ENABLED = STUDENT_AUTH_MODE === 'otp';
 const SMS_CONFIG = getSmsConfig();
 const OTP_TTL_MS = Math.max(2, Math.min(15, Number(process.env.OTP_TTL_MINUTES || 10))) * 60 * 1000;
 const OTP_RESEND_COOLDOWN_MS = Math.max(0, Number(process.env.OTP_RESEND_COOLDOWN_SECONDS ?? 60)) * 1000;
@@ -36,7 +42,8 @@ const OTP_MAX_PER_IP_HOUR = Math.max(1, Number(process.env.OTP_MAX_PER_IP_HOUR |
 const OTP_MAX_ATTEMPTS = 5;
 const CONFIG_WARNINGS = [];
 if (!process.env.JWT_SECRET) CONFIG_WARNINGS.push('JWT_SECRET env not set — using a generated secret stored in the local DB. Set JWT_SECRET in production.');
-if (LOCAL_OTP_MODE) CONFIG_WARNINGS.push('OTP is in LOCAL TEST MODE. This is disabled automatically when NODE_ENV=production; never use it for real students.');
+if (!OTP_LOGIN_ENABLED) CONFIG_WARNINGS.push('Student login is NAME-ONLY by owner request: mobile number and SMS OTP are disabled in the student app. Anyone who knows the exact full name of a student can sign in with that name, so teacher approval and batch control remain important.');
+else if (LOCAL_OTP_MODE) CONFIG_WARNINGS.push('OTP is in LOCAL TEST MODE. This is disabled automatically when NODE_ENV=production; never use it for real students.');
 else if (!SMS_CONFIG.configured) CONFIG_WARNINGS.push(`Real SMS OTP is not configured (missing: ${SMS_CONFIG.missing.join(', ')}). Student OTP requests will honestly return “not configured”; no demo OTP will be shown.`);
 if (IS_PRODUCTION && !usingCustomStorage) CONFIG_WARNINGS.push('Database/uploads are using the app folder. On Render this is ephemeral unless DATA_DIR/UPLOADS_DIR (or STORAGE_DIR) points to a persistent disk such as /var/data/dream-classes.');
 try { if (!db.prepare("SELECT 1 FROM users WHERE role='SUPER_ADMIN'").get()) CONFIG_WARNINGS.push('No Super Admin exists yet. Set ADMIN_EMAIL + a strong ADMIN_PASSWORD and run seed, or use the protected first-time setup with ADMIN_SETUP_TOKEN.'); } catch {}
@@ -99,6 +106,8 @@ const normalizeIndianMobile = value => {
   else if (digits.length === 11 && digits.startsWith('0')) digits = digits.slice(1);
   return /^[6-9]\d{9}$/.test(digits) ? digits : '';
 };
+const normalizeStudentName = value => String(value || '').replace(/[\u0000-\u001f\u007f]/g, ' ').trim().replace(/\s+/g, ' ').slice(0, 80);
+const studentNameKey = value => normalizeStudentName(value).toLowerCase();
 const DUMMY_PASSWORD_HASH = bcrypt.hashSync(crypto.randomBytes(24).toString('hex'), 10);
 function passwordMatches(password, hash) {
   try { return bcrypt.compareSync(String(password || ''), hash || DUMMY_PASSWORD_HASH); } catch { return false; }
@@ -202,15 +211,64 @@ const upPdf = makeUpload('pdfs', /\.pdf$/, 50);
 const upImg = makeUpload('images', /\.(jpg|jpeg|png|webp)$/, 8);
 const upThumb = makeUpload('thumbs', /\.(jpg|jpeg|png|webp)$/, 5);
 
-// ---------- OTP AUTH (students) ----------
+// ---------- STUDENT AUTH ----------
 const otpLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 60, message: { error: 'Too many OTP requests from this connection. Please try after some time.', code: 'OTP_RATE_LIMIT' } });
 const verifyLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 100, message: { error: 'Too many OTP verification attempts. Please try after some time.', code: 'OTP_RATE_LIMIT' } });
 const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20, message: { error: 'Too many login attempts. Try after some time.' } });
+const nameLoginLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 300, message: { error: 'Too many student login attempts from this connection. Please try after some time.', code: 'NAME_LOGIN_RATE_LIMIT' } });
 function cleanupOldOtps(now = Date.now()) {
   try { db.prepare('DELETE FROM otps WHERE created_at<?').run(now - 24 * 60 * 60 * 1000); } catch {}
 }
 setInterval(cleanupOldOtps, 60 * 60 * 1000).unref?.();
+function findStudentForNameLogin(nameKey, deviceId) {
+  if (deviceId) {
+    const byDevice = db.prepare("SELECT * FROM users WHERE role='STUDENT' AND login_name_key=? AND device_id=? ORDER BY id").get(nameKey, deviceId);
+    if (byDevice) return byDevice;
+  }
+  const matches = db.prepare("SELECT * FROM users WHERE role='STUDENT' AND login_name_key=? ORDER BY id").all(nameKey);
+  // Pure name-only login (owner-requested): if one account has this exact
+  // normalized full name, that is the account. If several same-name accounts
+  // already exist and none belongs to this device, do not guess between
+  // them; a separate device-bound account is created for teacher review.
+  return matches.length === 1 ? matches[0] : null;
+}
+app.post('/api/auth/name-login', nameLoginLimiter, (req, res) => {
+  const name = normalizeStudentName(req.body?.name);
+  const nameKey = studentNameKey(name);
+  const deviceId = String(req.body?.device_id || 'web').slice(0, 120);
+  if (name.length < 2 || !/[\p{L}\p{N}]/u.test(name)) {
+    return res.status(400).json({ error: 'Please enter your full name.', code: 'NAME_REQUIRED' });
+  }
+
+  let user = findStudentForNameLogin(nameKey, deviceId);
+  let created = false;
+  if (user && ['BLOCKED', 'SUSPENDED', 'REJECTED'].includes(user.status)) {
+    return res.status(403).json({ error: 'Account ' + user.status.toLowerCase() + '. Please contact Dream Sir.', code: 'ACCOUNT_' + user.status });
+  }
+  if (!user) {
+    const status = getSetting('approval_mode', 'MANUAL') === 'AUTO' ? 'APPROVED' : 'PENDING';
+    const id = db.prepare('INSERT INTO users(role,name,login_name_key,status,device_id) VALUES(?,?,?,?,?)')
+      .run('STUDENT', name, nameKey, status, deviceId).lastInsertRowid;
+    user = db.prepare('SELECT * FROM users WHERE id=?').get(id);
+    created = true;
+    audit(user.id, 'REGISTER_NAME', name, req);
+  }
+
+  // Keep the previous single-active-session behaviour: signing in on this
+  // device/token bumps the token version for the matched student account.
+  db.prepare('UPDATE users SET login_name_key=?, session_token_version=session_token_version+1, device_id=?, last_login=datetime(?) WHERE id=?')
+    .run(nameKey, deviceId, 'now', user.id);
+  user = db.prepare('SELECT * FROM users WHERE id=?').get(user.id);
+  audit(user.id, created ? 'LOGIN_NAME_NEW' : 'LOGIN_NAME', 'name-only', req);
+  res.status(created ? 201 : 200).json({ token: sign(user), user: publicUser(user), created, authMode: 'name' });
+});
+function rejectOtpLoginIfDisabled(req, res) {
+  if (OTP_LOGIN_ENABLED) return false;
+  res.status(410).json({ error: 'Mobile OTP login is disabled. Students now login with their name only.', code: 'OTP_LOGIN_DISABLED', studentAuthMode: STUDENT_AUTH_MODE });
+  return true;
+}
 app.post('/api/auth/request-otp', otpLimiter, async (req, res) => {
+  if (rejectOtpLoginIfDisabled(req, res)) return;
   const mobile = normalizeIndianMobile(req.body?.mobile);
   if (!mobile) return res.status(400).json({ error: 'Enter a valid Indian mobile number (10 digits, or +91 followed by 10 digits).', code: 'INVALID_MOBILE' });
   if (!LOCAL_OTP_MODE && !SMS_CONFIG.configured) {
@@ -256,6 +314,7 @@ app.post('/api/auth/request-otp', otpLimiter, async (req, res) => {
   }
 });
 app.post('/api/auth/verify-otp', verifyLimiter, (req, res) => {
+  if (rejectOtpLoginIfDisabled(req, res)) return;
   const mobile = normalizeIndianMobile(req.body?.mobile);
   const code = String(req.body?.code || '').trim();
   const name = String(req.body?.name || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 80);
@@ -310,7 +369,7 @@ app.post('/api/auth/verify-otp', verifyLimiter, (req, res) => {
 
   if (!user) {
     const status = getSetting('approval_mode', 'MANUAL') === 'AUTO' ? 'APPROVED' : 'PENDING';
-    const id = db.prepare('INSERT INTO users(role,name,mobile,status,class_id,device_id) VALUES(?,?,?,?,?,?)').run('STUDENT', name, mobile, status, parsedClassId, deviceId).lastInsertRowid;
+    const id = db.prepare('INSERT INTO users(role,name,login_name_key,mobile,status,class_id,device_id) VALUES(?,?,?,?,?,?,?)').run('STUDENT', name, studentNameKey(name), mobile, status, parsedClassId, deviceId).lastInsertRowid;
     user = db.prepare('SELECT * FROM users WHERE id=?').get(id);
     audit(user.id, 'REGISTER', name, req);
   }
@@ -364,7 +423,10 @@ app.get('/api/auth/file-token', auth, (req, res) => {
 app.post('/api/auth/logout', auth, (req, res) => { db.prepare('UPDATE users SET session_token_version=session_token_version+1 WHERE id=?').run(req.user.id); audit(req.user.id, 'LOGOUT', '', req); res.json({ ok: true }); });
 app.put('/api/auth/profile', auth, (req, res) => {
   const { name, class_id, fcm_token } = req.body || {};
-  db.prepare('UPDATE users SET name=COALESCE(?,name), class_id=COALESCE(?,class_id), fcm_token=COALESCE(?,fcm_token) WHERE id=?').run(name || null, class_id || null, fcm_token || null, req.user.id);
+  const cleanName = name !== undefined ? normalizeStudentName(name) : null;
+  if (name !== undefined && cleanName.length < 2) return res.status(400).json({ error: 'Please enter your full name.' });
+  db.prepare('UPDATE users SET name=COALESCE(?,name), login_name_key=COALESCE(?,login_name_key), class_id=COALESCE(?,class_id), fcm_token=COALESCE(?,fcm_token) WHERE id=?')
+    .run(cleanName || null, cleanName ? studentNameKey(cleanName) : null, class_id || null, fcm_token || null, req.user.id);
   res.json({ user: publicUser(db.prepare('SELECT * FROM users WHERE id=?').get(req.user.id)) });
 });
 app.post('/api/auth/photo', auth, upImg.single('photo'), validateUploadedFiles, (req, res) => { if (!req.file) return res.status(400).json({ error: 'No photo uploaded' }); const p = '/uploads/images/' + req.file.filename; db.prepare('UPDATE users SET photo=? WHERE id=?').run(p, req.user.id); res.json({ photo: p }); });
@@ -695,7 +757,7 @@ app.get('/api/admin/stats', (req, res) => {
   });
 });
 const crud = (table, fields) => ({
-  list: (req, res) => res.json({ items: db.prepare(`SELECT * FROM ${table} ORDER BY COALESCE(sort,0), id`).all() }),
+  list: (req, res) => { const order = fields.includes('sort') ? 'COALESCE(sort,0), id' : 'name, id'; res.json({ items: db.prepare(`SELECT * FROM ${table} ORDER BY ${order}`).all() }); },
   create: (req, res) => { const f = fields.filter(k => req.body[k] !== undefined); const id = db.prepare(`INSERT INTO ${table}(${f.join(',')}) VALUES(${f.map(() => '?').join(',')})`).run(...f.map(k => req.body[k])).lastInsertRowid; audit(req.user.id, 'CREATE_' + table, JSON.stringify(req.body), req); res.json({ item: db.prepare(`SELECT * FROM ${table} WHERE id=?`).get(id) }); },
   update: (req, res) => { const f = fields.filter(k => req.body[k] !== undefined); if (!f.length) return res.status(400).json({ error: 'No editable fields supplied' }); db.prepare(`UPDATE ${table} SET ${f.map(k => k + '=?').join(',')} WHERE id=?`).run(...f.map(k => req.body[k]), +req.params.id); res.json({ item: db.prepare(`SELECT * FROM ${table} WHERE id=?`).get(+req.params.id) }); },
   del: (req, res) => { db.prepare(`DELETE FROM ${table} WHERE id=?`).run(+req.params.id); audit(req.user.id, 'DELETE_' + table, req.params.id, req); res.json({ ok: true }); }
@@ -856,7 +918,10 @@ app.get('/api/admin/config-status', (req, res) => {
   const proto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http');
   if (proto !== 'https' && process.env.NODE_ENV === 'production') warnings.push('Requests are not arriving over HTTPS — put the app behind an HTTPS reverse proxy (Caddy/Nginx) before real students use it.');
   res.json({
-    otpMode: LOCAL_OTP_MODE ? 'LOCAL TEST ONLY' : (SMS_CONFIG.configured ? 'PRODUCTION SMS' : 'NOT CONFIGURED'),
+    studentAuthMode: STUDENT_AUTH_MODE,
+    otpLoginEnabled: OTP_LOGIN_ENABLED,
+    smsRequired: OTP_LOGIN_ENABLED,
+    otpMode: !OTP_LOGIN_ENABLED ? 'DISABLED (NAME LOGIN)' : (LOCAL_OTP_MODE ? 'LOCAL TEST ONLY' : (SMS_CONFIG.configured ? 'PRODUCTION SMS' : 'NOT CONFIGURED')),
     smsProvider: SMS_CONFIG.provider || null,
     smsConfigured: SMS_CONFIG.configured,
     msg91Configured: SMS_CONFIG.msg91Configured,
