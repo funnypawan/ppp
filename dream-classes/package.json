@@ -2,7 +2,7 @@
   "name": "dream-classes",
   "version": "1.0.0",
   "private": true,
-  "description": "Dream Classes — complete online education platform (Student PWA + Teacher/Admin Panel + secure backend) by Dream Sir, Kothwara, Dobhi, Gaya, Bihar",
+  "description": "Dream Classes \u2014 complete online education platform (Student PWA + Teacher/Admin Panel + secure backend) by Dream Sir, Kothwara, Dobhi, Gaya, Bihar",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -10,7 +10,7 @@
     "test": "node tests/smoke.test.js && node tests/features.test.js && node tests/workflows.test.js"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",

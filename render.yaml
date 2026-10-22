@@ -11,7 +11,12 @@ services:
     buildCommand: npm install
     startCommand: node seed.js && node server.js
     plan: free
+    branch: main
+    healthCheckPath: /api/health
+    autoDeploy: true
     envVars:
+      - key: NODE_VERSION
+        value: "22"
       - key: NODE_ENV
         value: production
       - key: JWT_SECRET
