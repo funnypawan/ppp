@@ -62,12 +62,10 @@ jobs:
         if: ${{ inputs.server_url != '' }}
         run: |
           python3 - <<'PY'
-          import json, os
-          url = os.environ["SERVER_URL"].strip()
-          cfg = json.load(open("capacitor.config.json"))
-          cfg.setdefault("server", {})["url"] = url
-          json.dump(cfg, open("capacitor.config.json", "w"), indent=2)
-          print("server.url set to:", url)
+          import os
+          url = os.environ["SERVER_URL"].strip().rstrip("/")
+          open("public/js/app-config.js", "w").write("/* GitHub Actions build dwara set kiya gaya server address */\nwindow.DC_API_BASE = '" + url + "';\n")
+          print("API base set to:", url)
           PY
         env:
           SERVER_URL: ${{ inputs.server_url }}
@@ -106,6 +104,10 @@ jobs:
           ls -lh "$APK"
           AAPT="$ANDROID_HOME/build-tools/36.0.0/aapt2"
           "$AAPT" dump badging "$APK" | grep -E "^package:|^application-label:|^launchable-activity:" | while IFS= read -r l; do echo "::notice::$l"; done
+          if unzip -p "$APK" assets/capacitor.config.json | grep -q "YOUR-PRODUCTION-DOMAIN"; then echo "::error::GALTI: placeholder server.url abhi bhi APK me hai!"; exit 1; fi
+          if unzip -p "$APK" assets/capacitor.config.json | grep -q '"url"'; then echo "::error::GALTI: server.url APK me hai — app bundled UI ki jagah web page kholega!"; exit 1; fi
+          unzip -l "$APK" | grep -q "assets/public/vendor/pdf.min.js" || { echo "::error::GALTI: bundled PDF.js APK me nahi hai!"; exit 1; }
+          echo "::notice::Bundled-mode check PASS: APK apne andar ki Dream Classes UI se chalega (koi nakli server URL nahi)" 
 
       - name: Prepare friendly APK file
         run: |

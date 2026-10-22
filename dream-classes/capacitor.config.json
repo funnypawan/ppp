@@ -4,7 +4,6 @@
   "webDir": "public",
   "backgroundColor": "#0b1020",
   "server": {
-    "url": "https://YOUR-PRODUCTION-DOMAIN.in",
     "cleartext": false,
     "androidScheme": "https"
   },

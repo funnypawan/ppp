@@ -25,7 +25,7 @@ function toast(m){const t=document.createElement('div');t.className='toast';t.te
 function imgUrl(p){if(!p)return '';if(p.startsWith('/uploads/images/'))return '/api/files/images/'+p.split('/').pop()+'?token='+encodeURIComponent(TOKEN);return p}
 function esc(s){return String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]))}
 async function api(p,opt={}){opt.headers={...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(TOKEN?{Authorization:'Bearer '+TOKEN}:{})};
- const r=await fetch(p,opt);const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.message||d.error||'Error');return d}
+ const r=await fetch((window.DC_API_BASE&&p.startsWith('/')?window.DC_API_BASE.replace(/\/+$/,''):'')+p,opt);const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.message||d.error||'Error');return d}
 function main(html){$('#content').innerHTML=html}
 function loading(){main('<div class="spinner"></div>')}
 async function loadBase(){const [c,s,ch,b]=await Promise.all([api('/api/admin/classes'),api('/api/admin/subjects'),api('/api/admin/chapters'),api('/api/admin/batches')]);
