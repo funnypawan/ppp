@@ -19,7 +19,7 @@ on:
       - ".github/workflows/build-android-apk.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-apk:
@@ -119,3 +119,18 @@ jobs:
           path: DreamClasses-v1.0-debug.apk
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish APK to GitHub Release (permanent direct download link)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-latest
+          name: Dream Classes Android App (APK Download)
+          body: |
+            🎓 **Dream Classes** — Android App (by Dream Sir, Kothwara, Dobhi, Gaya, Bihar)
+
+            📥 Install karne ke liye neeche **DreamClasses-v1.0-debug.apk** file par tap karke download karein, phir use kholkar Install dabayein.
+            (Phone "unknown apps" ki permission maange to Allow kar dein.)
+
+            ℹ️ Ye debug build hai. Ye hamesha sabse naye safal build se update ho jata hai, isliye ye link permanent hai.
+          files: DreamClasses-v1.0-debug.apk
+          make_latest: true
