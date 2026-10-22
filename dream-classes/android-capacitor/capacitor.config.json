@@ -1,0 +1,7 @@
+{
+  "appId": "in.dreamclasses.app",
+  "appName": "Dream Classes",
+  "webDir": "../public",
+  "server": { "url": "https://YOUR-DOMAIN-HERE", "cleartext": false },
+  "android": { "allowMixedContent": false }
+}
