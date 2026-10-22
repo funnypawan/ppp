@@ -33,11 +33,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup JDK 17
+      - name: Setup JDK 21 (Capacitor 8 ke liye zaroori)
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "21"
           cache: gradle
           cache-dependency-path: |
             dream-classes/android/*.gradle*
