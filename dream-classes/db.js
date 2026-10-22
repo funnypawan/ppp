@@ -3,9 +3,40 @@ const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 const fs = require('fs');
 
-const dataDir = path.join(__dirname, 'data');
+const legacyDataDir = path.join(__dirname, 'data');
+const legacyUploadsDir = path.join(__dirname, 'uploads');
+const resolveFromProject = value => path.resolve(__dirname, value);
+const storageRoot = process.env.STORAGE_DIR ? resolveFromProject(process.env.STORAGE_DIR) : null;
+const dataDir = process.env.DATA_DIR ? resolveFromProject(process.env.DATA_DIR) : (storageRoot ? path.join(storageRoot, 'data') : legacyDataDir);
+const uploadsDir = process.env.UPLOADS_DIR ? resolveFromProject(process.env.UPLOADS_DIR) : (storageRoot ? path.join(storageRoot, 'uploads') : legacyUploadsDir);
+const dbPath = path.join(dataDir, 'dream.db');
+const legacyDbPath = path.join(legacyDataDir, 'dream.db');
+const usingCustomStorage = dataDir !== legacyDataDir || uploadsDir !== legacyUploadsDir;
+
 fs.mkdirSync(dataDir, { recursive: true });
-const raw = new DatabaseSync(path.join(dataDir, 'dream.db'));
+fs.mkdirSync(uploadsDir, { recursive: true });
+// Backward-compatible one-time copy: if an operator moves DATA_DIR to a persistent
+// disk, keep the existing local database instead of silently starting empty.
+if (process.env.MIGRATE_LEGACY_DB !== '0' && dataDir !== legacyDataDir && !fs.existsSync(dbPath) && fs.existsSync(legacyDbPath)) {
+  ['', '-wal', '-shm'].forEach(suffix => {
+    const from = legacyDbPath + suffix;
+    if (fs.existsSync(from)) fs.copyFileSync(from, dbPath + suffix);
+  });
+  console.log('Existing Dream Classes database copied to the configured DATA_DIR.');
+}
+
+function resolveUploadPath(logicalPath) {
+  const clean = String(logicalPath || '').replace(/^\/+/, '');
+  if (!clean.startsWith('uploads/')) return path.join(__dirname, clean);
+  const relative = path.normalize(clean.slice('uploads/'.length));
+  const primary = path.join(uploadsDir, relative);
+  if (!primary.startsWith(uploadsDir + path.sep) && primary !== uploadsDir) return path.join(uploadsDir, path.basename(relative));
+  if (fs.existsSync(primary) || uploadsDir === legacyUploadsDir) return primary;
+  const legacy = path.join(legacyUploadsDir, relative);
+  return fs.existsSync(legacy) ? legacy : primary;
+}
+
+const raw = new DatabaseSync(dbPath);
 // Thin adapter: better-sqlite3-style prepare().get/all/run returning {lastInsertRowid}
 const db = {
   exec: sql => raw.exec(sql),
@@ -97,9 +128,34 @@ CREATE INDEX IF NOT EXISTS idx_doubts_student ON doubts(student_id);
 CREATE INDEX IF NOT EXISTS idx_progress_student ON progress(student_id);
 `);
 
+// Backward-compatible migrations for databases created by earlier versions.
+function ensureColumn(table, column, definition) {
+  const columns = db.prepare(`PRAGMA table_info(${table})`).all();
+  if (!columns.some(c => c.name === column)) db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+}
+ensureColumn('otps', 'status', "TEXT NOT NULL DEFAULT 'ACTIVE'");
+ensureColumn('otps', 'verified_at', 'INTEGER');
+ensureColumn('otps', 'request_ip', 'TEXT');
+ensureColumn('otps', 'provider', 'TEXT');
+ensureColumn('otps', 'provider_request_id', 'TEXT');
+ensureColumn('otps', 'last_sent_at', 'INTEGER');
+db.exec(`
+CREATE INDEX IF NOT EXISTS idx_otps_mobile_created ON otps(mobile, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_otps_ip_created ON otps(request_ip, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_users_email_lower ON users(lower(email));
+`);
+// Normalize stored admin/teacher emails when it cannot create a duplicate.
+try {
+  db.prepare("SELECT id,email FROM users WHERE email IS NOT NULL AND email<>lower(trim(email))").all().forEach(u => {
+    const normalized = String(u.email).trim().toLowerCase();
+    const collision = db.prepare('SELECT id FROM users WHERE lower(email)=? AND id<>?').get(normalized, u.id);
+    if (!collision) db.prepare('UPDATE users SET email=? WHERE id=?').run(normalized, u.id);
+  });
+} catch (e) { console.warn('Email normalization skipped:', e.message); }
+
 const getSetting = (k, d) => { const r = db.prepare('SELECT value FROM settings WHERE key=?').get(k); return r ? r.value : d; };
 const setSetting = (k, v) => db.prepare('INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run(k, String(v));
 if (!db.prepare('SELECT 1 FROM settings WHERE key=?').get('approval_mode')) setSetting('approval_mode', 'MANUAL');
 if (!db.prepare('SELECT 1 FROM settings WHERE key=?').get('institute_name')) setSetting('institute_name', 'Dream Classes');
 
-module.exports = { db, getSetting, setSetting };
+module.exports = { db, getSetting, setSetting, dataDir, dbPath, uploadsDir, legacyUploadsDir, usingCustomStorage, resolveUploadPath };

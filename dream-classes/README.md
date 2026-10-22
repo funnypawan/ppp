@@ -7,15 +7,15 @@
 ```bash
 cd dream-classes
 npm install
-ADMIN_PASSWORD='YourStrongPassword' node seed.js   # creates Super Admin + Class 9–12 structure
+ADMIN_PASSWORD='YourStrongPassword123' node seed.js # creates Super Admin + Class 9–12 structure
 npm start                                            # http://localhost:3000
-npm test                                             # 104 end-to-end tests (3 suites: smoke + features + workflows/security)
+npm test                                             # 151 tests (smoke + features + workflows/security + production auth)
 ```
-- **Student App:** `/` — login with mobile OTP (in dev mode the OTP is shown on screen for testing)
-- **Teacher Panel:** `/admin` — default login `admin@dreamclasses.in` / password set at seed (default `Dream@12345` — **change it**)
+- **Student App:** `/` — login with a real mobile OTP. In production, OTP arrives only by SMS from a configured MSG91/2Factor account; the UI never displays a demo OTP.
+- **Teacher Panel:** `/admin` — login with `ADMIN_EMAIL` and the strong `ADMIN_PASSWORD` supplied to seed. There is **no default password**. See `PRODUCTION.md` for first-time setup and the explicit password-reset flow.
 
 ## ✅ What's implemented & working
-- **Auth:** Mobile OTP (hashed, 5-min expiry, 5-attempt + rate limits), admin email/password (bcrypt), roles `SUPER_ADMIN / TEACHER / STUDENT`, **manual or auto approval** (Admin → Settings), **single-device sessions** with revocation, audit logs.
+- **Auth:** Mobile OTP (cryptographically generated, hashed, 10-min expiry, 60-second resend cooldown, per-mobile/per-IP limits, 5 attempts, one-time use), production SMS via MSG91/2Factor (backend-only secrets, honest failure when unconfigured), admin email/password (bcrypt, case-insensitive email, protected first-time setup/reset), roles `SUPER_ADMIN / TEACHER / STUDENT`, **manual or auto approval** (Admin → Settings), **single-device sessions** with revocation, short-lived file-only tokens, audit logs.
 - **Student app:** Home dashboard (progress, announcements, continue-learning, **upcoming tests, subject-wise performance**, results), My Classes (Class → Subject → Chapter from DB), **video player** (speeds 0.5–2x, resume, prev/next, fullscreen, **moving personal watermark**, 5-minute signed playback URLs, byte-range streaming, **quality selector 240p/360p/720p when variants are registered, HLS (.m3u8) adaptive playback**), **PDF.js reader** (page navigation, zoom, auto resume-page saving, no text selection, on-screen watermark; **downloads are stamped with the student's name + masked mobile on every page**), **practice questions** per chapter with instant server-checked feedback, **MCQ tests** (timer + auto-submit, mark-for-review, question palette, **server-side scoring**, negative marking, duplicate-submit protection, answers hidden until permitted review), **doubts** with photo upload & follow-ups (teacher can attach image/PDF solutions), **offline downloads** (permitted lectures/notes stored in app-private IndexedDB with a My Downloads section), **Web Push notifications** (VAPID — real phone alerts, no Firebase needed) + in-app inbox, profile (photo, theme light/dark/system, install app, delete account), Privacy/Terms/Help drafts.
 - **Admin panel:** Real dashboard counts + **7-day activity chart**, student approve/reject/block/unblock/transfer/revoke-device + per-student progress + class/batch filters, class/subject/chapter CRUD with publish & ordering, batches, **video upload with progress + drag-drop** (or URL/YouTube/HLS) with **thumbnail + quality-URL registration and full edit forms**, **multi-PDF upload** with edit forms, test creator (questions, marks, explanations, states DRAFT/SCHEDULED/PUBLISHED/CLOSED, **open/close scheduling**, CSV export), **practice-question manager**, doubt answering with image/PDF attachments, notification center (all/batch/class/student + preview + **scheduled sending with auto-dispatch** + history with status), announcements, teacher management, **admin password change, one-click database backup download**.
 - **Security:** Backend-enforced roles & batch access on every content/test/file request, blocked-student enforcement, upload type/size validation, no secrets in frontend, files never stored in DB rows.
@@ -25,16 +25,17 @@ npm test                                             # 104 end-to-end tests (3 s
 A real Capacitor 8 Android project is generated & configured in `android/`
 (package `in.dreamclasses.app`, brand icon/splash/status bar, FLAG_SECURE
 screenshot blocking, HTTPS-only network policy, back-button handling).
-**No APK is bundled** — the build sandbox has no Java/Android SDK.
-On any PC with JDK 17 + Android Studio: set `server.url` in
-`capacitor.config.json` to your HTTPS domain, then run `./build-android.sh`
-→ `android/app/build/outputs/apk/debug/app-debug.apk`. Full guide: `ANDROID.md`.
+The APK is built in GitHub Actions with JDK 21 and published to the permanent
+GitHub Release link. It uses bundled UI mode (no `server.url`): the server URL
+can be supplied during the workflow build or entered and health-checked inside
+the app, so changing the backend URL does not normally require a new APK.
+Full guide: `ANDROID.md`.
 Production deployment guide: `PRODUCTION.md`.
 
 ## 🔌 Production integrations still needed (credentials only — code hooks ready)
-1. **SMS/WhatsApp OTP:** signup at MSG91/Twilio/WhatsApp Business API, set `OTP_MODE=production` + keys in `.env`, enable sender in `server.js` (`/api/auth/request-otp`).
+1. **SMS OTP credentials:** the MSG91 and 2Factor integrations are coded and provider responses are checked honestly. You still need your own provider account/approved India DLT/template setup and must set the secrets only in the backend environment (see `.env.example` and `PRODUCTION.md`). Until one real test SMS succeeds with your credentials, treat SMS as **awaiting credentials**, not working.
 2. **Push notifications:** ✅ **Web Push (VAPID) is implemented and works out of the box** for the PWA/Android Chrome (keys auto-generated & stored server-side; students tap “Enable Push Notifications”). FCM is only needed later if you ship the native Capacitor APK and want native push there.
-3. **Deploy:** any Node host (Render/Railway/VPS): set env vars from `.env.example`, `npm install && node seed.js && npm start`, put HTTPS (Caddy/Nginx) in front, back up `data/dream.db` + `uploads/` daily. For many/large videos, move `uploads/` to S3/R2 and store URLs.
+3. **Deploy:** any Node host (Render/Railway/VPS): set env vars from `.env.example`, `npm ci && node seed.js && npm start`, use HTTPS, and point `STORAGE_DIR`/`DATA_DIR`/`UPLOADS_DIR` to persistent storage (Render free disk is ephemeral). Back up the database + uploads. For many/large videos, use a CDN/video host and store URLs.
 
 ## ⚠️ Honest limitations
 - Web/PWA cannot fully block screenshots/screen-recording or another camera photographing the screen; watermark + signed URLs + single-device login are the practical web protections (native FLAG_SECURE is available in the Capacitor APK).

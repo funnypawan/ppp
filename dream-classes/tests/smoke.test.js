@@ -1,5 +1,6 @@
 // End-to-end smoke tests against a live server on PORT 3100. Run: npm test
 const { spawn } = require('child_process');
+const { createTestContext } = require('./test-env');
 const BASE = 'http://127.0.0.1:3100';
 let pass = 0, fail = 0;
 const ok = (name, cond) => { cond ? pass++ : fail++; console.log((cond ? '✅ ' : '❌ ') + name); };
@@ -10,14 +11,15 @@ async function req(path, { method = 'GET', token, body } = {}) {
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 (async () => {
-  const srv = spawn('node', ['server.js'], { cwd: __dirname + '/..', env: { ...process.env, PORT: '3100' }, stdio: 'pipe' });
+  const ctx = createTestContext('dream-classes-smoke-');
+  const srv = spawn('node', ['server.js'], { cwd: __dirname + '/..', env: { ...ctx.env, PORT: '3100' }, stdio: 'pipe' });
   await sleep(1600);
   try {
     ok('Health check', (await req('/api/health')).data.ok === true);
     ok('Unauthorized blocked', (await req('/api/structure')).status === 401);
 
     // Admin login (seed must have run)
-    const adm = await req('/api/auth/admin-login', { method: 'POST', body: { email: 'admin@dreamclasses.in', password: process.env.ADMIN_PASSWORD || 'Dream@12345' } });
+    const adm = await req('/api/auth/admin-login', { method: 'POST', body: { email: 'admin@dreamclasses.in', password: ctx.adminPassword } });
     ok('Admin login', !!adm.data.token); const AT = adm.data.token;
     ok('Wrong admin password rejected', (await req('/api/auth/admin-login', { method: 'POST', body: { email: 'admin@dreamclasses.in', password: 'wrong' } })).status === 401);
 
@@ -68,7 +70,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     const blockedLogin = await req('/api/auth/verify-otp', { method: 'POST', body: { mobile, code: otp3.data.devOtp, device_id: 'd3' } });
     ok('Blocked student cannot login', blockedLogin.status === 403);
   } catch (e) { console.error('Test crash:', e); fail++; }
-  srv.kill();
+  srv.kill(); await sleep(300); ctx.cleanup();
   console.log(`\n${pass} passed, ${fail} failed`);
   process.exit(fail ? 1 : 0);
 })();
