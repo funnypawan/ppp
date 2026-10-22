@@ -1,0 +1,96 @@
+name: Build Android APK (Dream Classes)
+
+# Phone se chalane ke liye: GitHub repo -> Actions -> "Build Android APK (Dream Classes)"
+# -> "Run workflow" dabayein. Neeche "server_url" me apne live server ka address
+# de sakte hain (jaise https://dreamclasses.onrender.com). Khali chhodne par
+# capacitor.config.json wala address use hoga.
+on:
+  workflow_dispatch:
+    inputs:
+      server_url:
+        description: "Live server URL (optional) — e.g. https://your-server-domain.com"
+        required: false
+        default: ""
+        type: string
+  push:
+    branches: ["main", "arena/1a0a35fd-ppp"]
+    paths:
+      - "dream-classes/**"
+      - ".github/workflows/build-android-apk.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-apk:
+    name: Build debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: dream-classes
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          cache-dependency-path: |
+            dream-classes/android/*.gradle*
+            dream-classes/android/app/*.gradle*
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: dream-classes/package-lock.json
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK Platform 36 + Build Tools
+        run: sdkmanager "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+
+      - name: Set server URL (agar input diya gaya ho)
+        if: ${{ inputs.server_url != '' }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          url = os.environ["SERVER_URL"].strip()
+          cfg = json.load(open("capacitor.config.json"))
+          cfg.setdefault("server", {})["url"] = url
+          json.dump(cfg, open("capacitor.config.json", "w"), indent=2)
+          print("server.url set to:", url)
+          PY
+        env:
+          SERVER_URL: ${{ inputs.server_url }}
+
+      - name: Install project dependencies
+        run: npm ci
+
+      - name: Sync web app into Android project
+        run: npx cap sync android
+
+      - name: Build debug APK (Gradle)
+        working-directory: dream-classes/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Prepare friendly APK file
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk "$GITHUB_WORKSPACE/DreamClasses-v1.0-debug.apk"
+          ls -lh "$GITHUB_WORKSPACE/DreamClasses-v1.0-debug.apk"
+
+      - name: Upload APK (download karne ke liye)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dream-Classes-APK
+          path: DreamClasses-v1.0-debug.apk
+          if-no-files-found: error
+          retention-days: 30
