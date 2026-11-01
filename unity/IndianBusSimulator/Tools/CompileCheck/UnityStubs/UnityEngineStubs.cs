@@ -94,6 +94,17 @@ namespace UnityEngine
 
     public enum PrimitiveType { Sphere, Capsule, Cylinder, Cube, Plane, Quad }
 
+    public class Collider : Component
+    {
+        public bool isTrigger { get; set; }
+        public bool enabled { get; set; }
+    }
+
+    public class BoxCollider : Collider { public Vector3 size { get; set; } }
+    public class SphereCollider : Collider { public float radius { get; set; } }
+    public class CapsuleCollider : Collider { }
+    public class MeshCollider : Collider { }
+
     public struct Vector2
     {
         public float x;

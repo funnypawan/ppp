@@ -19,7 +19,7 @@ namespace IBS.World
     /// markings, buildings, shops, fuel stations, bus stops, street lights,
     /// signals, bridges, flyovers, toll plazas, trees, mountains and a river.
     /// </summary>
-    public class MapGenerator
+    public class MapGenerator : MonoBehaviour
     {
         public RoadNetwork Network;
         public MapDefinition Map;

@@ -181,7 +181,7 @@ namespace IBS.Vehicles
                 if (ahead < 14f) desired = Mathf.Min(desired, Mathf.Max(0f, (ahead - 5f) * 1.4f));
 
                 // Signals: stop at a red light near the end of the current edge.
-                if (edge.Progress > 0.9f)
+                if (vehicle.Progress > 0.9f)
                 {
                     RoadNode next = Network.Nodes[edge.B];
                     if (next.Signal == 3) desired = 0f;

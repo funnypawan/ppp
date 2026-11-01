@@ -58,7 +58,7 @@ namespace IBS.Game
             SaveSystem.Load();
             Save = SaveSystem.Data;
             Application.targetFrameRate = 60;
-            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            UnityEngine.Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
             _camera = Camera.main;
             if (_camera == null)
@@ -299,7 +299,7 @@ namespace IBS.Game
             DriveEnvironment env = new DriveEnvironment
             {
                 Grip = Environment.GripMultiplier,
-                WindFactor = Mathf.Clamp01(PlayerBus.Physics.Speed / 40f)
+                WindSpeed = Mathf.Clamp(PlayerBus.Physics.Speed * 0.8f, 0f, 30f)
             };
 
             WorldCollider[] colliders = MapGenerator.Colliders.ToArray();

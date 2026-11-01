@@ -42,7 +42,7 @@ namespace IBS.Vehicles
             Color paint = ColorFromHex(custom.BodyColor != null && custom.BodyColor.Length > 0
                 ? custom.BodyColor
                 : _spec.DefaultPaint);
-            Color interior = new Color(0.85f, 0.79f, 0.66f);
+            Color interiorColor = new Color(0.85f, 0.79f, 0.66f);
 
             PaintMaterial = ProceduralMesh.Material(paint);
             Material paintDark = ProceduralMesh.Material(paint * 0.72f);
@@ -50,7 +50,7 @@ namespace IBS.Vehicles
             Material chrome = ProceduralMesh.Material(new Color(0.72f, 0.75f, 0.78f));
             Material rubber = ProceduralMesh.Material(new Color(0.08f, 0.09f, 0.1f));
             Material seatMaterial = ProceduralMesh.Material(new Color(0.48f, 0.42f, 0.32f));
-            Material interiorMaterial = ProceduralMesh.Material(interior);
+            Material interiorMaterial = ProceduralMesh.Material(interiorColor);
             GlassMaterial = ProceduralMesh.Material(new Color(0.11f, 0.16f, 0.2f));
             HeadlightMaterial = ProceduralMesh.EmissiveMaterial(new Color(1f, 0.94f, 0.77f));
             Material taillightMaterial = ProceduralMesh.EmissiveMaterial(new Color(0.45f, 0.08f, 0.08f));
@@ -171,10 +171,10 @@ namespace IBS.Vehicles
             }
 
             // Interior --------------------------------------------------------------
-            GameObject interior = new GameObject("Interior");
-            interior.transform.SetParent(Root.transform, false);
+            GameObject interiorRoot = new GameObject("Interior");
+            interiorRoot.transform.SetParent(Root.transform, false);
 
-            GameObject floor = ProceduralMesh.CreateMeshObject("Floor", ProceduralMesh.Box(W - 0.2f, 0.08f, L - 0.5f), interiorMaterial, interior.transform);
+            GameObject floor = ProceduralMesh.CreateMeshObject("Floor", ProceduralMesh.Box(W - 0.2f, 0.08f, L - 0.5f), interiorMaterial, interiorRoot.transform);
             floor.transform.localPosition = new Vector3(0f, floorY, 0f);
 
             int seatRows = Mathf.Max(4, _spec.SeatRows);
@@ -186,25 +186,31 @@ namespace IBS.Vehicles
                 for (int s = 0; s < _spec.SeatsPerRow; s++)
                 {
                     float x = -W * 0.5f + 0.42f + s * ((W - 1.0f) / Mathf.Max(1, _spec.SeatsPerRow - 1));
-                    GameObject seat = ProceduralMesh.CreateMeshObject("Seat", ProceduralMesh.Box(0.42f, 0.12f, 0.46f), seatMaterial, interior.transform);
+                    GameObject seat = ProceduralMesh.CreateMeshObject("Seat", ProceduralMesh.Box(0.42f, 0.12f, 0.46f), seatMaterial, interiorRoot.transform);
                     seat.transform.localPosition = new Vector3(x, floorY + 0.42f, z);
-                    GameObject back = ProceduralMesh.CreateMeshObject("SeatBack", ProceduralMesh.Box(0.42f, 0.52f, 0.1f), seatMaterial, interior.transform);
+                    GameObject back = ProceduralMesh.CreateMeshObject("SeatBack", ProceduralMesh.Box(0.42f, 0.52f, 0.1f), seatMaterial, interiorRoot.transform);
                     back.transform.localPosition = new Vector3(x, floorY + 0.7f, z + 0.2f);
                 }
             }
 
-            GameObject dash = ProceduralMesh.CreateMeshObject("Dashboard", ProceduralMesh.Box(W - 0.6f, 0.28f, 0.5f), trim, interior.transform);
+            GameObject dash = ProceduralMesh.CreateMeshObject("Dashboard", ProceduralMesh.Box(W - 0.6f, 0.28f, 0.5f), trim, interiorRoot.transform);
             dash.transform.localPosition = new Vector3(0f, floorY + 0.72f, -L * 0.5f + 0.62f);
-            GameObject wheel = ProceduralMesh.CreateMeshObject("SteeringWheel", ProceduralMesh.Box(0.42f, 0.06f, 0.42f), trim, interior.transform);
-            wheel.transform.localPosition = new Vector3(W * 0.5f - 0.62f, floorY + 0.86f, -L * 0.5f + 0.78f);
-            wheel.transform.localRotation = Quaternion.Euler(0f, 90f, 26f);
-            SteeringWheel = wheel.transform;
-            GameObject driverSeat = ProceduralMesh.CreateMeshObject("DriverSeat", ProceduralMesh.Box(0.5f, 0.12f, 0.5f), seatMaterial, interior.transform);
+            GameObject steeringWheel = ProceduralMesh.CreateMeshObject("SteeringWheel", ProceduralMesh.Box(0.42f, 0.06f, 0.42f), trim, interiorRoot.transform);
+            steeringWheel.transform.localPosition = new Vector3(W * 0.5f - 0.62f, floorY + 0.86f, -L * 0.5f + 0.78f);
+            steeringWheel.transform.localRotation = Quaternion.Euler(0f, 90f, 26f);
+            SteeringWheel = steeringWheel.transform;
+            GameObject driverSeat = ProceduralMesh.CreateMeshObject("DriverSeat", ProceduralMesh.Box(0.5f, 0.12f, 0.5f), seatMaterial, interiorRoot.transform);
             driverSeat.transform.localPosition = new Vector3(W * 0.5f - 0.62f, floorY + 0.5f, -L * 0.5f + 1.35f);
 
             // License plate ---------------------------------------------------------
             GameObject plate = ProceduralMesh.CreateMeshObject("Plate", ProceduralMesh.Box(0.62f, 0.16f, 0.04f), ProceduralMesh.Material(Color.white), Root.transform);
             plate.transform.localPosition = new Vector3(0f, floorY - 0.16f, L * 0.5f - 0.04f);
+        }
+
+        /// <summary>Turns the head light emissive material on or off.</summary>
+        public void SetHeadlights(bool on)
+        {
+            HeadlightMaterial.color = on ? new Color(1f, 0.94f, 0.77f) : new Color(0.42f, 0.38f, 0.31f);
         }
 
         public static Color ColorFromHex(string hex)
