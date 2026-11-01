@@ -84,7 +84,16 @@ jobs:
           unzip -l "$APK" | grep -q "assets/public/index.html" || { echo "::error::Game web assets missing from APK!"; exit 1; }
           unzip -l "$APK" | grep -q "assets/public/vendor/three.module.js" || { echo "::error::Three.js bundle missing from APK!"; exit 1; }
           unzip -l "$APK" | grep -q "assets/public/js/main.js" || { echo "::error::Game entry point missing from APK!"; exit 1; }
-          echo "::notice::APK bundle verified: html + three.js + game entry present"
+          SOURCE_JS=$(find ../web/js -name "*.js" | wc -l)
+          APK_JS=$(unzip -l "$APK" | grep -cE "assets/public/js/.*\.js$" || true)
+          echo "::notice::JavaScript modules in source: $SOURCE_JS, bundled in APK: $APK_JS"
+          if [ "$SOURCE_JS" -ne "$APK_JS" ]; then
+            echo "::error::Module count mismatch - the APK is missing game code!"
+            exit 1
+          fi
+          unzip -l "$APK" | grep -q "assets/public/js/game/passengers.js" || { echo "::error::Passenger system missing from APK!"; exit 1; }
+          unzip -l "$APK" | grep -q "assets/public/js/world/roadnet.js" || { echo "::error::Road network missing from APK!"; exit 1; }
+          echo "::notice::APK bundle verified: html + three.js + entry point + all $SOURCE_JS game modules"
 
       - name: Publish build report to the run summary
         working-directory: indian-bus-simulator/android

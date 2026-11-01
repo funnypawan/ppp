@@ -9,7 +9,7 @@
 | Storage | ~25 MB for the APK plus WebView cache |
 | GPU | Any OpenGL ES 3.0 capable device (all phones from ~2015 onwards) |
 | Network | Not required - the game is fully offline |
-| Permissions | None. No camera, no microphone, no location, no storage access |
+| Permissions | Only the Android `INTERNET` / `ACCESS_NETWORK_STATE` entries that the embedded WebView needs. No camera, no microphone, no location, no storage |
 
 The game runs in landscape only and keeps the screen awake while it is open.
 

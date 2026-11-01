@@ -14,9 +14,14 @@ below produced a passing result.
 | C# compile check of every Unity script | `dotnet build` in `unity/IndianBusSimulator/Tools/CompileCheck` | **Build succeeded, 0 errors** |
 | C# physics / mission regression suite | `dotnet run --project CompileCheck.csproj` | **30 passed, 0 failed** |
 | Android debug APK | `./gradlew assembleDebug` (GitHub Actions, JDK 21, SDK 36) | **Built**, 4 567 489 bytes |
-| APK manifest verification | `aapt2 dump badging` | package `in.indianbus3d.game`, landscape, no permissions |
+| APK manifest verification | `aapt2 dump badging` | package `in.indianbus3d.game`, target SDK 36, `android.hardware.screen.landscape`, launcher `in.indianbus3d.game.MainActivity` |
 | APK content verification | `unzip -l` | `index.html`, `css/style.css`, `js/main.js`, `vendor/three.module.js` present |
 | Release publication | `gh release upload` | `IndianBusSimulator3D-v1.0-debug.apk` on the `bus-sim-apk` release |
+
+Every APK build posts its verification report (package name, SDK versions,
+orientation, bundled game files) into the tracking issue
+`[apk-build-report] Indian Bus Simulator 3D`, and the Unity compile check
+opens an issue only when it fails.
 
 Both workflows are public and can be re-run from the repository's **Actions**
 tab:

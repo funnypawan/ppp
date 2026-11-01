@@ -55,7 +55,7 @@ jobs:
           exit "$RUN"
 
       - name: Publish diagnostics
-        if: always()
+        if: failure()
         uses: actions/github-script@v7
         with:
           script: |
