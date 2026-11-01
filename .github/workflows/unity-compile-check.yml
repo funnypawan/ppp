@@ -29,8 +29,26 @@ jobs:
       - name: Build + run the compile check harness
         working-directory: unity/IndianBusSimulator/Tools/CompileCheck
         run: |
-          dotnet build CompileCheck.csproj -c Release --nologo
-          dotnet run --project CompileCheck.csproj -c Release --no-build
+          set +e
+          dotnet build CompileCheck.csproj -c Release --nologo > /tmp/build.log 2>&1
+          BUILD=$?
+          dotnet run --project CompileCheck.csproj -c Release --no-build > /tmp/run.log 2>&1
+          RUN=$?
+          {
+            echo "## Unity C# compile check"
+            echo ""
+            echo "### dotnet build (exit \`$BUILD\`)"
+            echo '```'
+            cat /tmp/build.log
+            echo '```'
+            echo ""
+            echo "### regression suite (exit \`$RUN\`)"
+            echo '```'
+            cat /tmp/run.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$BUILD" -ne 0 ]; then exit "$BUILD"; fi
+          exit "$RUN"
 
       - name: Package the checked sources
         uses: actions/upload-artifact@v4
