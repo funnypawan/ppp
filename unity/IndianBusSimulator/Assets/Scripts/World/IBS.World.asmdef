@@ -1,0 +1,16 @@
+{
+    "name": "IBS.World",
+    "rootNamespace": "",
+    "references": [
+        IBS.Core,
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

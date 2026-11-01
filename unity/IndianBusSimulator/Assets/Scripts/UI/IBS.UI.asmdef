@@ -1,0 +1,19 @@
+{
+    "name": "IBS.UI",
+    "rootNamespace": "",
+    "references": [
+        IBS.Core,
+        IBS.World,
+        IBS.Vehicles,
+        IBS.Game,
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
