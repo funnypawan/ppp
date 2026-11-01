@@ -85,6 +85,33 @@ jobs:
           unzip -l "$APK" | grep -q "assets/public/js/main.js" || { echo "::error::Game entry point missing from APK!"; exit 1; }
           echo "::notice::APK bundle verified: html + three.js + game entry present"
 
+      - name: Publish build report to the run summary
+        working-directory: indian-bus-simulator/android
+        run: |
+          APK=app/build/outputs/apk/debug/app-debug.apk
+          AAPT="$ANDROID_HOME/build-tools/36.0.0/aapt2"
+          {
+            echo "## 📦 Indian Bus Simulator 3D — APK build report"
+            echo ""
+            echo "**APK:** \`app/build/outputs/apk/debug/app-debug.apk\`"
+            ls -lh "$APK" | awk '{print "**Size:** " $5}'
+            echo ""
+            echo "### Package"
+            echo '```'
+            "$AAPT" dump badging "$APK" | grep -E "^package:|^application-label:|^launchable-activity:|^sdkVersion:|^targetSdkVersion:|uses-feature|uses-permission" | head -12
+            echo '```'
+            echo ""
+            echo "### Bundled game assets"
+            echo '```'
+            unzip -l "$APK" | grep -E "assets/public/(index.html|css/style.css|js/main.js|vendor/three.module.js)" | awk '{print $1, $4}'
+            echo '```'
+            echo ""
+            echo "### Checks"
+            echo "- [x] Gradle assembleDebug"
+            echo "- [x] npm test (unit + integration)"
+            echo "- [x] index.html / three.js / main.js present in the APK"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Prepare friendly APK file
         run: |
           cp android/app/build/outputs/apk/debug/app-debug.apk "$GITHUB_WORKSPACE/IndianBusSimulator3D-v1.0-debug.apk"
