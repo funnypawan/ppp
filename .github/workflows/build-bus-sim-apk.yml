@@ -110,7 +110,40 @@ jobs:
             echo "- [x] Gradle assembleDebug"
             echo "- [x] npm test (unit + integration)"
             echo "- [x] index.html / three.js / main.js present in the APK"
-          } >> "$GITHUB_STEP_SUMMARY"
+          } | tee "$GITHUB_STEP_SUMMARY" > /tmp/apk-report.md
+
+      - name: Publish the build report to the tracking issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.existsSync('/tmp/apk-report.md') ? fs.readFileSync('/tmp/apk-report.md', 'utf8') : 'no report';
+            const sha = context.sha.slice(0, 7);
+            const title = '[apk-build-report] Indian Bus Simulator 3D';
+            const list = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              per_page: 100
+            });
+            const existing = list.find(i => i.title === title);
+            const body = `### Build \`${sha}\`\n\n${report}`;
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body
+              });
+            }
 
       - name: Prepare friendly APK file
         run: |
