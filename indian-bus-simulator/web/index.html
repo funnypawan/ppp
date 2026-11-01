@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0b1014" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>Indian Bus Simulator 3D</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div id="app">
+  <canvas id="scene"></canvas>
+
+  <div id="ui-root">
+    <!-- ---------------------------------------------------------- loading -->
+    <section class="screen active" data-screen="loading" id="screen-loading">
+      <div class="loading-wrap">
+        <div class="loading-bus">🚌</div>
+        <h1>Indian Bus Simulator 3D</h1>
+        <div class="loading-bar"><span></span></div>
+        <p class="muted">Preparing the depot…</p>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------- main menu -->
+    <section class="screen" data-screen="menu" id="screen-menu"></section>
+
+    <!-- ---------------------------------------------------------- garage -->
+    <section class="screen panel-screen" data-screen="garage" id="screen-garage"></section>
+
+    <!-- ----------------------------------------------------- customisation -->
+    <section class="screen panel-screen" data-screen="customize" id="screen-customize"></section>
+
+    <!-- ------------------------------------------------------------ maps -->
+    <section class="screen panel-screen" data-screen="maps" id="screen-maps"></section>
+
+    <!-- ---------------------------------------------------------- career -->
+    <section class="screen panel-screen" data-screen="career" id="screen-career"></section>
+
+    <!-- ------------------------------------------------------- free drive -->
+    <section class="screen panel-screen" data-screen="free" id="screen-free"></section>
+
+    <!-- --------------------------------------------------------- settings -->
+    <section class="screen panel-screen" data-screen="settings" id="screen-settings"></section>
+
+    <!-- ------------------------------------------------------ achievements -->
+    <section class="screen panel-screen" data-screen="achievements" id="screen-achievements"></section>
+
+    <!-- ---------------------------------------------------------- rewards -->
+    <section class="screen panel-screen" data-screen="rewards" id="screen-rewards"></section>
+
+    <!-- ------------------------------------------------------------ pause -->
+    <section class="screen" data-screen="pause" id="screen-pause"></section>
+
+    <!-- -------------------------------------------------- mission results -->
+    <section class="screen" data-screen="mission-complete" id="screen-mission-complete">
+      <div class="pause-panel result">
+        <h2>🎉 Mission Complete</h2>
+        <div class="pause-stats" id="result-stats"></div>
+        <div class="menu-list">
+          <button class="menu-btn primary" id="btn-result-next"><span>▶</span> Next Mission</button>
+          <button class="menu-btn" id="btn-result-menu"><span>🏠</span> Main Menu</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="mission-failed" id="screen-mission-failed">
+      <div class="pause-panel result">
+        <h2>❌ Mission Failed</h2>
+        <p class="muted" id="fail-reason"></p>
+        <div class="menu-list">
+          <button class="menu-btn primary" id="btn-fail-retry"><span>↻</span> Retry</button>
+          <button class="menu-btn" id="btn-fail-menu"><span>🏠</span> Main Menu</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- -------------------------------------------------------------- HUD -->
+    <div id="hud">
+      <div class="hud-top-left">
+        <canvas id="gauge-canvas"></canvas>
+        <div class="hud-readouts">
+          <div class="readout"><span id="rpm-text">0</span><small>RPM</small></div>
+          <div class="readout"><span id="gear-text">1</span><small>GEAR</small></div>
+          <div class="readout fuel"><span id="fuel-text">0 L</span><small>FUEL</small>
+            <div class="fuel-bar"><div id="fuel-bar"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hud-top-center">
+        <div id="gps-banner">
+          <span id="gps-text">Follow the road</span>
+          <span id="gps-distance"></span>
+        </div>
+      </div>
+
+      <div class="hud-top-right">
+        <canvas id="minimap-canvas"></canvas>
+        <div class="chip-row">
+          <span class="chip" id="weather-chip">☀️ Sunny</span>
+          <span class="chip" id="clock-chip">12:00 PM</span>
+          <span class="chip" id="speed-limit">60 km/h</span>
+          <span class="chip danger" id="damage-chip"></span>
+        </div>
+      </div>
+
+      <div class="hud-bottom-left">
+        <div class="passenger-panel">
+          <span class="muted small">PASSENGERS</span>
+          <div id="passenger-count">0/0</div>
+          <div class="satisfaction"><div id="satisfaction-bar"></div></div>
+        </div>
+      </div>
+
+      <div class="hud-mission" id="mission-box">
+        <div id="mission-text"></div>
+        <div id="mission-timer"></div>
+      </div>
+
+      <div id="controls"></div>
+      <div id="toast"></div>
+    </div>
+
+    <!-- big map overlay -->
+    <div id="big-map-modal" class="modal">
+      <div class="modal-inner">
+        <button id="big-map-close" class="ghost-btn">✕ Close</button>
+        <canvas id="big-map-canvas"></canvas>
+      </div>
+    </div>
+
+    <div id="menu-toast"></div>
+  </div>
+</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

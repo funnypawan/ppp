@@ -1,0 +1,21 @@
+{
+  "name": "indian-bus-simulator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Indian Bus Simulator 3D — offline 3D bus driving game for Android",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/",
+    "serve": "node tools/serve.js",
+    "sync": "cap sync android",
+    "apk:debug": "cd android && ./gradlew assembleDebug",
+    "apk:release": "cd android && ./gradlew assembleRelease"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/core": "^8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.3"
+  }
+}

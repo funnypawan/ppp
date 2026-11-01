@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Indian Bus Sim 3D</string>
+    <string name="title_activity_main">Indian Bus Simulator 3D</string>
+    <string name="package_name">in.indianbus3d.game</string>
+    <string name="custom_url_scheme">in.indianbus3d.game</string>
+</resources>

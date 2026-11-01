@@ -1,0 +1,15 @@
+{
+  "appId": "in.indianbus3d.game",
+  "appName": "Indian Bus Sim 3D",
+  "webDir": "web",
+  "backgroundColor": "#0b1014",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false,
+    "allowNavigation": []
+  }
+}
