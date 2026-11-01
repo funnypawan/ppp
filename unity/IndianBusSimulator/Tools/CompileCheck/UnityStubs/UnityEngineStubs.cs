@@ -623,6 +623,7 @@ namespace UnityEngine
         public static void Box(Rect position, string text) { }
         public static void Box(Rect position, GUIContent content) { }
         public static void Box(Rect position, GUIContent content, GUIStyle style) { }
+        public static void Box(Rect position, string text, GUIStyle style) { }
         public static void DrawTexture(Rect position, Texture image) { }
         public static void DrawTexture(Rect position, Texture image, ScaleMode scaleMode) { }
         public static bool DragTexture(Rect position, Texture image) { return false; }

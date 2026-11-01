@@ -204,7 +204,7 @@ namespace IBS.UI
             for (int i = 0; i < BusCatalog.All.Count && i < 4; i++)
             {
                 BusSpec spec = BusCatalog.All[i];
-                bool unlocked = Manager.Save.IsBusUnlocked(spec.Id);
+                bool unlocked = SaveSystem.IsBusUnlocked(spec.Id);
                 string caption = spec.Name + (unlocked ? "" : "  ₹" + spec.Price);
                 if (GUI.Button(new Rect(200, 170 + i * 54, 330, 46), caption, _button))
                 {
@@ -228,7 +228,7 @@ namespace IBS.UI
             for (int i = 0; i < MapCatalog.All.Count && i < 4; i++)
             {
                 MapDefinition map = MapCatalog.All[i];
-                bool unlocked = Manager.Save.IsMapUnlocked(map.Id);
+                bool unlocked = SaveSystem.IsMapUnlocked(map.Id);
                 string caption = map.Name + (unlocked ? "" : "  ₹" + map.Price);
                 if (GUI.Button(new Rect(600, 170 + i * 54, 330, 46), caption, _button))
                 {
@@ -257,7 +257,7 @@ namespace IBS.UI
             float y = 90f;
             foreach (BusSpec spec in BusCatalog.All)
             {
-                bool unlocked = Manager.Save.IsBusUnlocked(spec.Id);
+                bool unlocked = SaveSystem.IsBusUnlocked(spec.Id);
                 bool selected = Manager.Save.SelectedBus == spec.Id;
                 GUI.Box(new Rect(200, y, 780, 76), GUIContent.none, _card);
                 GUI.Label(new Rect(214, y + 6, 560, 28), spec.Name + (selected ? "   (selected)" : ""), _body);
@@ -383,7 +383,7 @@ namespace IBS.UI
             float y = 90f;
             foreach (MapDefinition map in MapCatalog.All)
             {
-                bool unlocked = Manager.Save.IsMapUnlocked(map.Id);
+                bool unlocked = SaveSystem.IsMapUnlocked(map.Id);
                 bool selected = Manager.Save.SelectedMap == map.Id;
                 GUI.Box(new Rect(200, y, 780, 84), GUIContent.none, _card);
                 GUI.Label(new Rect(214, y + 6, 560, 28), map.Name + (selected ? "   (selected)" : ""), _body);

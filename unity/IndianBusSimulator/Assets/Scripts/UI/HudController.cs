@@ -27,7 +27,7 @@ namespace IBS.UI
         public bool ShowControls = true;
         public string ControlLayout = "default";
 
-        public readonly DriveInput Controls = new DriveInput();
+        public DriveInput Controls = new DriveInput();
         private readonly Dictionary<string, bool> _buttonState = new Dictionary<string, bool>();
         private GUIStyle _panel;
         private GUIStyle _label;

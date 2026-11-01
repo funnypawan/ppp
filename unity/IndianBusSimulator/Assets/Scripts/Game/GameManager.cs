@@ -422,7 +422,7 @@ namespace IBS.Game
         public bool BuyBus(string busId)
         {
             BusSpec spec = BusCatalog.Get(busId);
-            if (Save.IsBusUnlocked(busId)) return true;
+            if (SaveSystem.IsBusUnlocked(busId)) return true;
             if (!SaveSystem.SpendMoney(spec.Price)) return false;
             SaveSystem.UnlockBus(busId);
             SaveSystem.Save();
@@ -432,7 +432,7 @@ namespace IBS.Game
         public bool BuyMap(string mapId)
         {
             MapDefinition map = MapCatalog.Get(mapId);
-            if (Save.IsMapUnlocked(mapId)) return true;
+            if (SaveSystem.IsMapUnlocked(mapId)) return true;
             if (!SaveSystem.SpendMoney(map.Price)) return false;
             SaveSystem.UnlockMap(mapId);
             SaveSystem.Save();
