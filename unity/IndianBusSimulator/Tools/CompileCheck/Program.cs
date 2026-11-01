@@ -244,7 +244,7 @@ namespace IBS3D.CompileCheck
                 physics.Step(Dt, DriveEnvironment.Default());
             }
             float before = physics.Speed;
-            WorldCollider[] colliders = { WorldCollider.Circle(physics.X + 6f, physics.Y, 2f) };
+            WorldCollider[] colliders = { WorldCollider.Circle(physics.X + 2.5f, physics.Y, 2f) };
             CollisionResult result = CollisionSolver.Resolve(physics, colliders);
             Check(result.Impulse > 0f, "collision reports an impulse");
             Check(physics.Damage > 0f, "collision adds damage");
