@@ -508,11 +508,11 @@ namespace IBS.Core
                 {
                     float c = (float)Math.Cos(-col.Yaw);
                     float s = (float)Math.Sin(-col.Yaw);
-                    float lx = dx * c - dy * s;
-                    float ly = dx * s + dy * c;
-                    float qx = MathUtil.Clamp(lx, -col.Hx, col.Hx);
-                    float qy = MathUtil.Clamp(ly, -col.Hy, col.Hy);
-                    float dist = (float)Math.Sqrt((lx - qx) * (lx - qx) + (ly - qy) * (ly - qy));
+                    float bx = dx * c - dy * s;
+                    float by = dx * s + dy * c;
+                    float qx = MathUtil.Clamp(bx, -col.Hx, col.Hx);
+                    float qy = MathUtil.Clamp(by, -col.Hy, col.Hy);
+                    float dist = (float)Math.Sqrt((bx - qx) * (bx - qx) + (by - qy) * (by - qy));
                     if (dist >= halfW + 0.05f) continue;
 
                     float nlx, nly;

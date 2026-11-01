@@ -77,7 +77,7 @@ namespace IBS.Game
                 {
                     Passenger passenger = Waiting[i];
                     if (Vector2.Distance(passenger.From, new Vector2(Bus.Physics.X, Bus.Physics.Y)) > 7f) continue;
-                    if (Onboard.Count >= Bus.Spec.Capacity) break;
+                    if (Onboard.Count >= Bus.Spec.SeatCapacity) break;
                     Waiting.RemoveAt(i);
                     passenger.Seated = true;
                     Onboard.Add(passenger);

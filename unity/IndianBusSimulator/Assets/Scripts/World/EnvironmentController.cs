@@ -10,6 +10,7 @@ namespace IBS.World
     /// </summary>
     public class EnvironmentController : MonoBehaviour
     {
+        public MapDefinition Map;
         public float Hour = 12f;
         public string WeatherId = "clear";
         public bool TimeFlows = true;
@@ -24,6 +25,7 @@ namespace IBS.World
 
         public void Initialise(MapDefinition map, string weatherId, float hour)
         {
+            Map = map;
             WeatherId = weatherId;
             Weather = WeatherCatalog.Get(weatherId);
             Hour = hour;

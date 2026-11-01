@@ -16,6 +16,11 @@ namespace IBS.Core
             return v < lo ? lo : (v > hi ? hi : v);
         }
 
+        public static int Clamp(int v, int lo, int hi)
+        {
+            return v < lo ? lo : (v > hi ? hi : v);
+        }
+
         public static float Clamp01(float v)
         {
             return Clamp(v, 0f, 1f);

@@ -37,7 +37,7 @@ namespace IBS.World
             FuelStations.Clear();
             if (Root != null) Object.Destroy(Root);
             Root = new GameObject("Map_" + map.Id);
-            MathUtil.Rng rng = new MathUtil.Rng(seed);
+            MathUtil.Rng rng = new MathUtil.Rng((uint)seed);
 
             BuildGround();
             BuildRoads();

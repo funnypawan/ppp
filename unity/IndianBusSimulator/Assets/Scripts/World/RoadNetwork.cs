@@ -39,7 +39,7 @@ namespace IBS.World
             Map = map;
             Nodes.Clear();
             Edges.Clear();
-            MathUtil.Rng rng = new MathUtil.Rng(seed);
+            MathUtil.Rng rng = new MathUtil.Rng((uint)seed);
             switch (map.Layout)
             {
                 case "highway": BuildHighway(rng); break;
