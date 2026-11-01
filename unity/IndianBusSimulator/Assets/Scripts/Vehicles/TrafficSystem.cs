@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using IBS.World;
 using IBS.Core;
 using IBS.Util;
 

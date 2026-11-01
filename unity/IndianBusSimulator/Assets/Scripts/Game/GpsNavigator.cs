@@ -17,7 +17,7 @@ namespace IBS.Game
 
         private List<int> _path = new List<int>();
         private int _pathIndex;
-        private Rng _rng = new Rng(555);
+        private MathUtil.Rng _rng = new MathUtil.Rng(555);
 
         public void Initialise(RoadNetwork network)
         {

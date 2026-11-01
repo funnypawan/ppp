@@ -1,4 +1,5 @@
 using UnityEngine;
+using IBS.Vehicles;
 using IBS.Core;
 
 namespace IBS.Game

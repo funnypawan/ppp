@@ -7,6 +7,7 @@
 // Signatures were cross checked against the UnityCsReference sources.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace UnityEngine
@@ -68,7 +69,7 @@ namespace UnityEngine
         public void SetParent(Transform newParent, bool worldPositionStays) { }
         public Transform GetChild(int index) { return null; }
         public Transform Find(string n) { return null; }
-        public IEnumerator GetEnumerator() { yield break; }
+        System.Collections.IEnumerator GetEnumerator() { yield break; }
     }
 
     public class GameObject : Object
