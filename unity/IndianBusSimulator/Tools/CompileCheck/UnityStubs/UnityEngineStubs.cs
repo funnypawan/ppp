@@ -69,7 +69,7 @@ namespace UnityEngine
         public void SetParent(Transform newParent, bool worldPositionStays) { }
         public Transform GetChild(int index) { return null; }
         public Transform Find(string n) { return null; }
-        System.Collections.IEnumerator GetEnumerator() { yield break; }
+        public System.Collections.IEnumerator GetEnumerator() { yield break; }
     }
 
     public class GameObject : Object
