@@ -1,0 +1,42 @@
+name: Unity compile check (C# core)
+
+on:
+  push:
+    branches:
+      - main
+      - arena/**
+  pull_request:
+    paths:
+      - "unity/**"
+      - ".github/workflows/unity-compile-check.yml"
+
+jobs:
+  compile-check:
+    name: Type check Unity scripts and run the C# core suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Show SDK info
+        run: dotnet --info
+
+      - name: Build + run the compile check harness
+        working-directory: unity/IndianBusSimulator/Tools/CompileCheck
+        run: |
+          dotnet build CompileCheck.csproj -c Release --nologo
+          dotnet run --project CompileCheck.csproj -c Release --no-build
+
+      - name: Package the checked sources
+        uses: actions/upload-artifact@v4
+        with:
+          name: unity-compile-check-report
+          path: |
+            unity/IndianBusSimulator/Tools/CompileCheck/bin/Release/**/*.log
+          if-no-files-found: ignore
+          retention-days: 7

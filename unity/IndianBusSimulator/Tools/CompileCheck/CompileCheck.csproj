@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Compile check harness.
+
+    The Unity Editor is not available on CI machines, so the game scripts are
+    type checked against a minimal set of UnityEngine stubs (UnityStubs/).
+    The engine free core (math, bus catalogue, vehicle physics) is additionally
+    executed by Program.cs to make sure the C# port behaves like the
+    JavaScript implementation that is covered by the node test suite.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AssemblyName>IBS3DCompileCheck</AssemblyName>
+    <RootNamespace>IBS3D.CompileCheck</RootNamespace>
+    <NoWarn>CS0169;CS0414;CS0649;CS0108;CS0114</NoWarn>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RestorePackages>false</RestorePackages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../Assets/Scripts/**/*.cs" />
+    <Compile Include="UnityStubs/**/*.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>
