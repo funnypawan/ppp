@@ -518,15 +518,15 @@ namespace IBS.Core
                     float nlx, nly;
                     if (dist > 1e-4f)
                     {
-                        nlx = (lx - qx) / dist;
-                        nly = (ly - qy) / dist;
+                        nlx = (bx - qx) / dist;
+                        nly = (by - qy) / dist;
                     }
                     else
                     {
-                        float px = col.Hx - Math.Abs(lx);
-                        float py = col.Hy - Math.Abs(ly);
-                        if (px < py) { nlx = MathUtil.Sign(lx); nly = 0f; }
-                        else { nlx = 0f; nly = MathUtil.Sign(ly); }
+                        float px = col.Hx - Math.Abs(bx);
+                        float py = col.Hy - Math.Abs(by);
+                        if (px < py) { nlx = MathUtil.Sign(bx); nly = 0f; }
+                        else { nlx = 0f; nly = MathUtil.Sign(by); }
                     }
                     float cw = (float)Math.Cos(col.Yaw);
                     float sw = (float)Math.Sin(col.Yaw);
