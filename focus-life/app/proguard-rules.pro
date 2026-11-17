@@ -1,1 +1,3 @@
-# FOCUS LIFE ProGuard rules (release minify disabled by default for debug APK)
+# FOCUS LIFE release rules
+-keep class in.focuslife.app.data.** { *; }
+-dontwarn androidx.**
