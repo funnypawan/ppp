@@ -21,6 +21,18 @@
 2. Wait ~5–10 min → download `FocusLife-APK` artifact.
 3. Install as in Option A.
 
+## Restricted settings fix ("App was denied access")
+
+If the Accessibility toggle shows **"App was denied access"** (common on Android 13+ when the APK is sideloaded):
+
+1. Settings → Apps → **FOCUS LIFE** (App info)
+2. Tap **⋮** (top-right) → **Allow restricted settings**
+3. Settings → Accessibility → **FOCUS LIFE** → **ON**
+
+Or install from a PC: `adb install focus-life/app/build/outputs/apk/debug/app-debug.apk` (ADB installs are not restricted).
+
+Only Accessibility + Notification Listener are restricted — Notifications and Usage Access work normally.
+
 ## First launch setup
 
 1. Enter your name (Profile tab).

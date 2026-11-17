@@ -20,6 +20,23 @@ FOCUS LIFE is **offline-first and private**. It never uploads data, never collec
 
 - **Why:** To show a warning screen *before* you open an app you selected as distracting while a Focus/Study/Running/Sleep mode is active. It does NOT read screen content (`canRetrieveWindowContent=false`), does NOT record keystrokes, and does NOT send data anywhere.
 - **How:** Focus tab → **Accessibility Settings** → find **FOCUS LIFE** → toggle **ON** → confirm. Then select blocked apps (YouTube, Instagram, etc.) and start a Focus mode.
+
+### ⚠️ "App was denied access" / Restricted settings (Android 13+ sideloaded APKs)
+
+If you installed this APK directly (browser, APK file, chat app) instead of Play Store, Android **blocks the Accessibility toggle on purpose**. This is expected, not a bug. Fix it once:
+
+1. **Settings → Apps → FOCUS LIFE** (App info).
+2. Tap the **⋮ (three dots / more)** in the top-right corner.
+3. Tap **"Allow restricted settings"** (you may need PIN/fingerprint).
+4. Settings → **Accessibility** → **Downloaded/Installed apps** → **FOCUS LIFE** → **ON**.
+
+Notes:
+- If "Allow restricted settings" does NOT appear: open Accessibility → FOCUS LIFE → toggle ON once (the "App was denied access" dialog appears) → then go back to App info — the ⋮ option appears after that attempt.
+- On OPPO/ColorOS and Samsung/One UI the wording is "Restricted setting" or "Restricted settings" — same thing, same fix.
+- Alternative: install from a PC with `adb install FocusLife-v1.0-debug.apk` — ADB installs are exempt from restricted settings.
+- Restricted settings affect **only Accessibility and Notification Listener**. Notifications and Usage Access are NOT affected — they can be enabled normally.
+- Never allow restricted settings for an app you don't trust. FOCUS LIFE cannot read your chats, passwords or content — and you can verify that in "Why this is safe" above.
+
 - **Test:** Start Deep Focus (25 min) → open YouTube → FOCUS LIFE warning appears → tap **Go Back** or **Emergency Unlock** (with reason).
 - **Revoke:** Settings → Accessibility → FOCUS LIFE → OFF. Blocker stops; timer/study/habits keep working.
 - **Play Store note:** Accessibility use is disclosed in the Play Data Safety form as "App functionality — distraction warning, on-device only."

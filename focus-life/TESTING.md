@@ -26,7 +26,7 @@ CI history: first 5 runs failed (Groovy DSL syntax, accessibility XML attribute,
 | 5 | Fitness | Profile → Fitness → Save log | Home running/exercise cards update; weekly progress shows | ☐ |
 | 6 | Routine | Profile → Routine → edit time/title → Save | Slot updates; reminder fires near slot time | ☐ |
 | 7 | Usage analyzer | Grant Usage Access → Focus tab | Total screen time + app list + launch counts + suggestions | ☐ |
-| 8 | App blocker | Grant Accessibility → select YouTube → Start Focus → open YouTube | Warning overlay appears; Go Back returns; Emergency Unlock logs reason | ☐ |
+| 8 | App blocker | Grant Usage Access → if Android 13+ sideloaded, first App info → ⋮ → Allow restricted settings → then grant Accessibility → select YouTube → Start Focus → open YouTube | Warning overlay appears; Go Back returns; Emergency Unlock logs reason | ☐ |
 | 9 | Control Yourself | Profile → Control → add diary entry + reasons | Entry appears in diary; reasons shown on blocker overlay | ☐ |
 | 10 | Motivation | Profile → Motivation → add goal + vision | Goals/vision appear; daily quote shows | ☐ |
 | 11 | Daily report | Profile → Report | Study/focus/running/habits/goals + improvement area + weekly table | ☐ |

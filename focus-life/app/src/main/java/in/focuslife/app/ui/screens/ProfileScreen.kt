@@ -131,6 +131,17 @@ fun ProfileScreen(viewModel: AppViewModel) {
             OutlinedButton(onClick = { permissionRecheck++ }, modifier = Modifier.fillMaxWidth()) {
                 Text("Re-check Permissions")
             }
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+            ) {
+                Text(
+                    text = "Accessibility shows OFF / \"App was denied access\"? Sideloaded APKs are blocked by Android 13+ on purpose. Fix: App info → ⋮ (top-right) → Allow restricted settings → then enable FOCUS LIFE in Accessibility → Downloaded apps. (Only Accessibility is restricted — Notifications and Usage Access enable normally.)",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier.padding(12.dp)
+                )
+            }
         }
 
         item {
