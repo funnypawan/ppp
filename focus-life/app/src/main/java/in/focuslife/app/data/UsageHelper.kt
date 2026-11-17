@@ -40,6 +40,7 @@ object UsageHelper {
             return emptyList()
         }
         val pm = context.packageManager
+        val launchCounts = queryLaunchCounts(context, start, now)
         return stats
             .filter { it.totalTimeInForeground > 0 && it.packageName != context.packageName }
             .map {
@@ -48,9 +49,29 @@ object UsageHelper {
                 } catch (e: Exception) {
                     it.packageName
                 }
-                AppUsage(it.packageName, label, it.totalTimeInForeground, it.mLaunchCount)
+                AppUsage(it.packageName, label, it.totalTimeInForeground, launchCounts[it.packageName] ?: 0)
             }
             .sortedByDescending { it.foregroundMs }
+    }
+
+    @Suppress("DEPRECATION")
+    fun queryLaunchCounts(context: Context, start: Long, end: Long): Map<String, Int> {
+        val usm = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val counts = HashMap<String, Int>()
+        try {
+            val events = usm.queryEvents(start, end)
+            val event = android.app.usage.UsageEvents.Event()
+            while (events.hasNextEvent()) {
+                events.getNextEvent(event)
+                if (event.eventType == android.app.usage.UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                    val pkg = event.packageName ?: continue
+                    counts[pkg] = (counts[pkg] ?: 0) + 1
+                }
+            }
+        } catch (e: Exception) {
+            // Usage events not available for this period — return empty counts
+        }
+        return counts
     }
 
     fun totalScreenMs(context: Context): Long = queryTodayUsage(context).sumOf { it.foregroundMs }

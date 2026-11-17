@@ -44,11 +44,11 @@ class MainActivity : ComponentActivity() {
                 val viewModel: AppViewModel = viewModel()
                 var selectedTab by remember { mutableIntStateOf(0) }
                 val tabs = listOf(
-                    Triple(Icons.Default.Home, stringResource(R.string.nav_home)) { HomeScreen(viewModel, onOpenFocus = { selectedTab = 1 }, onOpenStudy = { selectedTab = 2 }) },
-                    Triple(Icons.Default.Timer, stringResource(R.string.nav_focus)) { FocusScreen(viewModel) },
-                    Triple(Icons.Default.Book, stringResource(R.string.nav_study)) { StudyScreen(viewModel) },
-                    Triple(Icons.Default.CheckCircle, stringResource(R.string.nav_habits)) { HabitsScreen(viewModel) },
-                    Triple(Icons.Default.Person, stringResource(R.string.nav_profile)) { ProfileScreen(viewModel) }
+                    Pair(Icons.Default.Home, stringResource(R.string.nav_home)),
+                    Pair(Icons.Default.Timer, stringResource(R.string.nav_focus)),
+                    Pair(Icons.Default.Book, stringResource(R.string.nav_study)),
+                    Pair(Icons.Default.CheckCircle, stringResource(R.string.nav_habits)),
+                    Pair(Icons.Default.Person, stringResource(R.string.nav_profile))
                 )
 
                 LaunchedEffect(Unit) {
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     bottomBar = {
                         NavigationBar {
-                            tabs.forEachIndexed { index, (icon, label, _) ->
+                            tabs.forEachIndexed { index, (icon, label) ->
                                 NavigationBarItem(
                                     selected = selectedTab == index,
                                     onClick = { selectedTab = index },
@@ -71,7 +71,13 @@ class MainActivity : ComponentActivity() {
                     }
                 ) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        tabs[selectedTab].third()
+                        when (selectedTab) {
+                            0 -> HomeScreen(viewModel, onOpenFocus = { selectedTab = 1 }, onOpenStudy = { selectedTab = 2 })
+                            1 -> FocusScreen(viewModel)
+                            2 -> StudyScreen(viewModel)
+                            3 -> HabitsScreen(viewModel)
+                            4 -> ProfileScreen(viewModel)
+                        }
                     }
                 }
             }
