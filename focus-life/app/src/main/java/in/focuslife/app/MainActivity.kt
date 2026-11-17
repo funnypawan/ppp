@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Timer
-import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
@@ -45,8 +45,8 @@ class MainActivity : ComponentActivity() {
                 var selectedTab by remember { mutableIntStateOf(0) }
                 val tabs = listOf(
                     Pair(Icons.Default.Home, stringResource(R.string.nav_home)),
-                    Pair(Icons.Default.Timer, stringResource(R.string.nav_focus)),
-                    Pair(Icons.Default.Book, stringResource(R.string.nav_study)),
+                    Pair(Icons.Default.PlayArrow, stringResource(R.string.nav_focus)),
+                    Pair(Icons.Default.List, stringResource(R.string.nav_study)),
                     Pair(Icons.Default.CheckCircle, stringResource(R.string.nav_habits)),
                     Pair(Icons.Default.Person, stringResource(R.string.nav_profile))
                 )
