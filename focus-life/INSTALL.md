@@ -2,7 +2,7 @@
 
 ## Option A: Install the APK (recommended, no PC needed)
 
-1. Download `FocusLife-v1.0-debug.apk` from GitHub Actions artifacts or the `focus-life-apk-latest` Release (see README / Actions page).
+1. Download **`FocusLife-v1.0-debug.apk`** (26.9 MB) directly from the release: **https://github.com/funnypawan/ppp/releases/tag/focus-life-apk-latest** — or from the `FocusLife-APK` artifact on the [Actions](https://github.com/funnypawan/ppp/actions/workflows/build-focus-life-apk.yml) page (sign in to GitHub required).
 2. Copy the APK to your phone (WhatsApp, Drive, USB, or download directly on phone).
 3. Tap the APK → if asked, allow **"Install unknown apps"** for your browser/file manager → **Install**.
 4. Open **FOCUS LIFE** from the launcher.
