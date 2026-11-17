@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   build-apk:
@@ -50,13 +51,30 @@ jobs:
           code=${PIPESTATUS[0]}
           if [ "$code" -ne 0 ]; then
             echo "::error::Gradle build failed — key lines:"
-            grep -aiE "error:|e: file|FAILURE:|What went wrong|Execution failed|AAPT|not found|requires|failed to" /tmp/gradle-focus.log | head -25 | while IFS= read -r l; do echo "::error::${l:0:280}"; done
+            grep -aiE -A4 -B1 "error:|e: file|FAILURE:|What went wrong|Execution failed|A problem occurred|Caused by|AAPT|not found|requires|failed to|Unresolved|Cannot find|duplicate|manifest merger" /tmp/gradle-focus.log | head -45 | while IFS= read -r l; do echo "::error::${l:0:280}"; done
           fi
           exit $code
 
       - name: Run unit tests
         working-directory: focus-life
         run: ./gradlew testDebugUnitTest --no-daemon
+
+      - name: Report build log as issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            echo "## Gradle failure log (run ${{ github.run_number }}, sha ${{ github.sha }})";
+            echo;
+            echo "<details><summary>Last 300 lines / 90 KB of build log</summary>";
+            echo;
+            echo '```';
+            tail -c 90000 /tmp/gradle-focus.log | tail -n 300;
+            echo '```';
+            echo "</details>";
+          } > /tmp/issue-body.md
+          gh issue create --repo "$GITHUB_REPOSITORY" --title "FOCUS LIFE build failure (run ${{ github.run_number }})" --body-file /tmp/issue-body.md || echo "could not create issue"
 
       - name: Upload Gradle log on failure
         if: failure()

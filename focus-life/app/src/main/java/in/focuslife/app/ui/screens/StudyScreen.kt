@@ -1,7 +1,9 @@
 package `in`.focuslife.app.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
@@ -15,7 +17,6 @@ import `in`.focuslife.app.data.DefaultData
 import `in`.focuslife.app.ui.components.SectionTitle
 import `in`.focuslife.app.ui.viewmodel.AppViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudyScreen(viewModel: AppViewModel) {
     var title by remember { mutableStateOf("") }
@@ -23,8 +24,6 @@ fun StudyScreen(viewModel: AppViewModel) {
     var chapter by remember { mutableStateOf("") }
     var targetMinutes by remember { mutableStateOf("60") }
     var exam by remember { mutableStateOf(DefaultData.exams.first()) }
-    var subjectExpanded by remember { mutableStateOf(false) }
-    var examExpanded by remember { mutableStateOf(false) }
 
     val tasks by viewModel.studyTasks.collectAsState()
     val weekStats by viewModel.weekStats.collectAsState()
@@ -46,22 +45,18 @@ fun StudyScreen(viewModel: AppViewModel) {
             Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text("Study target (e.g. Trigonometry practice)") }, modifier = Modifier.fillMaxWidth())
-                    ExposedDropdownMenuBox(expanded = subjectExpanded, onExpandedChange = { subjectExpanded = !subjectExpanded }) {
-                        OutlinedTextField(value = subject, onValueChange = {}, readOnly = true, label = { Text("Subject") }, modifier = Modifier.fillMaxWidth().menuAnchor())
-                        ExposedDropdownMenu(expanded = subjectExpanded, onDismissRequest = { subjectExpanded = false }) {
-                            DefaultData.subjects.forEach { s ->
-                                DropdownMenuItem(text = { Text(s) }, onClick = { subject = s; subjectExpanded = false })
-                            }
+                    Text(text = "Subject", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Row(modifier = Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        DefaultData.subjects.forEach { s ->
+                            FilterChip(selected = subject == s, onClick = { subject = s }, label = { Text(s) })
                         }
                     }
                     OutlinedTextField(value = chapter, onValueChange = { chapter = it }, label = { Text("Chapter / Topic") }, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(value = targetMinutes, onValueChange = { targetMinutes = it.filter(Char::isDigit).take(3) }, label = { Text("Target minutes") }, modifier = Modifier.fillMaxWidth())
-                    ExposedDropdownMenuBox(expanded = examExpanded, onExpandedChange = { examExpanded = !examExpanded }) {
-                        OutlinedTextField(value = exam, onValueChange = {}, readOnly = true, label = { Text("Exam") }, modifier = Modifier.fillMaxWidth().menuAnchor())
-                        ExposedDropdownMenu(expanded = examExpanded, onDismissRequest = { examExpanded = false }) {
-                            DefaultData.exams.forEach { e ->
-                                DropdownMenuItem(text = { Text(e) }, onClick = { exam = e; examExpanded = false })
-                            }
+                    Text(text = "Exam", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Row(modifier = Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        DefaultData.exams.forEach { e ->
+                            FilterChip(selected = exam == e, onClick = { exam = e }, label = { Text(e) })
                         }
                     }
                     Button(

@@ -9,7 +9,7 @@ import org.junit.Test
 class ExampleUnitTest {
     @Test
     fun formatDuration_works() {
-        assertEquals("90m", UsageHelper.formatDuration(90 * 60 * 1000L))
+        assertEquals("45m", UsageHelper.formatDuration(45 * 60 * 1000L))
         assertEquals("1h 30m", UsageHelper.formatDuration(90 * 60 * 1000L))
         assertEquals("2h 0m", UsageHelper.formatDuration(120 * 60 * 1000L))
     }
