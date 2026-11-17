@@ -34,6 +34,8 @@ CI history: first 5 runs failed (Groovy DSL syntax, accessibility XML attribute,
 | 13 | Permission denial | Deny Usage/Accessibility/Notifications | App does not crash; friendly empty states shown | ☐ |
 | 14 | Offline | Airplane mode → use all tabs | All features work; no network errors | ☐ |
 | 15 | Battery | Run 25-min timer with screen off | Timer completes; notification + history saved | ☐ |
+| 16 | Permissions screen | Profile → Permissions → Grant/Fix each, then Re-check | ✓ for all three after granting; after revoking one, its ✗ shows; app never crashes | ☐ |
+| 17 | Focus timer resume | Focus → start 1-min timer → pause → resume → let finish | Session is saved with minutes/completion (previously lost on resume) | ☐ |
 
 ## Known limitations (honest)
 

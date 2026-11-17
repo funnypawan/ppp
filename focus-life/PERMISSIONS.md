@@ -24,11 +24,12 @@ FOCUS LIFE is **offline-first and private**. It never uploads data, never collec
 - **Revoke:** Settings → Accessibility → FOCUS LIFE → OFF. Blocker stops; timer/study/habits keep working.
 - **Play Store note:** Accessibility use is disclosed in the Play Data Safety form as "App functionality — distraction warning, on-device only."
 
-## 4. Exact Alarms (routine reminders)
+## 4. Routine reminders (no extra permission needed)
 
 - **Why:** To remind you at your routine times (e.g. 05:00 Running).
-- **How:** Usually auto-granted. If reminders don't fire, Settings → Apps → Special app access → Alarms & reminders → FOCUS LIFE → Allow.
-- **Revoke:** Same screen → Deny. WorkManager reminders still run every 15 min as fallback.
+- **How it works:** WorkManager checks every 15 minutes and notifies when a slot is approaching. No exact-alarm permission is required or requested.
+- **Control:** Profile tab → the "Routine reminders" toggle disables them entirely (the background worker checks this flag before doing anything).
+- **Battery:** On OPPO/Xiaomi/Vivo the 15-minute cadence may be batched by the OS. See section 5.
 
 ## 5. Battery Optimization (recommended for timer)
 
@@ -36,6 +37,10 @@ FOCUS LIFE is **offline-first and private**. It never uploads data, never collec
 - **How:** Settings → Battery → Battery optimization → FOCUS LIFE → **Don't optimize**. This keeps the 25/50-min timer accurate.
 - **Revoke:** Not required; "Don't optimize" only affects FOCUS LIFE.
 
-## Graceful denial
+## 6. In-app Permissions screen
+
+Open **Profile → Permissions** to see a live ✓/✗ status for Notifications, Usage Access and Accessibility, with one-tap Grant/Fix buttons and a **Re-check Permissions** button after you return from Settings. This screen reads the real runtime state (not just what the user tapped earlier).
+
+## 7. Graceful denial
 
 Every feature degrades gracefully: deny Usage Access → analyzer shows instructions; deny Accessibility → blocker is disabled but timer works; deny Notifications → no reminders but all tracking works. No crashes, no forced prompts.

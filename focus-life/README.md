@@ -32,7 +32,7 @@ focus-life/
 
 - **Storage:** Room (`focuslife.db`) + DataStore. 100% offline. No network calls.
 - **Background:** Foreground service for timer (wake lock), WorkManager periodic reminders (15 min), battery-efficient.
-- **Permissions:** POST_NOTIFICATIONS, FOREGROUND_SERVICE, PACKAGE_USAGE_STATS, SCHEDULE_EXACT_ALARM, RECEIVE_BOOT_COMPLETED. Accessibility only for blocker warning.
+- **Permissions:** only POST_NOTIFICATIONS, FOREGROUND_SERVICE(+DATA_SYNC), PACKAGE_USAGE_STATS, RECEIVE_BOOT_COMPLETED, WAKE_LOCK. Accessibility only for blocker warning. No Internet (100% offline), no exact alarms, no runtime dangerous permissions. Live status in Profile → Permissions.
 - **Target:** OPPO A18 (4GB RAM, Helio G85), Android 10+. Lightweight, no heavy libraries.
 
 ## Build

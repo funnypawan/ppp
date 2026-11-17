@@ -118,3 +118,12 @@ jobs:
             ℹ️ Debug build, offline-first, no ads. See `focus-life/PERMISSIONS.md` for Usage Access + Accessibility setup.
           files: FocusLife-v1.0-debug.apk
           make_latest: true
+
+      - name: Close stale build-failure issues
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for n in $(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search 'FOCUS LIFE build failure in:title' --json number --jq '.[].number'); do
+            gh issue close "$n" --repo "$GITHUB_REPOSITORY" --comment "Fixed — this workflow run succeeded and the APK is published to release focus-life-apk-latest." || true
+          done

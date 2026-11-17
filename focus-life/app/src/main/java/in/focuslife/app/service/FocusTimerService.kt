@@ -31,6 +31,9 @@ class FocusTimerService : Service() {
         var remainingSeconds: Int = 0
         var isRunning: Boolean = false
         var isPaused: Boolean = false
+        var plannedMinutes: Int = 0
+        var taskTitle: String = ""
+        var mode: String = "deep_focus"
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -59,6 +62,9 @@ class FocusTimerService : Service() {
 
     private fun startTimer(minutes: Int, task: String, mode: String) {
         stopTimer(finished = false, silent = true)
+        plannedMinutes = minutes
+        taskTitle = task
+        FocusTimerService.mode = mode
         remainingSeconds = minutes * 60
         isRunning = true
         isPaused = false
@@ -72,8 +78,10 @@ class FocusTimerService : Service() {
         }
         timer = object : CountDownTimer(remainingSeconds * 1000L, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                remainingSeconds = (millisUntilFinished / 1000).toInt()
-                NotificationHelper.focusNotification(this@FocusTimerService, "Focusing — ${format(remainingSeconds)} remaining")
+                remainingSeconds = ((millisUntilFinished + 999) / 1000).toInt()
+                if (remainingSeconds % 30 == 0 || remainingSeconds <= 10) {
+                    NotificationHelper.focusNotification(this@FocusTimerService, "Focusing — ${format(remainingSeconds)} remaining")
+                }
             }
             override fun onFinish() {
                 completeSession(minutes, task, mode)
@@ -103,13 +111,13 @@ class FocusTimerService : Service() {
         isPaused = false
         timer = object : CountDownTimer(remainingSeconds * 1000L, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                remainingSeconds = (millisUntilFinished / 1000).toInt()
-                NotificationHelper.focusNotification(this@FocusTimerService, "Focusing — ${format(remainingSeconds)} remaining")
+                remainingSeconds = ((millisUntilFinished + 999) / 1000).toInt()
+                if (remainingSeconds % 30 == 0 || remainingSeconds <= 10) {
+                    NotificationHelper.focusNotification(this@FocusTimerService, "Focusing — ${format(remainingSeconds)} remaining")
+                }
             }
             override fun onFinish() {
-                // Resume doesn't know original minutes; approximate from remaining is not possible here,
-                // so we complete with elapsed tracking via prefs task length is handled in UI layer.
-                stopTimer(finished = true)
+                completeSession(plannedMinutes, taskTitle, mode)
             }
         }.start()
     }
@@ -118,6 +126,9 @@ class FocusTimerService : Service() {
         isRunning = false
         isPaused = false
         remainingSeconds = 0
+        plannedMinutes = 0
+        taskTitle = ""
+        FocusTimerService.mode = "deep_focus"
         if (wakeLock?.isHeld == true) wakeLock?.release()
         NotificationHelper.cancelFocus(this)
         NotificationHelper.reminderNotification(this, "FOCUS LIFE", getString(R.string.notification_focus_done))
@@ -147,6 +158,9 @@ class FocusTimerService : Service() {
             isRunning = false
             isPaused = false
             remainingSeconds = 0
+            plannedMinutes = 0
+            taskTitle = ""
+            mode = "deep_focus"
             if (wakeLock?.isHeld == true) wakeLock?.release()
             NotificationHelper.cancelFocus(this)
             stopForeground(true)

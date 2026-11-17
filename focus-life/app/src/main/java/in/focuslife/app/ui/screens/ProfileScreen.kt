@@ -1,5 +1,7 @@
 package `in`.focuslife.app.ui.screens
 
+import android.content.Intent
+import android.provider.Settings
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -8,11 +10,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.focuslife.app.R
 import `in`.focuslife.app.data.FitnessLog
+import `in`.focuslife.app.data.PermissionHelper
 import `in`.focuslife.app.data.Quotes
+import `in`.focuslife.app.data.UsageHelper
 import `in`.focuslife.app.ui.components.SectionTitle
 import `in`.focuslife.app.ui.viewmodel.AppViewModel
 
@@ -42,6 +47,10 @@ fun ProfileScreen(viewModel: AppViewModel) {
     val weekStats by viewModel.weekStats.collectAsState()
     val dayStats by viewModel.dayStats.collectAsState()
     val totalScreenMs by viewModel.totalScreenMs.collectAsState()
+
+    val context = LocalContext.current
+    var permissionRecheck by remember { mutableIntStateOf(0) }
+    val permissionStatus = remember(permissionRecheck) { PermissionHelper.status(context) }
 
     LaunchedEffect(userName) { if (name.isBlank()) name = userName }
     LaunchedEffect(personalReasons) { if (reasonsText.isBlank()) reasonsText = personalReasons }
@@ -80,6 +89,47 @@ fun ProfileScreen(viewModel: AppViewModel) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "Routine reminders", modifier = Modifier.weight(1f))
                 Switch(checked = remindersEnabled, onCheckedChange = { viewModel.setRemindersEnabled(it) })
+            }
+        }
+
+        item {
+            SectionTitle("Permissions")
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = "All permissions are optional. Deny any of them and the app keeps working with reduced features.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(Modifier.height(8.dp))
+            PermissionRow(
+                name = "Notifications (reminders)",
+                granted = permissionStatus.notifications,
+                onFix = {
+                    context.startActivity(
+                        Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                            .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    )
+                }
+            )
+            PermissionRow(
+                name = "Usage Access (screen time)",
+                granted = permissionStatus.usageAccess,
+                onFix = { context.startActivity(UsageHelper.usageAccessIntent(context)) }
+            )
+            PermissionRow(
+                name = "Accessibility (app blocker)",
+                granted = permissionStatus.accessibility,
+                onFix = {
+                    context.startActivity(
+                        Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    )
+                }
+            )
+            Spacer(Modifier.height(8.dp))
+            OutlinedButton(onClick = { permissionRecheck++ }, modifier = Modifier.fillMaxWidth()) {
+                Text("Re-check Permissions")
             }
         }
 
@@ -289,6 +339,31 @@ fun ProfileScreen(viewModel: AppViewModel) {
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PermissionRow(name: String, granted: Boolean, onFix: () -> Unit) {
+    Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = if (granted) "✓" else "✗",
+                style = MaterialTheme.typography.titleLarge,
+                color = if (granted) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+            )
+            Text(
+                text = name,
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            OutlinedButton(onClick = onFix) {
+                Text(if (granted) "Settings" else "Grant")
             }
         }
     }

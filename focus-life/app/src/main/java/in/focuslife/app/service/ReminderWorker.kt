@@ -5,12 +5,18 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import `in`.focuslife.app.R
 import `in`.focuslife.app.data.AppDatabase
+import `in`.focuslife.app.data.PreferencesManager
+import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class ReminderWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
+        val prefs = PreferencesManager(applicationContext)
+        val remindersEnabled = try { prefs.remindersEnabled.first() } catch (e: Exception) { false }
+        if (!remindersEnabled) return Result.success()
+
         val db = AppDatabase.getInstance(applicationContext)
         val slots = db.routineSlotDao().getAll().filter { it.enabled }
         val now = LocalTime.now()
