@@ -126,8 +126,8 @@ class FocusTimerService : Service() {
         isRunning = false
         isPaused = false
         remainingSeconds = 0
-        plannedMinutes = 0
-        taskTitle = ""
+        FocusTimerService.plannedMinutes = 0
+        FocusTimerService.taskTitle = ""
         FocusTimerService.mode = "deep_focus"
         if (wakeLock?.isHeld == true) wakeLock?.release()
         NotificationHelper.cancelFocus(this)
