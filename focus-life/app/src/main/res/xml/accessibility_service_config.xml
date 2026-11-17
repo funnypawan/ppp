@@ -5,4 +5,4 @@
     android:accessibilityFlags="flagRetrieveInteractiveWindows"
     android:canRetrieveWindowContent="false"
     android:canRequestFilterKeyEvents="false"
-    android:feedbackType="feedbackGeneric" />
+    android:accessibilityFeedbackType="feedbackGeneric" />
