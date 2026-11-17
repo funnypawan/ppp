@@ -1,0 +1,102 @@
+name: Build FOCUS LIFE APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["arena/bd56d3fc-ppp", "main"]
+    paths:
+      - "focus-life/**"
+      - ".github/workflows/build-focus-life-apk.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: Build FOCUS LIFE debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: focus-life
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          cache-dependency-path: |
+            focus-life/*.gradle*
+            focus-life/app/*.gradle*
+
+      - name: Setup Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
+          which sdkmanager
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
+
+      - name: Build debug APK (Gradle)
+        working-directory: focus-life
+        run: |
+          chmod +x gradlew
+          set +e
+          ./gradlew assembleDebug --no-daemon 2>&1 | tee /tmp/gradle-focus.log
+          code=${PIPESTATUS[0]}
+          if [ "$code" -ne 0 ]; then
+            echo "::error::Gradle build failed — key lines:"
+            grep -aiE "error:|e: file|FAILURE:|What went wrong|Execution failed|AAPT|not found|requires|failed to" /tmp/gradle-focus.log | head -25 | while IFS= read -r l; do echo "::error::${l:0:280}"; done
+          fi
+          exit $code
+
+      - name: Run unit tests
+        working-directory: focus-life
+        run: ./gradlew testDebugUnitTest --no-daemon
+
+      - name: Upload Gradle log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-focus-log
+          path: /tmp/gradle-focus.log
+          retention-days: 7
+
+      - name: Verify APK
+        working-directory: focus-life
+        run: |
+          APK=app/build/outputs/apk/debug/app-debug.apk
+          ls -lh "$APK"
+          AAPT="$ANDROID_HOME/build-tools/34.0.0/aapt2"
+          "$AAPT" dump badging "$APK" | grep -E "^package:|^application-label:|^launchable-activity:" | while IFS= read -r l; do echo "::notice::$l"; done
+
+      - name: Prepare friendly APK file
+        run: |
+          cp app/build/outputs/apk/debug/app-debug.apk "$GITHUB_WORKSPACE/FocusLife-v1.0-debug.apk"
+          ls -lh "$GITHUB_WORKSPACE/FocusLife-v1.0-debug.apk"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FocusLife-APK
+          path: FocusLife-v1.0-debug.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish APK to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: focus-life-apk-latest
+          name: FOCUS LIFE Android App (APK Download)
+          body: |
+            🎯 **FOCUS LIFE** — Personal Discipline & Distraction Control (Android 10+)
+
+            📥 Install: download **FocusLife-v1.0-debug.apk** below, tap it, allow "unknown apps" if asked, then Install.
+
+            ℹ️ Debug build, offline-first, no ads. See `focus-life/PERMISSIONS.md` for Usage Access + Accessibility setup.
+          files: FocusLife-v1.0-debug.apk
+          make_latest: true

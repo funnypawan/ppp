@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">FOCUS LIFE</string>
+    <string name="app_tagline">Personal Discipline &amp; Distraction Control</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_focus">Focus</string>
+    <string name="nav_study">Study</string>
+    <string name="nav_habits">Habits</string>
+    <string name="nav_profile">Profile</string>
+
+    <string name="home_today_focus_score">Today\'s Focus Score</string>
+    <string name="home_completed_tasks">Completed Tasks</string>
+    <string name="home_study_time">Study Time</string>
+    <string name="home_focus_time">Focus Time</string>
+    <string name="home_screen_time">Screen Time</string>
+    <string name="home_streak">Day Streak</string>
+    <string name="home_running">Running</string>
+    <string name="home_exercise">Exercise</string>
+    <string name="home_remaining_goals">Remaining Goals</string>
+    <string name="home_daily_progress">Daily Progress</string>
+
+    <string name="focus_title">Deep Focus</string>
+    <string name="focus_start">Start Focus</string>
+    <string name="focus_pause">Pause</string>
+    <string name="focus_resume">Resume</string>
+    <string name="focus_stop">Stop</string>
+    <string name="focus_current_task">Current Task</string>
+    <string name="focus_remaining">Remaining</string>
+
+    <string name="study_title">Study Planner</string>
+    <string name="habits_title">Habit Tracker</string>
+    <string name="profile_title">Profile &amp; Settings</string>
+
+    <string name="control_title">CONTROL YOURSELF</string>
+    <string name="control_put_phone">Put your phone away.</string>
+    <string name="control_drink_water">Drink some water.</string>
+    <string name="control_walk">Take a short walk.</string>
+    <string name="control_return">Return to your current task.</string>
+
+    <string name="quote_1">Your future depends on what you do today.</string>
+    <string name="quote_2">Small progress is still progress.</string>
+    <string name="quote_3">Control your time, control your life.</string>
+    <string name="quote_4">Discipline is more important than motivation.</string>
+
+    <string name="perm_usage_title">Usage Access Permission</string>
+    <string name="perm_usage_desc">FOCUS LIFE uses Usage Access only to show your daily screen time and app-wise usage. Nothing is uploaded or shared.</string>
+    <string name="perm_accessibility_title">Accessibility Permission</string>
+    <string name="perm_accessibility_desc">Accessibility is used only to warn you before opening apps you selected as distracting during Focus/Study modes. You can turn it off anytime.</string>
+
+    <string name="blocker_warning_title">Distraction Warning</string>
+    <string name="blocker_warning_desc">You are in Focus mode. This app is in your distraction list. Take a breath and return to your task.</string>
+    <string name="emergency_unlock">Emergency Unlock</string>
+    <string name="go_back">Go Back</string>
+
+    <string name="routine_title">Daily Routine</string>
+    <string name="fitness_title">Running &amp; Fitness</string>
+    <string name="report_title">Daily Report</string>
+    <string name="motivation_title">Motivation</string>
+    <string name="language_title">Language / भाषा</string>
+    <string name="language_en">English</string>
+    <string name="language_hi">हिन्दी</string>
+
+    <string name="notification_channel_focus">Focus Timer</string>
+    <string name="notification_channel_reminders">Routine Reminders</string>
+    <string name="notification_focus_done">Focus session complete! Great work.</string>
+    <string name="notification_routine">Time for your next activity. Stay focused!</string>
+</resources>

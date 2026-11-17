@@ -1,0 +1,10 @@
+<resources>
+    <color name="navy_background">#0B1226</color>
+    <color name="navy_surface">#141E3A</color>
+    <color name="navy_surface_variant">#1E2A4A</color>
+    <color name="accent_teal">#2DD4BF</color>
+    <color name="accent_gold">#FBBF24</color>
+    <color name="accent_rose">#FB7185</color>
+    <color name="text_primary">#F1F5F9</color>
+    <color name="text_secondary">#94A3B8</color>
+</resources>

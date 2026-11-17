@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">FOCUS LIFE</string>
+    <string name="app_tagline">व्यक्तिगत अनुशासन और ध्यान भटकाव नियंत्रण</string>
+
+    <string name="nav_home">होम</string>
+    <string name="nav_focus">फोकस</string>
+    <string name="nav_study">पढ़ाई</string>
+    <string name="nav_habits">आदतें</string>
+    <string name="nav_profile">प्रोफ़ाइल</string>
+
+    <string name="home_today_focus_score">आज का फोकस स्कोर</string>
+    <string name="home_completed_tasks">पूरे किए गए कार्य</string>
+    <string name="home_study_time">पढ़ाई का समय</string>
+    <string name="home_focus_time">फोकस का समय</string>
+    <string name="home_screen_time">स्क्रीन समय</string>
+    <string name="home_streak">लगातार दिन</string>
+    <string name="home_running">दौड़</string>
+    <string name="home_exercise">व्यायाम</string>
+    <string name="home_remaining_goals">शेष लक्ष्य</string>
+    <string name="home_daily_progress">दैनिक प्रगति</string>
+
+    <string name="focus_title">डीप फोकस</string>
+    <string name="focus_start">फोकस शुरू करें</string>
+    <string name="focus_pause">रोकें</string>
+    <string name="focus_resume">जारी रखें</string>
+    <string name="focus_stop">रोकें</string>
+    <string name="focus_current_task">वर्तमान कार्य</string>
+    <string name="focus_remaining">शेष समय</string>
+
+    <string name="study_title">पढ़ाई योजनाकार</string>
+    <string name="habits_title">आदत ट्रैकर</string>
+    <string name="profile_title">प्रोफ़ाइल और सेटिंग्स</string>
+
+    <string name="control_title">अपने आप को नियंत्रित करें</string>
+    <string name="control_put_phone">अपना फोन दूर रखें।</string>
+    <string name="control_drink_water">कुछ पानी पिएं।</string>
+    <string name="control_walk">थोड़ी देर टहलें।</string>
+    <string name="control_return">अपने वर्तमान कार्य पर वापस जाएं।</string>
+
+    <string name="quote_1">आपका भविष्य आज आप क्या करते हैं, इस पर निर्भर करता है।</string>
+    <string name="quote_2">छोटी प्रगति भी प्रगति है।</string>
+    <string name="quote_3">अपने समय को नियंत्रित करें, अपना जीवन नियंत्रित करें।</string>
+    <string name="quote_4">अनुशासन प्रेरणा से अधिक महत्वपूर्ण है।</string>
+
+    <string name="perm_usage_title">उपयोग पहुंच अनुमति</string>
+    <string name="perm_usage_desc">FOCUS LIFE उपयोग पहुंच का उपयोग केवल आपका दैनिक स्क्रीन समय और ऐप अनुसार उपयोग दिखाने के लिए करता है। कुछ भी अपलोड या साझा नहीं किया जाता।</string>
+    <string name="perm_accessibility_title">एक्सेसिबिलिटी अनुमति</string>
+    <string name="perm_accessibility_desc">एक्सेसिबिलिटी का उपयोग केवल फोकस/पढ़ाई मोड के दौरान आपके द्वारा चुने गए ध्यान भटकाने वाले ऐप्स को खोलने से पहले चेतावनी देने के लिए किया जाता है। आप इसे कभी भी बंद कर सकते हैं।</string>
+
+    <string name="blocker_warning_title">ध्यान भटकाव चेतावनी</string>
+    <string name="blocker_warning_desc">आप फोकस मोड में हैं। यह ऐप आपकी ध्यान भटकाव सूची में है। एक गहरी सांस लें और अपने कार्य पर वापस जाएं।</string>
+    <string name="emergency_unlock">आपातकालीन अनलॉक</string>
+    <string name="go_back">वापस जाएं</string>
+
+    <string name="routine_title">दैनिक दिनचर्या</string>
+    <string name="fitness_title">दौड़ और फिटनेस</string>
+    <string name="report_title">दैनिक रिपोर्ट</string>
+    <string name="motivation_title">प्रेरणा</string>
+    <string name="language_title">भाषा / Language</string>
+    <string name="language_en">English</string>
+    <string name="language_hi">हिन्दी</string>
+
+    <string name="notification_channel_focus">फोकस टाइमर</string>
+    <string name="notification_channel_reminders">दिनचर्या रिमाइंडर</string>
+    <string name="notification_focus_done">फोकस सत्र पूरा! बहुत बढ़िया।</string>
+    <string name="notification_routine">अगली गतिविधि का समय है। फोकस बनाए रखें!</string>
+</resources>
